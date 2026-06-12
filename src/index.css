@@ -313,14 +313,19 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
   }
   html,
   body {
-    @apply overflow-x-hidden scroll-smooth;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-family:
       "Outfit",
       "Inter",
@@ -340,7 +345,8 @@
   h4,
   h5,
   h6 {
-    @apply tracking-tight font-bold;
+    letter-spacing: -0.025em;
+    font-weight: 700;
     font-family:
       "Outfit",
       "Poppins",
@@ -356,7 +362,7 @@
     height: 8px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: color-mix(in oklch, var(--muted-foreground) 20%, transparent);
@@ -418,13 +424,20 @@
 
 @layer utilities {
   .glass {
-    @apply bg-background/60 backdrop-blur-md border border-white/10;
+    background-color: color-mix(in oklch, var(--background) 60%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in oklch, white 10%, transparent);
   }
   .glass-dark {
-    @apply bg-black/40 backdrop-blur-md border border-white/5;
+    background-color: color-mix(in oklch, black 40%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid color-mix(in oklch, white 5%, transparent);
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, var(--primary), var(--chart-3));
   }
   .animate-in {
     animation: animate-in 0.5s ease-out forwards;
@@ -551,11 +564,6 @@
   width: auto !important;
   height: auto !important;
   padding: 0.5rem !important;
-}
-
-/* RTL support */
-[dir="rtl"] {
-  /* RTL specific styles */
 }
 
 [data-mobile="true"] [data-sidebar="menu-button"] span {
