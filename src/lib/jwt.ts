@@ -34,12 +34,21 @@ export const getUserRoles = (): string[] => {
   if (!token) return [];
   const decoded = decodeJwt(token);
   if (!decoded) return [];
-  const roles =
+  let roles =
     decoded.roles ||
     decoded.role ||
     decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
     decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"] ||
     [];
+
+  if (typeof roles === "string" && roles.startsWith("[")) {
+    try {
+      roles = JSON.parse(roles);
+    } catch {
+      // Ignore
+    }
+  }
+
   return Array.isArray(roles) ? (roles as string[]) : [roles as string];
 };
 
@@ -48,7 +57,16 @@ export const getUserPermissions = (): string[] => {
   if (!token) return [];
   const decoded = decodeJwt(token);
   if (!decoded) return [];
-  const permissions = decoded.permissions || [];
+  let permissions = decoded.permissions || [];
+
+  if (typeof permissions === "string" && permissions.startsWith("[")) {
+    try {
+      permissions = JSON.parse(permissions);
+    } catch {
+      // Ignore
+    }
+  }
+
   return Array.isArray(permissions) ? (permissions as string[]) : [permissions as string];
 };
 
@@ -79,6 +97,6 @@ export const getTokenAccountHints = (): {
   return { firstName: firstName || "Account", lastName, email: email || "" };
 };
 
-export const isCompany = (): boolean => hasRole("Company");
+export const isOwner = (): boolean => hasRole("Owner");
 export const isAdmin = (): boolean => hasRole("Admin");
 export const isMember = (): boolean => hasRole("Member");

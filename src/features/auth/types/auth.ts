@@ -62,6 +62,14 @@ export interface RefreshTokenResponse {
   refreshTokenExpiration: string;
 }
 
+export const UserRole = {
+  Admin: "Admin",
+  Owner: "Owner",
+  Member: "Member",
+} as const;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
 export interface User {
   id: string;
   firstName: string;
@@ -69,6 +77,7 @@ export interface User {
   email: string;
   userName?: string;
   isEmailConfirmed?: boolean;
+  role?: UserRole | UserRole[]; // Accept single role or array of roles depending on the backend
 }
 
 export interface ApiError {

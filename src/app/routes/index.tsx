@@ -6,6 +6,15 @@ import AppLayout from "@/shared/components/navigation/AppLayout";
 import ScrollToTop from "@/shared/components/navigation/ScrollToTop";
 import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import NotFoundPage from "@/shared/components/NotFoundPage";
+import UnauthorizedPage from "@/shared/components/UnauthorizedPage";
+import { RoleProtectedRoute } from "@/features/auth/components/RoleProtectedRoute";
+import { UserRole } from "@/features/auth/types/auth";
+
+// Clubs
+import ClubsPage from "@/features/clubs/pages/ClubsPage";
+import ClubDetailsPage from "@/features/clubs/pages/ClubDetailsPage";
+import OwnerClubsPage from "@/features/clubs/pages/OwnerClubsPage";
+import AdminClubsPage from "@/features/clubs/pages/AdminClubsPage";
 
 // Home
 import HomePage from "@/features/home/pages/HomePage";
@@ -55,6 +64,20 @@ const MainRouter = () => {
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/posts" element={<PostsPage />} />
           <Route path="/posts/my" element={<MyPostsPage />} />
+
+          {/* Public Clubs Routes (inside AppLayout to show navbar) */}
+          <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="/clubs/:clubId" element={<ClubDetailsPage />} />
+
+          {/* Owner Protected Routes */}
+          <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Owner]} />}>
+            <Route path="/owner/clubs" element={<OwnerClubsPage />} />
+          </Route>
+
+          {/* Admin Protected Routes */}
+          <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Admin]} />}>
+            <Route path="/admin/clubs" element={<AdminClubsPage />} />
+          </Route>
         </Route>
 
         {/* Auth */}
@@ -132,9 +155,12 @@ const MainRouter = () => {
         />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
 
-        {/* 404 */}
+        {/* 404 & Unauthorized */}
         <Route path="*" element={<PublicLayout />}>
           <Route index element={<NotFoundPage />} />
+        </Route>
+        <Route path="/unauthorized" element={<PublicLayout />}>
+          <Route index element={<UnauthorizedPage />} />
         </Route>
       </Routes>
     </>
