@@ -19,9 +19,10 @@ import { cn } from "@/lib/utils";
 
 interface PublicHeaderProps {
   leading?: ReactNode;
+  hideLogo?: boolean;
 }
 
-const PublicHeader = ({ leading }: PublicHeaderProps) => {
+const PublicHeader = ({ leading, hideLogo }: PublicHeaderProps) => {
   const { isAuthenticated, logout, user } = useAuth();
   const location = useLocation();
 
@@ -49,9 +50,11 @@ const PublicHeader = ({ leading }: PublicHeaderProps) => {
           <div className="flex min-w-0 flex-1 items-center gap-2 md:gap-6">
             {leading}
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 shrink-0 group">
-              <span className="text-xl font-bold tracking-tight text-primary">Sportiva</span>
-            </Link>
+            {!hideLogo && (
+              <Link to="/" className="flex items-center gap-2 shrink-0 group">
+                <span className="text-xl font-bold tracking-tight text-primary">Sportiva</span>
+              </Link>
+            )}
 
             {/* Navigation Links */}
             <nav className="hidden items-center gap-1 md:flex shrink-0">

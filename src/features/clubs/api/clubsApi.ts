@@ -31,6 +31,7 @@ export const clubsApi = {
     const formData = new FormData();
     formData.append("Name", data.name);
     if (data.logo) formData.append("Logo", data.logo);
+    if (data.cover) formData.append("Cover", data.cover);
     if (data.governorate) formData.append("Governorate", data.governorate);
     if (data.city) formData.append("City", data.city);
     if (data.address) formData.append("Address", data.address);
@@ -46,6 +47,7 @@ export const clubsApi = {
     const formData = new FormData();
     if (data.name !== undefined) formData.append("Name", data.name);
     if (data.logo) formData.append("Logo", data.logo);
+    if (data.cover) formData.append("Cover", data.cover);
     if (data.governorate !== undefined) formData.append("Governorate", data.governorate);
     if (data.city !== undefined) formData.append("City", data.city);
     if (data.address !== undefined) formData.append("Address", data.address);

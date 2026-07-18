@@ -13,8 +13,23 @@ import { UserRole } from "@/features/auth/types/auth";
 // Clubs
 import ClubsPage from "@/features/clubs/pages/ClubsPage";
 import ClubDetailsPage from "@/features/clubs/pages/ClubDetailsPage";
-import OwnerClubsPage from "@/features/clubs/pages/OwnerClubsPage";
-import AdminClubsPage from "@/features/clubs/pages/AdminClubsPage";
+import OwnerClubDashboardPage from "@/features/clubs/pages/OwnerClubDashboardPage";
+import CourtsPage from "@/features/clubs/pages/CourtsPage";
+import CourtDetailsPage from "@/features/clubs/pages/CourtDetailsPage";
+
+// Subscriptions
+import PlansPage from "@/features/subscriptions/pages/PlansPage";
+import AdminPlansPage from "@/features/subscriptions/pages/AdminPlansPage";
+
+// Bookings
+import BookingsPage from "@/features/bookings/pages/BookingsPage";
+
+// Memberships
+import AdminUpgradeRequestsPage from "@/features/memberships/pages/AdminUpgradeRequestsPage";
+
+// Friendly Matches
+import MatchesPage from "@/features/matches/pages/MatchesPage";
+import MatchDetailsPage from "@/features/matches/pages/MatchDetailsPage";
 
 // Home
 import HomePage from "@/features/home/pages/HomePage";
@@ -68,15 +83,22 @@ const MainRouter = () => {
           {/* Public Clubs Routes (inside AppLayout to show navbar) */}
           <Route path="/clubs" element={<ClubsPage />} />
           <Route path="/clubs/:clubId" element={<ClubDetailsPage />} />
+          <Route path="/clubs/:clubId/courts/:courtId" element={<CourtDetailsPage />} />
+          <Route path="/courts" element={<CourtsPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/matches" element={<MatchesPage />} />
+          <Route path="/matches/:matchId" element={<MatchDetailsPage />} />
 
           {/* Owner Protected Routes */}
           <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Owner]} />}>
-            <Route path="/owner/clubs" element={<OwnerClubsPage />} />
+            <Route path="/owner/clubs/:clubId/dashboard" element={<OwnerClubDashboardPage />} />
           </Route>
 
           {/* Admin Protected Routes */}
           <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Admin]} />}>
-            <Route path="/admin/clubs" element={<AdminClubsPage />} />
+            <Route path="/admin/plans" element={<AdminPlansPage />} />
+            <Route path="/admin/membership-requests" element={<AdminUpgradeRequestsPage />} />
           </Route>
         </Route>
 

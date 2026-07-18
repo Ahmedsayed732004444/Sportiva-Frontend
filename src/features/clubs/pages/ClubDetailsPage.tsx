@@ -10,14 +10,30 @@ import {
 } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { MapPin, Phone, Mail, ArrowLeft, Building2, Edit2, Trash2 } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowLeft, Edit2, Trash2, Star, Check, Users, ArrowRight, Clock, Heart } from "lucide-react";
+import { Badge } from "@/shared/components/ui/badge";
 import { isAdmin } from "@/lib/jwt";
 import { ClubFormModal } from "../components/ClubFormModal";
+import { useGetClubReviews } from "@/features/reviews/hooks/useReviews";
+import { cn, formatRelativeTime } from "@/lib/utils";
+import { getSportName } from "./CourtsPage";
+
+const SPORT_EMOJIS: Record<number, string> = {
+  0: "⚽",
+  1: "🏀",
+  2: "🎾",
+  3: "🎾",
+  4: "🏐",
+  5: "🏅",
+};
 
 export default function ClubDetailsPage() {
   const { clubId } = useParams<{ clubId: string }>();
   const navigate = useNavigate();
   const { data: club, isLoading, isError, error } = useGetClub(clubId as string);
+
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetClubReviews(clubId as string);
+  const reviews = reviewsData?.items || [];
   const deleteClub = useDeleteClub();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,14 +90,14 @@ export default function ClubDetailsPage() {
 
   if (!club) return null;
 
-  const canManage = isAdmin() || club.isOwner;
+  const canManage = isAdmin();
 
   return (
-    <div className="container mx-auto max-w-4xl py-8 px-4">
-      <div className="flex items-center justify-between mb-6">
-        <Button asChild variant="ghost">
-          <Link to="/clubs">
-            <ArrowLeft className="mr-2 h-4 w-4" />
+    <div className="container mx-auto max-w-4xl py-6 px-2 sm:py-8 sm:px-4 max-w-7xl space-y-6">
+      <div className="flex items-center justify-between mb-2">
+        <Button asChild variant="ghost" className="hover:bg-emerald-50/50 text-[#20A854] hover:text-[#20A854] p-0 font-bold gap-2">
+          <Link to="/clubs" className="flex items-center">
+            <ArrowLeft className="h-4 w-4" />
             Back to Clubs
           </Link>
         </Button>
@@ -98,100 +114,226 @@ export default function ClubDetailsPage() {
         )}
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-6">
-          {club.logoUrl ? (
-            <img
-              src={club.logoUrl}
-              alt={`${club.name} logo`}
-              className="h-24 w-24 rounded-full object-cover border-4 border-background shadow-sm"
-            />
+      <Card className="overflow-hidden border border-gray-100 dark:border-muted/30 bg-white dark:bg-card rounded-3xl shadow-sm relative">
+        {/* Cover Photo */}
+        <div className="relative h-60 w-full overflow-hidden bg-muted shrink-0">
+          {club.coverUrl ? (
+            <img src={club.coverUrl} alt={`${club.name} cover`} className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary border-4 border-background shadow-sm text-3xl font-bold">
-              {club.name?.charAt(0)?.toUpperCase()}
-            </div>
+            <div className="h-full w-full bg-gradient-to-r from-emerald-600/10 to-emerald-700/20" />
           )}
-          <div className="flex-1">
-            <div className="flex items-start justify-between">
-              <div>
-                <CardTitle className="text-3xl">{club.name}</CardTitle>
-                <CardDescription className="flex items-center gap-1 mt-2 text-base">
-                  <MapPin className="h-4 w-4" />
+        </div>
+
+        {/* Profile Details Row */}
+        <div className="relative px-6 pb-6 pt-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          {/* Avatar Container overlapping */}
+          <div className="flex flex-col md:flex-row md:items-end gap-5">
+            {club.logoUrl ? (
+              <img
+                src={club.logoUrl}
+                alt={`${club.name} logo`}
+                className="h-32 w-32 rounded-full border-4 border-white dark:border-card shadow-md relative z-10 shrink-0 -mt-16 bg-white"
+              />
+            ) : (
+              <div className="flex h-32 w-32 items-center justify-center rounded-full bg-emerald-500/10 text-[#20A854] border-4 border-white dark:border-card shadow-md relative z-10 text-4xl font-extrabold -mt-16 bg-white shrink-0">
+                {club.name?.charAt(0)?.toUpperCase()}
+              </div>
+            )}
+            <div className="space-y-1">
+              <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+                {club.name}
+              </h1>
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5 text-[#20A854]" />
+                <span>
                   {club.address ? `${club.address}, ` : ""}
                   {club.city ? `${club.city}, ` : ""}
                   {club.governorate || "Location not specified"}
-                </CardDescription>
+                </span>
               </div>
-              <span
-                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${
-                  club.isActive
-                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                }`}
-              >
-                {club.isActive ? "Active" : "Inactive"}
-              </span>
             </div>
           </div>
-        </CardHeader>
-        <CardContent className="mt-6 border-t pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-muted-foreground" />
-                Contact Information
-              </h3>
-              <div className="space-y-3 pl-7">
-                {club.phoneNumber && (
-                  <div className="flex items-center gap-3">
-                    <Phone className="h-5 w-5 text-muted-foreground" />
-                    <span>{club.phoneNumber}</span>
-                  </div>
-                )}
-                {club.email && (
-                  <div className="flex items-center gap-3">
-                    <Mail className="h-5 w-5 text-muted-foreground" />
-                    <a href={`mailto:${club.email}`} className="text-primary hover:underline">
-                      {club.email}
-                    </a>
-                  </div>
-                )}
-                {!club.phoneNumber && !club.email && (
-                  <p className="text-sm text-muted-foreground">No contact information available.</p>
-                )}
-              </div>
-            </div>
 
-            {club.owner && (
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Club Management</h3>
-                <div className="flex items-center gap-3">
-                  {club.owner.profilePictureUrl ? (
-                    <img
-                      src={club.owner.profilePictureUrl}
-                      alt={club.owner.fullName}
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground font-medium">
-                      {club.owner.fullName.charAt(0).toUpperCase()}
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-medium">{club.owner.fullName}</p>
-                    <p className="text-xs text-muted-foreground">Club Owner</p>
-                  </div>
-                </div>
-              </div>
-            )}
+          {/* Active Badge */}
+          <div className="flex items-center shrink-0">
+            <span
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold shadow-sm border",
+                club.isActive
+                  ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
+                  : "bg-red-500/10 text-red-600 border-red-500/20"
+              )}
+            >
+              {club.isActive ? (
+                <>
+                  <Check className="h-3.5 w-3.5 stroke-[3]" />
+                  Active
+                </>
+              ) : (
+                "Inactive"
+              )}
+            </span>
           </div>
-        </CardContent>
+        </div>
       </Card>
 
+      {/* Grid: Contact Info & Management */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Card 1: Contact Info */}
+        <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-5 flex flex-col justify-between">
+          <div>
+            <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+              <div className="h-2 w-2 rounded-full bg-[#20A854]" />
+              Contact Info
+            </h2>
+            <div className="space-y-4">
+              {/* Phone */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] flex items-center justify-center shrink-0 border border-emerald-500/10">
+                    <Phone className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Phone</p>
+                    <p className="text-sm font-extrabold text-gray-800 dark:text-gray-200">{club.phoneNumber || "Not specified"}</p>
+                  </div>
+                </div>
+                {club.phoneNumber && (
+                  <a href={`tel:${club.phoneNumber}`} className="h-8 w-8 rounded-full border border-gray-100 dark:border-muted/30 flex items-center justify-center text-gray-400 hover:text-[#20A854] hover:bg-gray-50 dark:hover:bg-muted/40 transition-colors">
+                    <Phone className="h-3.5 w-3.5" />
+                  </a>
+                )}
+              </div>
+
+              {/* Email */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] flex items-center justify-center shrink-0 border border-emerald-500/10">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Email</p>
+                    <p className="text-sm font-extrabold text-gray-800 dark:text-gray-200 block truncate max-w-[200px]">
+                      {club.email || "Not specified"}
+                    </p>
+                  </div>
+                </div>
+                {club.email && (
+                  <a href={`mailto:${club.email}`} className="h-8 w-8 rounded-full border border-gray-100 dark:border-muted/30 flex items-center justify-center text-gray-400 hover:text-[#20A854] hover:bg-gray-50 dark:hover:bg-muted/40 transition-colors">
+                    <Mail className="h-3.5 w-3.5" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Card 2: Management */}
+        <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-5">
+          <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+            <div className="h-2 w-2 rounded-full bg-[#20A854]" />
+            Management
+          </h2>
+          {club.owner ? (
+            <div className="flex items-center gap-4 py-2">
+              {club.owner.profilePictureUrl ? (
+                <img
+                  src={club.owner.profilePictureUrl}
+                  alt={club.owner.fullName}
+                  className="h-16 w-16 rounded-full object-cover border border-gray-100 dark:border-muted/30"
+                />
+              ) : (
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 border border-emerald-500/20 font-extrabold text-xl">
+                  {club.owner.fullName.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div>
+                <p className="font-extrabold text-base text-gray-900 dark:text-white leading-tight">{club.owner.fullName}</p>
+                <p className="text-xs text-gray-500 font-medium mt-1">Club Owner</p>
+              </div>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground py-2">No owner specified.</p>
+          )}
+        </Card>
+      </div>
+
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-6">Courts</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">Courts</h2>
+          <Link to="/courts" className="text-xs font-bold text-[#20A854] hover:underline flex items-center gap-1">
+            View all courts
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
         <CourtsList clubId={clubId as string} />
       </div>
+
+      <Card className="bg-card border border-gray-100 dark:border-muted/30 rounded-3xl shadow-sm mt-12 overflow-hidden">
+        <CardHeader className="pb-4 flex flex-row items-center justify-between gap-4 border-b border-gray-50 dark:border-muted/10">
+          <div>
+            <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-foreground">
+              <Star className="h-5 w-5 text-amber-500 fill-amber-400 shrink-0" />
+              Club Reviews ({reviews.length})
+            </CardTitle>
+            <CardDescription className="text-xs mt-1">What players say about this club's facilities</CardDescription>
+          </div>
+          {reviews.length > 0 && (
+            <span className="text-xs font-bold text-[#20A854] flex items-center gap-1 shrink-0 cursor-default">
+              Reviews Listed
+            </span>
+          )}
+        </CardHeader>
+        <CardContent className="space-y-6 pt-5">
+          {isReviewsLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="text-center py-10 text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+              No reviews submitted yet for this club.
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-50 dark:divide-muted/10">
+              {reviews.map((rev) => (
+                <div key={rev.reviewId} className="flex flex-col sm:flex-row sm:items-center gap-4 py-4 first:pt-0 last:pb-0">
+                  {/* Left: Avatar & Name/Date */}
+                  <div className="flex items-center gap-3 min-w-[200px] shrink-0">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-[#20A854] font-bold text-xs border border-emerald-100 dark:border-emerald-950/30">
+                      {rev.author.fullName.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="font-extrabold text-sm text-gray-800 dark:text-gray-200 leading-tight">{rev.author.fullName}</p>
+                      <span className="text-[10px] text-gray-400 font-medium">{formatRelativeTime(rev.createdAt)}</span>
+                    </div>
+                  </div>
+
+                  {/* Center: Stars */}
+                  <div className="flex items-center gap-0.5 shrink-0">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={cn(
+                          "h-3.5 w-3.5",
+                          i < rev.rating ? "fill-amber-400 text-amber-400" : "text-gray-200 dark:text-muted/30 fill-transparent"
+                        )}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Right: Comment */}
+                  <div className="flex-1 sm:pl-4 min-w-0">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                      {rev.comment}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <ClubFormModal
         isOpen={isModalOpen}
@@ -201,6 +343,103 @@ export default function ClubDetailsPage() {
     </div>
   );
 }
+
+interface ClubCourtCardProps {
+  court: any;
+  clubId: string;
+}
+
+const ClubCourtCard = ({ court, clubId }: ClubCourtCardProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  
+  return (
+    <Link to={`/clubs/${clubId}/courts/${court.courtId}`} className="block group">
+      <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full p-0">
+        {/* Cover Image */}
+        <div className="h-44 w-full bg-muted relative bg-cover bg-center shrink-0 overflow-hidden">
+          {court.imageUrl ? (
+            <img 
+              src={court.imageUrl} 
+              alt={court.name} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-r from-emerald-600/10 to-emerald-700/20 flex items-center justify-center text-muted-foreground/30 font-bold text-3xl">
+              {court.name?.substring(0, 2)?.toUpperCase()}
+            </div>
+          )}
+
+          {/* Floating sport icon button */}
+          <div className="absolute bottom-3 left-3 h-8 w-8 rounded-full bg-white dark:bg-card flex items-center justify-center shadow-sm border border-gray-100 dark:border-muted/30 z-10 text-base">
+            {SPORT_EMOJIS[court.sportType] || "⚽"}
+          </div>
+
+          {/* Favorite Heart Button */}
+          <button
+            type="button"
+            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/90 dark:bg-card/90 backdrop-blur-sm flex items-center justify-center text-gray-500 hover:text-red-500 transition-colors shadow-sm z-10 border border-gray-100 dark:border-muted/30"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsFavorite(!isFavorite);
+            }}
+          >
+            <Heart className={cn("h-4 w-4 transition-colors", isFavorite ? "fill-red-500 text-red-500" : "text-gray-500")} />
+          </button>
+        </div>
+
+        {/* Content */}
+        <CardContent className="p-4 flex-1 flex flex-col justify-between">
+          <div className="space-y-3">
+            {/* Badge & Rating Row */}
+            <div className="flex items-center justify-between gap-2">
+              <Badge variant="secondary" className="bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] hover:bg-emerald-50/80 gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold border border-[#20A854]/10 shrink-0">
+                {SPORT_EMOJIS[court.sportType] || "⚽"} {getSportName(court.sportType)}
+              </Badge>
+
+              <div className="flex items-center gap-1 text-xs font-semibold text-gray-600 dark:text-muted-foreground">
+                <span className="text-amber-500 text-xs">★</span>
+                <span>{(court.averageRating ?? 0).toFixed(1)}</span>
+                <span className="text-[10px] text-gray-400 font-normal">({court.reviewsCount ?? 0} reviews)</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-extrabold text-sm text-gray-900 dark:text-white truncate" title={court.name}>
+                {court.name || "Unnamed Court"}
+              </h3>
+              {court.description && (
+                <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed mt-1">
+                  {court.description}
+                </p>
+              )}
+            </div>
+
+            {/* Capacity & Price Row */}
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#20A854] bg-[#20A854]/5 border border-[#20A854]/10 rounded-xl px-2.5 py-1">
+                <Users className="h-3 w-3" />
+                <span>{court.maxCapacity} Players Max</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] font-bold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-muted/15 border border-gray-100 dark:border-muted/30 rounded-xl px-2.5 py-1">
+                <Clock className="h-3 w-3 text-gray-400" />
+                <span>{court.pricePerHour} EGP / Hour</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Book Now Button Row */}
+          <div className="border-t border-gray-50 dark:border-muted/10 pt-3.5 mt-4 flex items-center justify-end">
+            <div className="bg-[#20A854] group-hover:bg-[#20A854]/90 text-white rounded-xl px-3.5 h-8.5 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all">
+              Book Now
+              <ArrowRight className="h-3.5 w-3.5" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
+  );
+};
 
 function CourtsList({ clubId }: { clubId: string }) {
   const { data, isLoading, isError } = useGetClubCourts(clubId);
@@ -234,46 +473,7 @@ function CourtsList({ clubId }: { clubId: string }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {data.items.map((court) => (
-        <Card key={court.courtId} className="overflow-hidden flex flex-col">
-          {court.imageUrl ? (
-            <div className="h-40 bg-muted">
-              <img src={court.imageUrl} alt={court.name} className="w-full h-full object-cover" />
-            </div>
-          ) : (
-            <div className="h-40 bg-muted flex items-center justify-center text-muted-foreground font-medium">
-              No Image
-            </div>
-          )}
-          <CardHeader className="pb-3">
-            <CardTitle className="text-xl flex justify-between items-start">
-              <span className="truncate">{court.name || "Unnamed Court"}</span>
-              <span className="text-sm font-bold text-primary shrink-0">
-                ${court.pricePerHour}/hr
-              </span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1">
-            {court.description && (
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{court.description}</p>
-            )}
-            <div className="flex flex-col gap-2 text-sm mt-auto">
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Capacity:</span>
-                <span className="font-medium">{court.maxCapacity} players</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Status:</span>
-                <span
-                  className={
-                    court.isActive ? "text-green-600 font-medium" : "text-red-600 font-medium"
-                  }
-                >
-                  {court.isActive ? "Active" : "Inactive"}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <ClubCourtCard key={court.courtId} court={court} clubId={clubId} />
       ))}
     </div>
   );

@@ -39,6 +39,7 @@ export interface UserProfileResponse {
   isMe: boolean;
   isFollowing: boolean;
   canSendMessage: boolean;
+  createdAt: string;
 }
 
 export interface ToggleFollowResponse {

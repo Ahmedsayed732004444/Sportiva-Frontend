@@ -1,4 +1,3 @@
-// c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/shared/components/navigation/AppSidebar.tsx
 import { Link, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -56,44 +55,55 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+    <Sidebar
+      collapsible="icon"
+      className="!top-0 !h-screen border-r border-gray-700/30 bg-[#161F30] text-white z-[1001]"
+    >
       {/* ── Brand Header ── */}
-      <SidebarHeader className="px-4 py-4 border-b border-sidebar-border relative overflow-hidden">
-        {/* Subtle brand gradient accent (Raycast-style) */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(to bottom, color-mix(in oklch, var(--primary) 8%, transparent), transparent)",
-          }}
-          aria-hidden="true"
-        />
+      <SidebarHeader className="px-4 py-5 border-b border-gray-700/30 bg-[#161F30] relative overflow-hidden shrink-0">
         <Link
           to="/"
           onClick={handleLinkClick}
-          className="flex flex-col group-data-[state=collapsed]:items-center relative"
+          className="flex items-center gap-3 group-data-[state=collapsed]:justify-center relative"
         >
-          <span
-            className="text-lg font-bold text-sidebar-primary tracking-tight leading-tight group-data-[state=collapsed]:hidden"
-            style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-          >
-            Sportiva
-          </span>
-          <span className="text-xs text-sidebar-foreground/50 font-medium group-data-[state=collapsed]:hidden">
-            Sports Booking
-          </span>
-          {/* Collapsed icon fallback */}
-          <span className="hidden text-lg font-bold text-sidebar-primary group-data-[state=collapsed]:block">
-            SP
-          </span>
+          {/* Stylized sports green S logo */}
+          <div className="h-10 w-10 shrink-0 bg-[#20A854]/10 border border-[#20A854]/25 rounded-xl flex items-center justify-center transition-all group-hover:scale-105">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-5.5 w-5.5 text-[#20A854]"
+            >
+              {/* S shape represented dynamically */}
+              <path d="M12 2a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10a10 10 0 0 0 10-10" className="opacity-10" />
+              <path d="M8 17c1.5-1.5 4.5-1.5 6 0" />
+              <path d="M10 7C11.5 8.5 14.5 8.5 16 7" />
+              <path d="M7 12h10" />
+              <path d="M12 7v10" />
+            </svg>
+          </div>
+          <div className="flex flex-col group-data-[state=collapsed]:hidden text-left">
+            <span
+              className="text-lg font-black text-white tracking-tight leading-none"
+              style={{ fontFamily: "'Cabinet Grotesk', 'Inter', system-ui, sans-serif" }}
+            >
+              Sportiva
+            </span>
+            <span className="text-[10px] text-[#20A854] font-bold uppercase tracking-widest mt-1">
+              Play. Connect. Win.
+            </span>
+          </div>
         </Link>
       </SidebarHeader>
 
       {/* ── Main Navigation ── */}
-      <SidebarContent className="px-3 py-3">
+      <SidebarContent className="px-3 py-3 bg-[#161F30]">
         <SidebarGroup className="p-0">
           <SidebarGroupContent>
-            <SidebarMenu className="gap-0.5">
+            <SidebarMenu className="gap-1">
               {config.navigationLinks.map((link) => {
                 const Icon = link.icon;
                 const active = isActive(link.path);
@@ -105,17 +115,17 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
                       tooltip={link.label}
                       onClick={handleLinkClick}
                       className={cn(
-                        "h-10 px-3 rounded-md transition-colors duration-[var(--duration-normal)] font-medium text-sm relative",
+                        "h-11 px-3 rounded-xl transition-all font-semibold text-sm relative border border-transparent",
                         active
-                          ? "bg-sidebar-accent text-sidebar-primary before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-3/4 before:w-1 before:bg-sidebar-primary before:rounded-r-full"
-                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                          ? "bg-[#1F3438] text-[#20A854] border-[#20A854]/20 shadow-sm"
+                          : "text-gray-400 hover:bg-[#1E2A40] hover:text-white"
                       )}
                     >
                       <Link to={link.path} className="flex items-center gap-3">
                         <Icon
                           className={cn(
-                            "h-4 w-4 shrink-0 transition-colors",
-                            active ? "text-sidebar-primary" : "text-sidebar-foreground/50"
+                            "h-5 w-5 shrink-0 transition-colors",
+                            active ? "text-[#20A854]" : "text-gray-400 group-hover:text-white"
                           )}
                           aria-hidden="true"
                         />
@@ -130,9 +140,9 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Bottom: Settings + Help + Logout ── */}
-      <SidebarFooter className="px-3 py-3 border-t border-sidebar-border">
-        <SidebarMenu className="gap-0.5">
+      {/* ── Bottom: Settings + Help & Support + Logout ── */}
+      <SidebarFooter className="px-3 py-4 border-t border-gray-700/30 bg-[#161F30] shrink-0">
+        <SidebarMenu className="gap-1">
           {/* Settings */}
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -140,17 +150,17 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
               tooltip="Settings"
               onClick={handleLinkClick}
               className={cn(
-                "h-10 px-3 rounded-md transition-colors duration-[var(--duration-normal)] font-medium text-sm relative",
+                "h-11 px-3 rounded-xl transition-all font-semibold text-sm relative border border-transparent",
                 isActive("/settings")
-                  ? "bg-sidebar-accent text-sidebar-primary before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-3/4 before:w-1 before:bg-sidebar-primary before:rounded-r-full"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                  ? "bg-[#1F3438] text-[#20A854] border-[#20A854]/20 shadow-sm"
+                  : "text-gray-400 hover:bg-[#1E2A40] hover:text-white"
               )}
             >
               <Link to="/settings" className="flex items-center gap-3">
                 <Settings
                   className={cn(
-                    "h-4 w-4 shrink-0 transition-colors",
-                    isActive("/settings") ? "text-sidebar-primary" : "text-sidebar-foreground/50"
+                    "h-5 w-5 shrink-0 transition-colors",
+                    isActive("/settings") ? "text-[#20A854]" : "text-gray-400 group-hover:text-white"
                   )}
                   aria-hidden="true"
                 />
@@ -163,24 +173,24 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              tooltip="Help"
+              tooltip="Help & Support"
               onClick={handleLinkClick}
               className={cn(
-                "h-10 px-3 rounded-md transition-colors duration-[var(--duration-normal)] font-medium text-sm relative",
+                "h-11 px-3 rounded-xl transition-all font-semibold text-sm relative border border-transparent",
                 isActive("/help")
-                  ? "bg-sidebar-accent text-sidebar-primary before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:h-3/4 before:w-1 before:bg-sidebar-primary before:rounded-r-full"
-                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                  ? "bg-[#1F3438] text-[#20A854] border-[#20A854]/20 shadow-sm"
+                  : "text-gray-400 hover:bg-[#1E2A40] hover:text-white"
               )}
             >
               <Link to="/help" className="flex items-center gap-3">
                 <HelpCircle
                   className={cn(
-                    "h-4 w-4 shrink-0 transition-colors",
-                    isActive("/help") ? "text-sidebar-primary" : "text-sidebar-foreground/50"
+                    "h-5 w-5 shrink-0 transition-colors",
+                    isActive("/help") ? "text-[#20A854]" : "text-gray-400 group-hover:text-white"
                   )}
                   aria-hidden="true"
                 />
-                <span>Help</span>
+                <span>Help & Support</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -190,9 +200,9 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
             <SidebarMenuButton
               tooltip="Logout"
               onClick={() => logout()}
-              className="h-10 px-3 rounded-md transition-colors duration-[var(--duration-normal)] font-medium text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground cursor-pointer"
+              className="h-11 px-3 rounded-xl transition-all font-semibold text-sm text-red-400 hover:bg-[#1E2A40] hover:text-red-300 border border-transparent hover:border-red-950/20 cursor-pointer"
             >
-              <LogOut className="h-4 w-4 shrink-0 text-sidebar-foreground/50" aria-hidden="true" />
+              <LogOut className="h-5 w-5 shrink-0 text-red-400" aria-hidden="true" />
               <span>Logout</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

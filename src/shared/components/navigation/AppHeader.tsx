@@ -7,7 +7,19 @@ import { SidebarTrigger } from "@/shared/components/ui/sidebar";
 const AppHeader = () => {
   return (
     <PublicHeader
-      leading={<SidebarTrigger className="shrink-0 md:-ml-1" aria-label="Toggle sidebar" />}
+      hideLogo={true}
+      leading={
+        <div className="flex items-center gap-4">
+          <SidebarTrigger className="shrink-0 md:-ml-1" aria-label="Toggle sidebar" />
+          <div className="flex items-center gap-3">
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Player Profile</h1>
+            <div className="hidden md:flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/40 px-3 py-1 rounded-full border border-muted/50">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 block"></span>
+              You are viewing your profile
+            </div>
+          </div>
+        </div>
+      }
     />
   );
 };

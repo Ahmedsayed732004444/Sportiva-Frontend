@@ -13,10 +13,11 @@ export const CLUBS_QUERY_KEYS = {
   myClubsList: (filters: RequestFilters) => [...CLUBS_QUERY_KEYS.myClubs(), { filters }] as const,
 };
 
-export const useGetClubs = (filters: RequestFilters = {}) => {
+export const useGetClubs = (filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: CLUBS_QUERY_KEYS.list(filters),
     queryFn: () => clubsApi.getClubs(filters),
+    ...options,
   });
 };
 
@@ -36,10 +37,11 @@ export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}) =
   });
 };
 
-export const useGetMyClubs = (filters: RequestFilters = {}) => {
+export const useGetMyClubs = (filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: CLUBS_QUERY_KEYS.myClubsList(filters),
     queryFn: () => clubsApi.getMyClubs(filters),
+    ...options,
   });
 };
 

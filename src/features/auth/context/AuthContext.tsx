@@ -75,12 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      queryClient.setQueryData(QUERY_KEYS.auth.user, {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      });
+      queryClient.setQueryData(QUERY_KEYS.auth.user, user);
       queryClient.setQueryData([QUERY_KEYS.auth.user, "me"], user);
     }
   }, [user, queryClient]);

@@ -1,13 +1,14 @@
 // src/features/posts/components/PostCard.tsx
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, Loader2, MessageCircle, MoreHorizontal } from "lucide-react";
+import { Heart, Loader2, MessageCircle, MoreHorizontal, Share2 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useToggleLike, useDeletePost } from "@/features/posts/hooks/usePosts";
 import { EditPostModal } from "@/features/posts/components/EditPostModal";
 import { LikesListModal } from "@/features/posts/components/LikesListModal";
 import { CommentsSection } from "@/features/posts/components/CommentsSection"; // ✅ Added import
 import { Button } from "@/shared/components/ui/button";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,6 +72,18 @@ export const PostCard = ({ post }: PostCardProps) => {
       // ✅ Fixed: renamed from post.id
       onSuccess: () => setDeleteOpen(false),
     });
+  };
+
+  const handleShare = () => {
+    const postUrl = `${window.location.origin}/posts/${post.postId}`;
+    navigator.clipboard
+      .writeText(postUrl)
+      .then(() => {
+        toast.success("Post link copied to clipboard!");
+      })
+      .catch(() => {
+        toast.error("Failed to copy link.");
+      });
   };
 
   const metaParts = [location, formatRelativeTime(post.createdAt)].filter(Boolean);
@@ -139,7 +152,7 @@ export const PostCard = ({ post }: PostCardProps) => {
           <img
             src={post.fileUrl}
             alt="Post attachment"
-            className="max-h-[500px] w-full rounded-xl object-cover"
+            className="max-h-[320px] md:max-h-[360px] w-full rounded-xl object-cover"
           />
         )}
       </div>
@@ -191,6 +204,18 @@ export const PostCard = ({ post }: PostCardProps) => {
           />{" "}
           {/* ✅ Added fill when active */}
           {commentsCount}
+        </Button>
+
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={handleShare}
+          className="h-8 rounded-full gap-1.5 px-3 text-muted-foreground hover:text-foreground ml-auto"
+          aria-label="Share post"
+        >
+          <Share2 className="h-4 w-4" aria-hidden="true" />
+          Share
         </Button>
       </footer>
       <EditPostModal post={post} open={editOpen} onOpenChange={setEditOpen} />

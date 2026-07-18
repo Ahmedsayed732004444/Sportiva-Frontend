@@ -39,6 +39,7 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
   const createClub = useCreateClub();
   const updateClub = useUpdateClub();
   const [logoFile, setLogoFile] = React.useState<File | null>(null);
+  const [coverFile, setCoverFile] = React.useState<File | null>(null);
 
   const form = useForm<ClubFormValues>({
     resolver: zodResolver(clubSchema),
@@ -75,6 +76,7 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
         reset();
       }
       setLogoFile(null);
+      setCoverFile(null);
     }
   }, [isOpen, club, reset, setValue]);
 
@@ -86,12 +88,14 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
           data: {
             ...values,
             logo: logoFile || undefined,
+            cover: coverFile || undefined,
           },
         });
       } else {
         await createClub.mutateAsync({
           ...values,
           logo: logoFile || undefined,
+          cover: coverFile || undefined,
         });
       }
       onClose();
@@ -103,6 +107,12 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setLogoFile(e.target.files[0]);
+    }
+  };
+
+  const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCoverFile(e.target.files[0]);
     }
   };
 
@@ -131,6 +141,12 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
             <Label htmlFor="logo">Logo</Label>
             <Input id="logo" type="file" accept="image/*" onChange={handleFileChange} />
             <p className="text-xs text-muted-foreground">Optional. Upload a club logo.</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="cover">Cover Image</Label>
+            <Input id="cover" type="file" accept="image/*" onChange={handleCoverChange} />
+            <p className="text-xs text-muted-foreground">Optional. Upload a club cover banner.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">

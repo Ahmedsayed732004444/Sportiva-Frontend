@@ -3,25 +3,21 @@ This file is a merged representation of a subset of the codebase, containing fil
 # File Summary
 
 ## Purpose
-
 This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
 
 ## File Format
-
 The content is organized as follows:
-
 1. This summary section
 2. Repository information
 3. Directory structure
 4. Repository files (if enabled)
 5. Multiple file entries, each consisting of:
-   a. A header with the file path (## File: path/to/file)
-   b. The full contents of the file in a code block
+  a. A header with the file path (## File: path/to/file)
+  b. The full contents of the file in a code block
 
 ## Usage Guidelines
-
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
 - When processing this file, use the file path to distinguish
@@ -30,16 +26,14 @@ The content is organized as follows:
   the same level of security as you would the original repository.
 
 ## Notes
-
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Files matching these patterns are excluded: ai-context.md, repomix-output.xml, **/\*.css, **/_.min.js, \*\*/_.lock, **/node_modules/**, **/\*.svg, **/_.png, \*\*/_.jpg, **/\*.ico, **/_.woff, \*\*/_.woff2, **/**snapshots**/**, **/dist/**, **/build/**
+- Files matching these patterns are excluded: ai-context.md, repomix-output.xml, **/*.css, **/*.min.js, **/*.lock, **/node_modules/**, **/*.svg, **/*.png, **/*.jpg, **/*.ico, **/*.woff, **/*.woff2, **/__snapshots__/**, **/dist/**, **/build/**
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
 
 # Directory Structure
-
 ```
 .gitignore
 .husky/pre-commit
@@ -61,6 +55,7 @@ src/features/auth/components/ForgotPasswordForm.tsx
 src/features/auth/components/LoginForm.tsx
 src/features/auth/components/RegisterForm.tsx
 src/features/auth/components/ResetPasswordForm.tsx
+src/features/auth/components/RoleProtectedRoute.tsx
 src/features/auth/context/AuthContext.tsx
 src/features/auth/hooks/useAuth.ts
 src/features/auth/hooks/useAuthMutations.ts
@@ -75,6 +70,26 @@ src/features/auth/schemas/authSchemas.ts
 src/features/auth/services/authApi.ts
 src/features/auth/services/authService.ts
 src/features/auth/types/auth.ts
+src/features/bookings/api/bookingsApi.ts
+src/features/bookings/components/BookingReceiptModal.tsx
+src/features/bookings/hooks/useBookings.ts
+src/features/bookings/pages/BookingsPage.tsx
+src/features/bookings/types/bookings.ts
+src/features/clubs/api/clubsApi.ts
+src/features/clubs/api/courtsApi.ts
+src/features/clubs/api/timeSlotsApi.ts
+src/features/clubs/components/ClubFormModal.tsx
+src/features/clubs/components/CourtAvailabilityModal.tsx
+src/features/clubs/components/CourtFormModal.tsx
+src/features/clubs/hooks/useClubs.ts
+src/features/clubs/hooks/useCourts.ts
+src/features/clubs/hooks/useTimeSlots.ts
+src/features/clubs/pages/ClubDetailsPage.tsx
+src/features/clubs/pages/ClubsPage.tsx
+src/features/clubs/pages/CourtDetailsPage.tsx
+src/features/clubs/pages/CourtsPage.tsx
+src/features/clubs/pages/OwnerClubDashboardPage.tsx
+src/features/clubs/types/clubs.ts
 src/features/home/components/AudienceSection.tsx
 src/features/home/components/CTASection.tsx
 src/features/home/components/FeatureCard.tsx
@@ -88,6 +103,17 @@ src/features/home/components/StatCard.tsx
 src/features/home/components/StatsSection.tsx
 src/features/home/components/StepCard.tsx
 src/features/home/pages/HomePage.tsx
+src/features/matches/api/matchesApi.ts
+src/features/matches/components/MatchFormModal.tsx
+src/features/matches/hooks/useMatches.ts
+src/features/matches/pages/MatchDetailsPage.tsx
+src/features/matches/pages/MatchesPage.tsx
+src/features/matches/types/matches.ts
+src/features/memberships/api/membershipsApi.ts
+src/features/memberships/components/MembershipUpgradeModal.tsx
+src/features/memberships/hooks/useMemberships.ts
+src/features/memberships/pages/AdminUpgradeRequestsPage.tsx
+src/features/memberships/types/memberships.ts
 src/features/posts/components/CommentsSection.tsx
 src/features/posts/components/CreatePostBar.tsx
 src/features/posts/components/CreatePostModal.tsx
@@ -103,7 +129,9 @@ src/features/posts/services/commentService.ts
 src/features/posts/services/postService.ts
 src/features/posts/types/comment.ts
 src/features/posts/types/post.ts
+src/features/profile/components/AboutMeWidget.tsx
 src/features/profile/components/FollowButton.tsx
+src/features/profile/components/PreferredSportsWidget.tsx
 src/features/profile/components/ProfileStats.tsx
 src/features/profile/hooks/usePaginatedFollowers.ts
 src/features/profile/hooks/usePaginatedFollowing.ts
@@ -115,6 +143,21 @@ src/features/profile/pages/ProfilePage.tsx
 src/features/profile/schemas/profileSchemas.ts
 src/features/profile/services/profileService.ts
 src/features/profile/types/profile.ts
+src/features/reviews/api/reviewsApi.ts
+src/features/reviews/components/ReviewFormModal.tsx
+src/features/reviews/hooks/useReviews.ts
+src/features/reviews/types/reviews.ts
+src/features/subscriptions/api/clubSubscriptionsApi.ts
+src/features/subscriptions/api/plansApi.ts
+src/features/subscriptions/components/PlanFormModal.tsx
+src/features/subscriptions/components/SelectClubModal.tsx
+src/features/subscriptions/components/SubscribeModal.tsx
+src/features/subscriptions/hooks/useClubSubscriptions.ts
+src/features/subscriptions/hooks/usePlans.ts
+src/features/subscriptions/pages/AdminPlansPage.tsx
+src/features/subscriptions/pages/PlansPage.tsx
+src/features/subscriptions/types/clubSubscriptions.ts
+src/features/subscriptions/types/plans.ts
 src/lib/api/client.ts
 src/lib/api/errors.ts
 src/lib/api/index.ts
@@ -149,8 +192,10 @@ src/shared/components/ui/sheet.tsx
 src/shared/components/ui/sidebar.tsx
 src/shared/components/ui/skeleton.tsx
 src/shared/components/ui/sonner.tsx
+src/shared/components/ui/tabs.tsx
 src/shared/components/ui/textarea.tsx
 src/shared/components/ui/tooltip.tsx
+src/shared/components/UnauthorizedPage.tsx
 src/shared/hooks/useDebounce.ts
 src/shared/hooks/useMobile.ts
 src/shared/hooks/useSidebarConfig.ts
@@ -166,8 +211,6430 @@ vite.config.ts
 
 # Files
 
-## File: .gitignore
+## File: src/features/bookings/api/bookingsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
+import type {
+  BookingResponse,
+  CreateBookingRequest,
+  ReviewBookingRequest,
+  BookingStatusDto,
+} from "../types/bookings";
 
+export const bookingsApi = {
+  getMyBookings: (filters: RequestFilters, status?: BookingStatusDto) => {
+    return apiClient.get<PaginatedList<BookingResponse>>("/bookings/my", {
+      params: {
+        ...filters,
+        status,
+      },
+    });
+  },
+
+  getBooking: (bookingId: string) => {
+    return apiClient.get<BookingResponse>(`/bookings/${bookingId}`);
+  },
+
+  createBooking: (data: CreateBookingRequest) => {
+    return apiClient.post<BookingResponse>("/bookings", data);
+  },
+
+  cancelBooking: (bookingId: string) => {
+    return apiClient.delete<void>(`/bookings/${bookingId}`);
+  },
+
+  getBookingReceipt: (bookingId: string) => {
+    return apiClient.get<BookingResponse>(`/bookings/${bookingId}/receipt`);
+  },
+
+  reviewBooking: (bookingId: string, data: ReviewBookingRequest) => {
+    return apiClient
+      .getAxiosInstance()
+      .patch<BookingResponse>(`/bookings/${bookingId}/review`, data)
+      .then((res) => res.data);
+  },
+
+  getCourtBookings: (courtId: string, filters: RequestFilters, date?: string) => {
+    return apiClient.get<PaginatedList<BookingResponse>>(`/courts/${courtId}/bookings`, {
+      params: {
+        ...filters,
+        date,
+      },
+    });
+  },
+
+  getClubBookings: (clubId: string, filters: RequestFilters) => {
+    return apiClient.get<PaginatedList<BookingResponse>>(`/clubs/${clubId}/bookings`, {
+      params: filters,
+    });
+  },
+};
+```
+
+## File: src/features/bookings/components/BookingReceiptModal.tsx
+```typescript
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { useGetBookingReceipt } from "../hooks/useBookings";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import { Printer, Calendar, Clock, DollarSign, Building, User, Receipt, AlertCircle } from "lucide-react";
+import { BookingStatusDto } from "../types/bookings";
+
+interface BookingReceiptModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  bookingId: string;
+}
+
+export function BookingReceiptModal({ isOpen, onClose, bookingId }: BookingReceiptModalProps) {
+  const { data: receipt, isLoading, isError } = useGetBookingReceipt(bookingId);
+
+  const getStatusBadge = (status: BookingStatusDto) => {
+    switch (status) {
+      case BookingStatusDto.Pending:
+        return <Badge variant="secondary">Pending Approval</Badge>;
+      case BookingStatusDto.Confirmed:
+        return <Badge variant="default" className="bg-green-600 hover:bg-green-700">Confirmed</Badge>;
+      case BookingStatusDto.Rejected:
+        return <Badge variant="destructive">Rejected</Badge>;
+      case BookingStatusDto.Cancelled:
+        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Cancelled</Badge>;
+      case BookingStatusDto.Completed:
+        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">Completed</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
+    }
+  };
+
+  const formatTime = (timeStr: string) => {
+    try {
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[450px] overflow-hidden p-0 max-h-[90vh] flex flex-col">
+        <DialogHeader className="p-6 bg-muted/30 border-b">
+          <div className="flex items-center gap-2 text-primary font-bold text-lg">
+            <Receipt className="h-5 w-5" />
+            <span>Booking Receipt</span>
+          </div>
+          <DialogDescription>
+            Official confirmation receipt of your court booking.
+          </DialogDescription>
+        </DialogHeader>
+
+        {isLoading ? (
+          <div className="p-6 space-y-4 flex-1">
+            <Skeleton className="h-6 w-1/3" />
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        ) : isError || !receipt ? (
+          <div className="p-6 text-center space-y-4 flex-1">
+            <AlertCircle className="h-10 w-10 mx-auto text-destructive" />
+            <p className="text-sm text-muted-foreground">Failed to load booking receipt details.</p>
+            <Button onClick={onClose} variant="outline" className="w-full">
+              Close
+            </Button>
+          </div>
+        ) : (
+          <div className="p-6 space-y-6 overflow-y-auto flex-1 print:p-0">
+            {/* Invoice Design */}
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">Receipt No</p>
+                <p className="font-mono font-bold text-foreground text-sm">{receipt.bookingNumber}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">Status</p>
+                <div className="mt-0.5">{getStatusBadge(receipt.status)}</div>
+              </div>
+            </div>
+
+            {/* Details table */}
+            <div className="space-y-4 border-t pt-4">
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                  <Building className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Court & Facility</p>
+                  <p className="font-semibold text-sm">{receipt.court.name || "Unnamed Court"}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                    <Calendar className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Date</p>
+                    <p className="font-semibold text-sm">{new Date(receipt.timeSlot.day).toLocaleDateString()}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                    <Clock className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Time Range</p>
+                    <p className="font-semibold text-sm">
+                      {formatTime(receipt.timeSlot.startTime)} - {formatTime(receipt.timeSlot.endTime)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0">
+                  <User className="h-4 w-4" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Player / Booker</p>
+                  <p className="font-semibold text-sm">{receipt.bookedBy.fullName}</p>
+                  <p className="text-xs text-muted-foreground">{receipt.bookedBy.email}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Price section */}
+            <div className="border-t pt-4 bg-muted/30 -mx-6 px-6 py-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground">Payment Method</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">Pay Offline at Club</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">Total Fee</p>
+                <p className="text-2xl font-black text-foreground flex items-center justify-end">
+                  <DollarSign className="h-5 w-5 text-primary shrink-0 -mr-1" />
+                  {receipt.price}
+                </p>
+              </div>
+            </div>
+
+            {/* Print & Close actions */}
+            <div className="flex justify-end gap-2 pt-2 border-t print:hidden">
+              <Button variant="outline" size="sm" onClick={handlePrint}>
+                <Printer className="mr-1.5 h-4 w-4" /> Print
+              </Button>
+              <Button size="sm" onClick={onClose}>
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/bookings/hooks/useBookings.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { bookingsApi } from "../api/bookingsApi";
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+import type { BookingStatusDto, CreateBookingRequest, ReviewBookingRequest } from "../types/bookings";
+import { toast } from "sonner";
+
+export const BOOKINGS_QUERY_KEYS = {
+  all: ["bookings"] as const,
+  my: (filters: RequestFilters, status?: BookingStatusDto) =>
+    [...BOOKINGS_QUERY_KEYS.all, "my", { filters, status }] as const,
+  detail: (bookingId: string) => [...BOOKINGS_QUERY_KEYS.all, "detail", bookingId] as const,
+  receipt: (bookingId: string) => [...BOOKINGS_QUERY_KEYS.all, "receipt", bookingId] as const,
+  courtScoped: (courtId: string) => [...BOOKINGS_QUERY_KEYS.all, "court", courtId] as const,
+  courtList: (courtId: string, filters: RequestFilters, date?: string) =>
+    [...BOOKINGS_QUERY_KEYS.courtScoped(courtId), "list", { filters, date }] as const,
+  clubScoped: (clubId: string) => [...BOOKINGS_QUERY_KEYS.all, "club", clubId] as const,
+  clubList: (clubId: string, filters: RequestFilters) =>
+    [...BOOKINGS_QUERY_KEYS.clubScoped(clubId), "list", { filters }] as const,
+};
+
+export const useGetMyBookings = (filters: RequestFilters = {}, status?: BookingStatusDto) => {
+  return useQuery({
+    queryKey: BOOKINGS_QUERY_KEYS.my(filters, status),
+    queryFn: () => bookingsApi.getMyBookings(filters, status),
+  });
+};
+
+export const useGetBooking = (bookingId: string) => {
+  return useQuery({
+    queryKey: BOOKINGS_QUERY_KEYS.detail(bookingId),
+    queryFn: () => bookingsApi.getBooking(bookingId),
+    enabled: !!bookingId,
+  });
+};
+
+export const useCreateBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateBookingRequest) => bookingsApi.createBooking(data),
+    onSuccess: () => {
+      toast.success("Booking request submitted successfully! Pending owner approval.");
+      // Invalidate slots queries to reflect the booked status change
+      queryClient.invalidateQueries({ queryKey: ["timeSlots"] });
+      queryClient.invalidateQueries({ queryKey: BOOKINGS_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Booking failed: ${msg}`);
+    },
+  });
+};
+
+export const useCancelBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (bookingId: string) => bookingsApi.cancelBooking(bookingId),
+    onSuccess: () => {
+      toast.success("Booking cancelled successfully.");
+      // Invalidate both bookings and slot queries
+      queryClient.invalidateQueries({ queryKey: BOOKINGS_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: ["timeSlots"] });
+      // Invalidate courts list in case counters changed
+      queryClient.invalidateQueries({ queryKey: ["courts"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Cancellation failed: ${msg}`);
+    },
+  });
+};
+
+export const useGetBookingReceipt = (bookingId: string) => {
+  return useQuery({
+    queryKey: BOOKINGS_QUERY_KEYS.receipt(bookingId),
+    queryFn: () => bookingsApi.getBookingReceipt(bookingId),
+    enabled: !!bookingId,
+  });
+};
+
+export const useReviewBooking = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ bookingId, data }: { bookingId: string; data: ReviewBookingRequest }) =>
+      bookingsApi.reviewBooking(bookingId, data),
+    onSuccess: (_, variables) => {
+      toast.success(
+        `Booking request has been ${
+          variables.data.newStatus === 1 ? "confirmed" : "rejected"
+        } successfully.`
+      );
+      queryClient.invalidateQueries({ queryKey: BOOKINGS_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: ["timeSlots"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Review failed: ${msg}`);
+    },
+  });
+};
+
+export const useGetCourtBookings = (courtId: string, filters: RequestFilters = {}, date?: string) => {
+  return useQuery({
+    queryKey: BOOKINGS_QUERY_KEYS.courtList(courtId, filters, date),
+    queryFn: () => bookingsApi.getCourtBookings(courtId, filters, date),
+    enabled: !!courtId,
+  });
+};
+
+export const useGetClubBookings = (clubId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: BOOKINGS_QUERY_KEYS.clubList(clubId, filters),
+    queryFn: () => bookingsApi.getClubBookings(clubId, filters),
+    enabled: !!clubId,
+  });
+};
+```
+
+## File: src/features/bookings/pages/BookingsPage.tsx
+```typescript
+import { useState, useEffect } from "react";
+import { useGetMyClubs } from "@/features/clubs/hooks/useClubs";
+import {
+  useGetMyBookings,
+  useGetClubBookings,
+  useCancelBooking,
+  useReviewBooking,
+} from "../hooks/useBookings";
+import { useDeleteReview } from "@/features/reviews/hooks/useReviews";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { Badge } from "@/shared/components/ui/badge";
+import { Label } from "@/shared/components/ui/label";
+import {
+  Calendar,
+  Clock,
+  DollarSign,
+  Building,
+  User,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Receipt,
+  FileText,
+  Bookmark,
+  Star,
+  Edit,
+  Trash2,
+} from "lucide-react";
+import { isOwner, isMember, isAdmin } from "@/lib/jwt";
+import { BookingStatusDto } from "../types/bookings";
+import { BookingReceiptModal } from "../components/BookingReceiptModal";
+import { ReviewFormModal } from "@/features/reviews/components/ReviewFormModal";
+
+export default function BookingsPage() {
+  const owner = isOwner();
+  const member = isMember() || isAdmin();
+
+  // State
+  const [selectedClubId, setSelectedClubId] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [receiptBookingId, setReceiptBookingId] = useState<string | null>(null);
+  const [reviewBookingId, setReviewBookingId] = useState<string | null>(null);
+  const [editingReview, setEditingReview] = useState<{
+    reviewId: string;
+    rating: number;
+    comment?: string;
+  } | null>(null);
+
+  // Queries
+  const { data: myClubsData, isLoading: isClubsLoading } = useGetMyClubs({}, { enabled: owner });
+  const myClubs = myClubsData?.items || [];
+
+  // Set default club when loaded
+  useEffect(() => {
+    if (owner && myClubs.length > 0 && !selectedClubId) {
+      setSelectedClubId(myClubs[0].clubId);
+    }
+  }, [owner, myClubs, selectedClubId]);
+
+  const parsedStatus = statusFilter === "all" ? undefined : Number(statusFilter);
+
+  // Member bookings query
+  const memberBookingsQuery = useGetMyBookings(
+    { pageNumber: 1, pageSize: 50 },
+    parsedStatus
+  );
+
+  // Owner bookings query
+  const ownerBookingsQuery = useGetClubBookings(
+    selectedClubId,
+    { pageNumber: 1, pageSize: 50 }
+  );
+
+  const query = owner ? ownerBookingsQuery : memberBookingsQuery;
+  const { data: bookingsData, isLoading, isError } = query;
+  const bookings = bookingsData?.items || [];
+
+  // Mutations
+  const cancelBooking = useCancelBooking();
+  const reviewBooking = useReviewBooking();
+  const deleteReview = useDeleteReview();
+
+  const handleReviewStatus = async (bookingId: string, approve: boolean) => {
+    try {
+      await reviewBooking.mutateAsync({
+        bookingId,
+        data: {
+          newStatus: approve ? BookingStatusDto.Confirmed : BookingStatusDto.Rejected,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleCancel = async (bookingId: string) => {
+    if (confirm("Are you sure you want to cancel this booking?")) {
+      try {
+        await cancelBooking.mutateAsync(bookingId);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleDeleteReview = async (reviewId: string) => {
+    if (confirm("Are you sure you want to delete your review?")) {
+      try {
+        await deleteReview.mutateAsync(reviewId);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleWriteReview = (bookingId: string) => {
+    setReviewBookingId(bookingId);
+    setEditingReview(null);
+  };
+
+  const handleEditReview = (bookingId: string, review: any) => {
+    setReviewBookingId(bookingId);
+    setEditingReview({
+      reviewId: review.reviewId,
+      rating: review.rating,
+      comment: review.comment,
+    });
+  };
+
+  const getStatusBadge = (status: BookingStatusDto) => {
+    switch (status) {
+      case BookingStatusDto.Pending:
+        return <Badge variant="secondary">Pending Approval</Badge>;
+      case BookingStatusDto.Confirmed:
+        return <Badge variant="default" className="bg-green-600 hover:bg-green-700">Confirmed</Badge>;
+      case BookingStatusDto.Rejected:
+        return <Badge variant="destructive">Rejected</Badge>;
+      case BookingStatusDto.Cancelled:
+        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Cancelled</Badge>;
+      case BookingStatusDto.Completed:
+        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">Completed</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
+    }
+  };
+
+  const formatTime = (timeStr: string) => {
+    try {
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-7xl space-y-8">
+      {/* Header */}
+      <div className="border-b pb-6">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          {owner ? "Club Booking Requests" : "My Bookings"}
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          {owner
+            ? "Review and manage court reservations submitted by players."
+            : "Keep track of your court bookings and reservation statuses."}
+        </p>
+      </div>
+
+      {/* Control Filter Bar */}
+      <Card className="bg-card border-muted/40 shadow-sm">
+        <CardContent className="pt-6 flex flex-col sm:flex-row gap-4 items-end">
+          {owner && (
+            <div className="flex-1 space-y-2 w-full">
+              <Label htmlFor="bookings-club-select">Select Club</Label>
+              {isClubsLoading ? (
+                <Skeleton className="h-10 w-full" />
+              ) : (
+                <Select value={selectedClubId} onValueChange={setSelectedClubId}>
+                  <SelectTrigger id="bookings-club-select">
+                    <SelectValue placeholder="Choose a club..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {myClubs.map((club) => (
+                      <SelectItem key={club.clubId} value={club.clubId}>
+                        {club.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </div>
+          )}
+
+          {member && (
+            <div className="w-full sm:w-64 space-y-2">
+              <Label htmlFor="status-filter">Filter by Status</Label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger id="status-filter">
+                  <SelectValue placeholder="All Bookings" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Bookings</SelectItem>
+                  <SelectItem value="0">Pending</SelectItem>
+                  <SelectItem value="1">Confirmed</SelectItem>
+                  <SelectItem value="2">Rejected</SelectItem>
+                  <SelectItem value="3">Cancelled</SelectItem>
+                  <SelectItem value="4">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Bookings List */}
+      {owner && !selectedClubId ? (
+        <div className="py-16 text-center text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+          <Bookmark className="h-12 w-12 mx-auto mb-4 text-muted-foreground/45" />
+          <h3 className="text-lg font-semibold mb-1">No Club Selected</h3>
+          <p className="text-sm">Please select a club above to view bookings.</p>
+        </div>
+      ) : isLoading ? (
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <Skeleton key={i} className="h-28 w-full rounded-xl" />
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20 flex flex-col items-center justify-center gap-2">
+          <AlertCircle className="h-8 w-8" />
+          <span>Failed to load bookings. Please try again later.</span>
+        </div>
+      ) : bookings.length === 0 ? (
+        <div className="py-16 text-center text-muted-foreground bg-card border rounded-xl space-y-2">
+          <FileText className="h-10 w-10 mx-auto text-muted-foreground/40" />
+          <h3 className="text-base font-semibold">No Bookings Found</h3>
+          <p className="text-sm">There are no bookings listed for this selection.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {bookings.map((booking) => (
+            <Card key={booking.bookingId} className="bg-card hover:border-muted-foreground/20 transition-all border-muted/50 overflow-hidden shadow-sm">
+              <CardContent className="p-6 flex flex-col justify-between gap-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                  <div className="space-y-4 flex-1">
+                    {/* Header Row */}
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="font-mono text-xs text-muted-foreground font-bold">
+                        #{booking.bookingNumber}
+                      </span>
+                      {getStatusBadge(booking.status)}
+                      <span className="text-xs text-muted-foreground">
+                        Requested on {new Date(booking.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    {/* Booking Details Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                      {/* Club & Court */}
+                      <div className="flex items-center gap-2">
+                        <Building className="h-4 w-4 text-primary shrink-0" />
+                        <div className="truncate">
+                          <p className="font-semibold text-foreground truncate">
+                            {booking.court.name || "Unnamed Court"}
+                          </p>
+                          {owner ? null : (
+                            <p className="text-xs text-muted-foreground truncate">Sportiva Facility</p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Time details */}
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-primary shrink-0" />
+                        <div>
+                          <p className="font-semibold text-foreground">
+                            {new Date(booking.timeSlot.day).toLocaleDateString()}
+                          </p>
+                          <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            {formatTime(booking.timeSlot.startTime)} - {formatTime(booking.timeSlot.endTime)}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* User summary (if Owner) */}
+                      {owner ? (
+                        <div className="flex items-center gap-2">
+                          <User className="h-4 w-4 text-primary shrink-0" />
+                          <div className="truncate">
+                            <p className="font-semibold text-foreground truncate">{booking.bookedBy.fullName}</p>
+                            <p className="text-xs text-muted-foreground truncate">{booking.bookedBy.email}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="h-4 w-4 text-primary shrink-0" />
+                          <div>
+                            <p className="font-semibold text-foreground">${booking.price}</p>
+                            <p className="text-xs text-muted-foreground">Pay Offline at Club</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Actions Panel */}
+                  <div className="flex flex-wrap items-center gap-2 md:justify-end shrink-0 pt-4 md:pt-0 border-t md:border-t-0 border-muted">
+                    {owner && (
+                      <div className="flex items-center gap-1.5 justify-end">
+                        <span className="text-sm font-black text-foreground mr-4">
+                          Price: ${booking.price}
+                        </span>
+                      </div>
+                    )}
+
+                    {booking.canRespondToRequest && (
+                      <>
+                        <Button
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => handleReviewStatus(booking.bookingId, true)}
+                          disabled={reviewBooking.isPending}
+                        >
+                          <CheckCircle className="mr-1.5 h-4 w-4" /> Accept
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleReviewStatus(booking.bookingId, false)}
+                          disabled={reviewBooking.isPending}
+                        >
+                          <XCircle className="mr-1.5 h-4 w-4" /> Reject
+                        </Button>
+                      </>
+                    )}
+
+                    {booking.canCancel && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-destructive border-destructive hover:bg-destructive/10"
+                        onClick={() => handleCancel(booking.bookingId)}
+                        disabled={cancelBooking.isPending}
+                      >
+                        Cancel Booking
+                      </Button>
+                    )}
+
+                    {booking.canReview && (
+                      <Button
+                        size="sm"
+                        className="bg-amber-500 hover:bg-amber-600 text-white gap-1.5"
+                        onClick={() => handleWriteReview(booking.bookingId)}
+                      >
+                        <Star className="h-4 w-4 fill-white" /> Write Review
+                      </Button>
+                    )}
+
+                    {member && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="gap-1.5"
+                        onClick={() => setReceiptBookingId(booking.bookingId)}
+                      >
+                        <Receipt className="h-4 w-4" /> View Receipt
+                      </Button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Inline Review Display */}
+                {booking.existingReview && (
+                  <div className="mt-4 p-4 bg-amber-500/5 rounded-xl border border-amber-500/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Your Review</span>
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={cn(
+                                "h-3.5 w-3.5",
+                                i < (booking.existingReview?.rating || 0)
+                                  ? "fill-amber-400 text-amber-400"
+                                  : "text-muted-foreground/20 fill-transparent"
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      {booking.existingReview.comment && (
+                        <p className="text-xs text-muted-foreground leading-relaxed italic">
+                          "{booking.existingReview.comment}"
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="flex gap-1.5 shrink-0 self-end sm:self-auto">
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        className="h-7 w-7 p-0"
+                        onClick={() => handleEditReview(booking.bookingId, booking.existingReview)}
+                      >
+                        <Edit className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        className="h-7 w-7 p-0 text-destructive hover:bg-destructive/10"
+                        onClick={() => handleDeleteReview(booking.existingReview!.reviewId)}
+                        disabled={deleteReview.isPending}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Booking Receipt Modal */}
+      {receiptBookingId && (
+        <BookingReceiptModal
+          isOpen={!!receiptBookingId}
+          onClose={() => setReceiptBookingId(null)}
+          bookingId={receiptBookingId}
+        />
+      )}
+
+      {/* Review Form Modal */}
+      {reviewBookingId && (
+        <ReviewFormModal
+          isOpen={!!reviewBookingId}
+          onClose={() => {
+            setReviewBookingId(null);
+            setEditingReview(null);
+          }}
+          bookingId={reviewBookingId}
+          review={editingReview}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/bookings/types/bookings.ts
+```typescript
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+
+export enum BookingStatusDto {
+  Pending = 0,
+  Confirmed = 1,
+  Rejected = 2,
+  Cancelled = 3,
+  Completed = 4,
+}
+
+export interface BookingResponse {
+  bookingId: string;
+  bookingNumber: string;
+  status: BookingStatusDto;
+  price: number;
+  court: {
+    courtId: string;
+    name?: string;
+    imageUrl?: string;
+  };
+  timeSlot: {
+    timeSlotId: string;
+    day: string;
+    startTime: string;
+    endTime: string;
+    isBooked: boolean;
+  };
+  bookedBy: {
+    userId: string;
+    fullName: string;
+    email?: string;
+    profilePhotoUrl?: string;
+  };
+  isMine: boolean;
+  canCancel: boolean;
+  canRespondToRequest: boolean;
+  canReview: boolean;
+  existingReview?: {
+    reviewId: string;
+    rating: number;
+    comment?: string;
+    createdAt: string;
+  } | null;
+  createdAt: string;
+}
+
+export interface CreateBookingRequest {
+  courtId: string;
+  timeSlotId: string;
+}
+
+export interface ReviewBookingRequest {
+  newStatus: BookingStatusDto; // Confirmed or Rejected
+}
+```
+
+## File: src/features/clubs/api/courtsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type {
+  CourtResponse,
+  CreateCourtRequest,
+  UpdateCourtRequest,
+  RequestFilters,
+  PaginatedList,
+  TimeSlotSummary,
+} from "../types/clubs";
+
+export const courtsApi = {
+  searchCourts: (filters: RequestFilters, sport?: number, city?: string, date?: string) => {
+    return apiClient.get<PaginatedList<CourtResponse>>("/courts", {
+      params: {
+        ...filters,
+        sport,
+        city,
+        date,
+      },
+    });
+  },
+
+  getCourtAvailability: (courtId: string, date: string) => {
+    return apiClient.get<TimeSlotSummary[]>(`/courts/${courtId}/availability`, {
+      params: { date },
+    });
+  },
+
+  getClubCourts: (clubId: string, filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<CourtResponse>>(`/clubs/${clubId}/courts`, {
+      params: filters,
+    });
+  },
+
+  getCourt: (clubId: string, courtId: string) => {
+    return apiClient.get<CourtResponse>(`/clubs/${clubId}/courts/${courtId}`);
+  },
+
+  createCourt: (clubId: string, data: CreateCourtRequest) => {
+    const formData = new FormData();
+    if (data.name) formData.append("Name", data.name);
+    if (data.description) formData.append("Description", data.description);
+    if (data.image) formData.append("Image", data.image);
+    formData.append("SportType", String(data.sportType));
+    formData.append("MaxCapacity", String(data.maxCapacity));
+    formData.append("PricePerHour", String(data.pricePerHour));
+
+    return apiClient.post<CourtResponse>(`/clubs/${clubId}/courts`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  updateCourt: (clubId: string, courtId: string, data: UpdateCourtRequest) => {
+    const formData = new FormData();
+    if (data.name !== undefined) formData.append("Name", data.name);
+    if (data.description !== undefined) formData.append("Description", data.description);
+    if (data.image) formData.append("Image", data.image);
+    if (data.sportType !== undefined) formData.append("SportType", String(data.sportType));
+    if (data.maxCapacity !== undefined) formData.append("MaxCapacity", String(data.maxCapacity));
+    if (data.pricePerHour !== undefined) formData.append("PricePerHour", String(data.pricePerHour));
+    if (data.isActive !== undefined) formData.append("IsActive", String(data.isActive));
+
+    return apiClient.put<CourtResponse>(`/clubs/${clubId}/courts/${courtId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  deleteCourt: (clubId: string, courtId: string) => {
+    return apiClient.delete<void>(`/clubs/${clubId}/courts/${courtId}`);
+  },
+
+  toggleCourtStatus: (clubId: string, courtId: string) => {
+    return apiClient
+      .getAxiosInstance()
+      .patch<void>(`/clubs/${clubId}/courts/${courtId}/status`)
+      .then((res) => res.data);
+  },
+};
+```
+
+## File: src/features/clubs/api/timeSlotsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { TimeSlotResponse, SetTimeSlotsAvailabilityRequest } from "../types/clubs";
+
+export const timeSlotsApi = {
+  getTimeSlots: (courtId: string, date?: string, available?: boolean) => {
+    return apiClient.get<TimeSlotResponse[]>(`/courts/${courtId}/time-slots`, {
+      params: {
+        date,
+        available,
+      },
+    });
+  },
+
+  getTimeSlot: (courtId: string, slotId: string) => {
+    return apiClient.get<TimeSlotResponse>(`/courts/${courtId}/time-slots/${slotId}`);
+  },
+
+  setTimeSlotsAvailability: (courtId: string, data: SetTimeSlotsAvailabilityRequest) => {
+    return apiClient
+      .getAxiosInstance()
+      .patch<TimeSlotResponse[]>(`/courts/${courtId}/time-slots/availability`, data)
+      .then((res) => res.data);
+  },
+};
+```
+
+## File: src/features/clubs/components/CourtAvailabilityModal.tsx
+```typescript
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { useGetCourtAvailability } from "../hooks/useCourts";
+import { Calendar as CalendarIcon, Clock, AlertCircle } from "lucide-react";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { toast } from "sonner";
+
+interface CourtAvailabilityModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  courtId: string;
+  courtName: string;
+}
+
+export function CourtAvailabilityModal({ isOpen, onClose, courtId, courtName }: CourtAvailabilityModalProps) {
+  const [selectedDate, setSelectedDate] = useState(() => {
+    return new Date().toISOString().split("T")[0];
+  });
+
+  const { data: slots, isLoading, isError } = useGetCourtAvailability(courtId, selectedDate, { enabled: isOpen });
+
+  const formatTime = (timeStr: string) => {
+    try {
+      // timeStr might be "08:00:00" or similar
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  const handleBookSlot = (slotId: string, startTime: string) => {
+    toast.success(`Booking slot for ${formatTime(startTime)} is not fully implemented yet, but availability checked successfully!`);
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{courtName} Availability</DialogTitle>
+          <DialogDescription>
+            Select a date to view available time slots for booking.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="booking-date" className="flex items-center gap-1.5">
+              <CalendarIcon className="h-4 w-4 text-primary" /> Select Date
+            </Label>
+            <Input
+              id="booking-date"
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="bg-card border-muted-foreground/20"
+              min={new Date().toISOString().split("T")[0]}
+            />
+          </div>
+
+          <div className="border-t pt-4">
+            <h4 className="font-semibold text-sm mb-3 flex items-center gap-1.5 text-foreground">
+              <Clock className="h-4 w-4 text-primary" /> Time Slots for {new Date(selectedDate).toLocaleDateString()}
+            </h4>
+
+            {isLoading ? (
+              <div className="grid grid-cols-2 gap-2">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+              </div>
+            ) : isError ? (
+              <div className="flex items-center gap-2 text-destructive p-4 bg-destructive/10 rounded-lg text-sm">
+                <AlertCircle className="h-5 w-5" />
+                <span>Failed to load court availability. Please try again.</span>
+              </div>
+            ) : !slots || slots.length === 0 ? (
+              <div className="text-center py-6 text-sm text-muted-foreground bg-muted/40 rounded-lg">
+                No slots have been configured for this date yet.
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2">
+                {slots.map((slot) => {
+                  return (
+                    <button
+                      key={slot.timeSlotId}
+                      disabled={slot.isBooked}
+                      onClick={() => handleBookSlot(slot.timeSlotId, slot.startTime)}
+                      className={`flex flex-col items-center justify-center p-3 rounded-lg border text-sm font-medium transition-all ${
+                        slot.isBooked
+                          ? "bg-red-500/10 border-red-500/20 text-red-500 cursor-not-allowed"
+                          : "bg-green-500/10 border-green-500/20 hover:border-green-500/50 text-green-600 hover:scale-[1.02]"
+                      }`}
+                    >
+                      <span>
+                        {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                      </span>
+                      <span className="text-xs font-semibold mt-0.5 opacity-80">
+                        {slot.isBooked ? "Booked" : "Available"}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button variant="outline" onClick={onClose}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/clubs/components/CourtFormModal.tsx
+```typescript
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { useCreateCourt, useUpdateCourt } from "../hooks/useCourts";
+import { SportType } from "../types/clubs";
+import type { CourtResponse } from "../types/clubs";
+
+const courtSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  sportType: z.coerce.number().int().min(1).max(5),
+  maxCapacity: z.coerce.number().int().min(1, "Capacity must be at least 1"),
+  pricePerHour: z.coerce.number().min(0, "Price must be non-negative"),
+  isActive: z.boolean().optional(),
+});
+
+type CourtFormValues = z.infer<typeof courtSchema>;
+
+interface CourtFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  clubId: string;
+  court?: CourtResponse | null;
+}
+
+export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModalProps) {
+  const isEditing = !!court;
+  const createCourt = useCreateCourt();
+  const updateCourt = useUpdateCourt();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const form = useForm<CourtFormValues>({
+    resolver: zodResolver(courtSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      sportType: SportType.Padel,
+      maxCapacity: 4,
+      pricePerHour: 20,
+      isActive: true,
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
+
+  useEffect(() => {
+    if (isOpen) {
+      if (court) {
+        setValue("name", court.name || "");
+        setValue("description", court.description || "");
+        setValue("sportType", court.sportType || SportType.Padel);
+        setValue("maxCapacity", court.maxCapacity || 4);
+        setValue("pricePerHour", court.pricePerHour || 20);
+        setValue("isActive", court.isActive ?? true);
+      } else {
+        reset();
+      }
+      setImageFile(null);
+    }
+  }, [isOpen, court, reset, setValue]);
+
+  const onSubmit = async (values: CourtFormValues) => {
+    try {
+      if (isEditing && court) {
+        await updateCourt.mutateAsync({
+          clubId,
+          courtId: court.courtId,
+          data: {
+            ...values,
+            image: imageFile || undefined,
+          },
+        });
+      } else {
+        await createCourt.mutateAsync({
+          clubId,
+          data: {
+            ...values,
+            clubId,
+            image: imageFile || undefined,
+          },
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to save court", error);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{isEditing ? "Edit Court" : "Create New Court"}</DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update the court's details below."
+              : "Fill out the information below to add a new court to this club."}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Court Name *</Label>
+            <Input id="name" {...register("name")} placeholder="e.g. Court A" />
+            {errors.name && (
+              <span className="text-xs text-destructive">{errors.name.message as string}</span>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              {...register("description")}
+              placeholder="e.g. Indoor padel court with premium grass"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="image">Court Image</Label>
+            <Input id="image" type="file" accept="image/*" onChange={handleFileChange} />
+            <p className="text-xs text-muted-foreground">Upload a photo of the court.</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="sportType">Sport Type *</Label>
+              <Select
+                onValueChange={(val) => setValue("sportType", Number(val))}
+                defaultValue={String(court?.sportType || SportType.Padel)}
+              >
+                <SelectTrigger id="sportType" className="w-full">
+                  <SelectValue placeholder="Select sport" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">Football</SelectItem>
+                  <SelectItem value="2">Padel</SelectItem>
+                  <SelectItem value="3">Tennis</SelectItem>
+                  <SelectItem value="4">Basketball</SelectItem>
+                  <SelectItem value="5">Volleyball</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="maxCapacity">Max Capacity (Players) *</Label>
+              <Input id="maxCapacity" type="number" {...register("maxCapacity")} />
+              {errors.maxCapacity && (
+                <span className="text-xs text-destructive">{errors.maxCapacity.message as string}</span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="pricePerHour">Price Per Hour ($) *</Label>
+            <Input id="pricePerHour" type="number" step="0.01" {...register("pricePerHour")} />
+            {errors.pricePerHour && (
+              <span className="text-xs text-destructive">{errors.pricePerHour.message as string}</span>
+            )}
+          </div>
+
+          {isEditing && (
+            <div className="flex items-center space-x-2 mt-4">
+              <Checkbox
+                id="isActive"
+                onCheckedChange={(checked) => setValue("isActive", !!checked)}
+                defaultChecked={court?.isActive}
+              />
+              <Label htmlFor="isActive" className="cursor-pointer">
+                Active status
+              </Label>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting || createCourt.isPending || updateCourt.isPending}
+            >
+              {isSubmitting || createCourt.isPending || updateCourt.isPending ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/clubs/hooks/useCourts.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { courtsApi } from "../api/courtsApi";
+import type { CreateCourtRequest, UpdateCourtRequest, RequestFilters } from "../types/clubs";
+import { toast } from "sonner";
+
+export const COURTS_QUERY_KEYS = {
+  all: ["courts"] as const,
+  searches: () => [...COURTS_QUERY_KEYS.all, "search"] as const,
+  search: (filters: RequestFilters, sport?: number, city?: string, date?: string) =>
+    [...COURTS_QUERY_KEYS.searches(), { filters, sport, city, date }] as const,
+  availabilities: () => [...COURTS_QUERY_KEYS.all, "availability"] as const,
+  availability: (courtId: string, date: string) =>
+    [...COURTS_QUERY_KEYS.availabilities(), courtId, { date }] as const,
+  clubScoped: (clubId: string) => [...COURTS_QUERY_KEYS.all, "club", clubId] as const,
+  clubList: (clubId: string, filters: RequestFilters) =>
+    [...COURTS_QUERY_KEYS.clubScoped(clubId), "list", { filters }] as const,
+  detail: (clubId: string, courtId: string) =>
+    [...COURTS_QUERY_KEYS.clubScoped(clubId), "detail", courtId] as const,
+};
+
+export const useSearchCourts = (
+  filters: RequestFilters = {},
+  sport?: number,
+  city?: string,
+  date?: string,
+  options?: { enabled?: boolean }
+) => {
+  return useQuery({
+    queryKey: COURTS_QUERY_KEYS.search(filters, sport, city, date),
+    queryFn: () => courtsApi.searchCourts(filters, sport, city, date),
+    ...options,
+  });
+};
+
+export const useGetCourtAvailability = (courtId: string, date: string, options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: COURTS_QUERY_KEYS.availability(courtId, date),
+    queryFn: () => courtsApi.getCourtAvailability(courtId, date),
+    enabled: !!courtId && !!date,
+    ...options,
+  });
+};
+
+export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: COURTS_QUERY_KEYS.clubList(clubId, filters),
+    queryFn: () => courtsApi.getClubCourts(clubId, filters),
+    enabled: !!clubId,
+    ...options,
+  });
+};
+
+export const useGetCourt = (clubId: string, courtId: string) => {
+  return useQuery({
+    queryKey: COURTS_QUERY_KEYS.detail(clubId, courtId),
+    queryFn: () => courtsApi.getCourt(clubId, courtId),
+    enabled: !!clubId && !!courtId,
+  });
+};
+
+export const useCreateCourt = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, data }: { clubId: string; data: CreateCourtRequest }) =>
+      courtsApi.createCourt(clubId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Court created successfully");
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to create court: ${msg}`);
+    },
+  });
+};
+
+export const useUpdateCourt = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, courtId, data }: { clubId: string; courtId: string; data: UpdateCourtRequest }) =>
+      courtsApi.updateCourt(clubId, courtId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Court updated successfully");
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update court: ${msg}`);
+    },
+  });
+};
+
+export const useDeleteCourt = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, courtId }: { clubId: string; courtId: string }) =>
+      courtsApi.deleteCourt(clubId, courtId),
+    onSuccess: (_, variables) => {
+      toast.success("Court deleted successfully");
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to delete court: ${msg}`);
+    },
+  });
+};
+
+export const useToggleCourtStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, courtId }: { clubId: string; courtId: string }) =>
+      courtsApi.toggleCourtStatus(clubId, courtId),
+    onSuccess: (_, variables) => {
+      toast.success("Court status updated successfully");
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId) });
+      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update court status: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/clubs/hooks/useTimeSlots.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { timeSlotsApi } from "../api/timeSlotsApi";
+import type { SetTimeSlotsAvailabilityRequest } from "../types/clubs";
+import { toast } from "sonner";
+
+export const TIMESLOTS_QUERY_KEYS = {
+  all: ["timeSlots"] as const,
+  courtScoped: (courtId: string) => [...TIMESLOTS_QUERY_KEYS.all, "court", courtId] as const,
+  list: (courtId: string, date?: string, available?: boolean) =>
+    [...TIMESLOTS_QUERY_KEYS.courtScoped(courtId), "list", { date, available }] as const,
+  detail: (courtId: string, slotId: string) =>
+    [...TIMESLOTS_QUERY_KEYS.courtScoped(courtId), "detail", slotId] as const,
+};
+
+export const useGetTimeSlots = (
+  courtId: string,
+  date?: string,
+  available?: boolean,
+  options?: { enabled?: boolean }
+) => {
+  return useQuery({
+    queryKey: TIMESLOTS_QUERY_KEYS.list(courtId, date, available),
+    queryFn: () => timeSlotsApi.getTimeSlots(courtId, date, available),
+    enabled: !!courtId,
+    ...options,
+  });
+};
+
+export const useGetTimeSlot = (courtId: string, slotId: string) => {
+  return useQuery({
+    queryKey: TIMESLOTS_QUERY_KEYS.detail(courtId, slotId),
+    queryFn: () => timeSlotsApi.getTimeSlot(courtId, slotId),
+    enabled: !!courtId && !!slotId,
+  });
+};
+
+export const useSetTimeSlotsAvailability = (courtId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: SetTimeSlotsAvailabilityRequest) =>
+      timeSlotsApi.setTimeSlotsAvailability(courtId, data),
+    onSuccess: () => {
+      toast.success("Time slots availability updated successfully");
+      queryClient.invalidateQueries({ queryKey: TIMESLOTS_QUERY_KEYS.courtScoped(courtId) });
+      // Also invalidate court search queries to reflect status changes if any
+      queryClient.invalidateQueries({ queryKey: ["courts"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update slots: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/clubs/pages/CourtDetailsPage.tsx
+```typescript
+import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import {
+  useGetCourt,
+  useDeleteCourt,
+  useToggleCourtStatus,
+} from "../hooks/useCourts";
+import { useGetTimeSlots, useSetTimeSlotsAvailability } from "../hooks/useTimeSlots";
+import { useGetCourtReviews } from "@/features/reviews/hooks/useReviews";
+import { useCreateBooking } from "@/features/bookings/hooks/useBookings";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Badge } from "@/shared/components/ui/badge";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+import {
+  ArrowLeft,
+  Calendar as CalendarIcon,
+  Users,
+  DollarSign,
+  Clock,
+  AlertCircle,
+  Edit2,
+  Trash2,
+  Power,
+  ShieldAlert,
+  CheckCircle,
+  XCircle,
+  Star,
+  MessageSquare,
+} from "lucide-react";
+import { getSportName } from "./CourtsPage";
+import { CourtFormModal } from "../components/CourtFormModal";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+
+export default function CourtDetailsPage() {
+  const { clubId, courtId } = useParams<{ clubId: string; courtId: string }>();
+  const navigate = useNavigate();
+
+  const [selectedDate, setSelectedDate] = useState(() => {
+    return new Date().toISOString().split("T")[0];
+  });
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedSlotIds, setSelectedSlotIds] = useState<string[]>([]);
+
+  // Queries
+  const { data: court, isLoading: isCourtLoading, isError: isCourtError, error: courtError } = useGetCourt(
+    clubId as string,
+    courtId as string
+  );
+
+  const canManage = court?.canManage || false;
+
+  const { data: slots, isLoading: isSlotsLoading, isError: isSlotsError } = useGetTimeSlots(
+    courtId as string,
+    selectedDate,
+    canManage ? undefined : true,
+    { enabled: !!courtId }
+  );
+
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetCourtReviews(courtId as string);
+  const reviews = reviewsData?.items || [];
+
+  // Mutations
+  const deleteCourt = useDeleteCourt();
+  const toggleCourtStatus = useToggleCourtStatus();
+  const setSlotsAvailability = useSetTimeSlotsAvailability(courtId as string);
+  const createBooking = useCreateBooking();
+
+  const formatTime = (timeStr: string) => {
+    try {
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  const handleBookSlot = async (slotId: string, startTime: string) => {
+    if (!courtId) return;
+    if (confirm(`Are you sure you want to request booking for ${formatTime(startTime)}?`)) {
+      try {
+        await createBooking.mutateAsync({
+          courtId,
+          timeSlotId: slotId,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleToggleStatus = async () => {
+    if (!court || !clubId || !courtId) return;
+    try {
+      await toggleCourtStatus.mutateAsync({ clubId, courtId });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!court || !clubId || !courtId) return;
+    if (confirm("Are you sure you want to delete this court? This action cannot be undone.")) {
+      try {
+        await deleteCourt.mutateAsync({ clubId, courtId });
+        navigate(`/clubs/${clubId}`);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  // Bulk set slots active/inactive
+  const handleBulkAvailability = async (isActive: boolean) => {
+    if (selectedSlotIds.length === 0) {
+      toast.warning("Please select at least one time slot.");
+      return;
+    }
+
+    try {
+      await setSlotsAvailability.mutateAsync({
+        slotIds: selectedSlotIds,
+        isActive,
+      });
+      setSelectedSlotIds([]); // clear selection
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleToggleSlotSelect = (slotId: string) => {
+    setSelectedSlotIds((prev) =>
+      prev.includes(slotId) ? prev.filter((id) => id !== slotId) : [...prev, slotId]
+    );
+  };
+
+  const handleSelectAllSlots = () => {
+    if (!slots) return;
+    if (selectedSlotIds.length === slots.length) {
+      setSelectedSlotIds([]);
+    } else {
+      setSelectedSlotIds(slots.map((s) => s.timeSlotId));
+    }
+  };
+
+  if (isCourtLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4 max-w-5xl space-y-6">
+        <Skeleton className="h-10 w-32" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Skeleton className="h-64 md:col-span-2 rounded-xl" />
+          <Skeleton className="h-64 rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isCourtError || !court) {
+    return (
+      <div className="container mx-auto py-8 px-4 max-w-md text-center space-y-4">
+        <ShieldAlert className="h-12 w-12 mx-auto text-destructive" />
+        <h2 className="text-2xl font-bold text-destructive">Court Not Found</h2>
+        <p className="text-muted-foreground">
+          {(courtError as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+            "The court details could not be retrieved."}
+        </p>
+        <Button asChild variant="outline">
+          <Link to="/courts">Back to Courts</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const allSlots = slots || [];
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-5xl space-y-8">
+      {/* Back navigation */}
+      <div className="flex items-center justify-between border-b pb-6">
+        <Button asChild variant="ghost" className="h-10">
+          <Link to={`/clubs/${clubId}`}>
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Club
+          </Link>
+        </Button>
+
+        {/* Management Controls */}
+        {canManage && (
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={handleToggleStatus} disabled={toggleCourtStatus.isPending}>
+              <Power className="mr-2 h-4 w-4" />
+              {court.isActive ? "Deactivate" : "Activate"}
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setIsEditModalOpen(true)}>
+              <Edit2 className="mr-2 h-4 w-4" /> Edit
+            </Button>
+            <Button variant="destructive" size="sm" onClick={handleDelete} disabled={deleteCourt.isPending}>
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Main Details Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        {/* Court Info & Image */}
+        <div className="md:col-span-2 space-y-6">
+          <div 
+            className="w-full h-80 rounded-2xl bg-muted overflow-hidden bg-cover bg-center border relative"
+            style={court.imageUrl ? { backgroundImage: `url(${court.imageUrl})` } : undefined}
+          >
+            {!court.imageUrl && (
+              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/35 font-extrabold text-6xl bg-secondary/50">
+                {court.name?.substring(0, 2)?.toUpperCase()}
+              </div>
+            )}
+            <Badge className="absolute top-4 left-4 uppercase font-extrabold tracking-wider px-3 py-1.5 text-xs shadow-md">
+              {getSportName(court.sportType)}
+            </Badge>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                {court.name || "Unnamed Court"}
+                <Badge variant={court.isActive ? "default" : "destructive"}>
+                  {court.isActive ? "Active" : "Inactive"}
+                </Badge>
+              </h1>
+              {court.club && (
+                <p className="text-muted-foreground text-sm mt-1">
+                  Located at: <strong>{court.club.name}</strong>
+                </p>
+              )}
+            </div>
+
+            {court.description ? (
+              <p className="text-base text-foreground/80 leading-relaxed bg-muted/30 p-4 rounded-xl border border-muted/50">
+                {court.description}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground italic">No description provided for this court.</p>
+            )}
+
+            {/* Specifications Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="bg-card/50 border-muted/40">
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Max Players</p>
+                    <p className="text-xl font-bold text-foreground">{court.maxCapacity} players</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card/50 border-muted/40">
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <DollarSign className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Price Per Hour</p>
+                    <p className="text-xl font-bold text-foreground">${court.pricePerHour}/hr</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+
+        {/* Availability / Booking Section */}
+        <div className="space-y-6">
+          <Card className="bg-card border-muted/40 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <Clock className="h-5 w-5 text-primary" /> Availability Calendar
+              </CardTitle>
+              <CardDescription>Select a date to check slots availability</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="availability-date" className="flex items-center gap-1 text-sm font-semibold">
+                  <CalendarIcon className="h-4 w-4 text-primary" /> Date
+                </Label>
+                <Input
+                  id="availability-date"
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  min={new Date().toISOString().split("T")[0]}
+                />
+              </div>
+
+              <div className="border-t pt-4 space-y-3">
+                <h4 className="font-semibold text-sm text-foreground flex items-center gap-1.5">
+                  Time Slots
+                </h4>
+
+                {/* Owner Bulk Actions */}
+                {canManage && allSlots.length > 0 && (
+                  <div className="flex flex-col gap-2 p-2.5 bg-muted/50 border border-muted rounded-lg mb-3">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span className="flex items-center gap-2">
+                        <Checkbox
+                          checked={selectedSlotIds.length === allSlots.length && allSlots.length > 0}
+                          onCheckedChange={handleSelectAllSlots}
+                        />
+                        Select All ({selectedSlotIds.length})
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        size="xs"
+                        variant="outline"
+                        className="flex-1 text-[11px] h-7 gap-1"
+                        onClick={() => handleBulkAvailability(true)}
+                        disabled={selectedSlotIds.length === 0 || setSlotsAvailability.isPending}
+                      >
+                        <CheckCircle className="h-3 w-3 text-green-500" /> Activate
+                      </Button>
+                      <Button
+                        size="xs"
+                        variant="outline"
+                        className="flex-1 text-[11px] h-7 gap-1"
+                        onClick={() => handleBulkAvailability(false)}
+                        disabled={selectedSlotIds.length === 0 || setSlotsAvailability.isPending}
+                      >
+                        <XCircle className="h-3 w-3 text-red-500" /> Deactivate
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {isSlotsLoading ? (
+                  <div className="grid grid-cols-1 gap-2">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ) : isSlotsError ? (
+                  <div className="flex items-center gap-2 text-destructive p-3 bg-destructive/10 rounded-lg text-xs">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>Failed to load time slots.</span>
+                  </div>
+                ) : allSlots.length === 0 ? (
+                  <div className="text-center py-6 text-sm text-muted-foreground bg-muted/30 rounded-lg">
+                    No active/available slots configured for this date.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1">
+                    {allSlots.map((slot) => {
+                      if (canManage) {
+                        return (
+                          <div
+                            key={slot.timeSlotId}
+                            onClick={() => handleToggleSlotSelect(slot.timeSlotId)}
+                            className={`flex items-center gap-3 p-3 rounded-lg border text-sm font-medium transition-all cursor-pointer ${
+                              selectedSlotIds.includes(slot.timeSlotId)
+                                ? "border-primary bg-primary/5"
+                                : !slot.isActive
+                                ? "bg-muted/40 border-muted text-muted-foreground"
+                                : slot.isBooked
+                                ? "bg-red-500/5 border-red-500/10 text-red-500"
+                                : "bg-green-500/5 border-green-500/10 text-green-600 hover:border-green-500/30"
+                            }`}
+                          >
+                            <Checkbox
+                              checked={selectedSlotIds.includes(slot.timeSlotId)}
+                              onCheckedChange={() => handleToggleSlotSelect(slot.timeSlotId)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            <div className="flex-1">
+                              <span>
+                                {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                              </span>
+                            </div>
+                            <Badge
+                              variant={
+                                !slot.isActive ? "secondary" : slot.isBooked ? "destructive" : "default"
+                              }
+                              className="font-bold"
+                            >
+                              {!slot.isActive ? "Disabled" : slot.isBooked ? "Booked" : "Active"}
+                            </Badge>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <button
+                            key={slot.timeSlotId}
+                            disabled={slot.isBooked}
+                            onClick={() => handleBookSlot(slot.timeSlotId, slot.startTime)}
+                            className="flex items-center justify-between p-3 rounded-lg border text-sm font-medium transition-all bg-green-500/10 border-green-500/20 hover:border-green-500/50 text-green-600 hover:scale-[1.01]"
+                          >
+                            <span>
+                              {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                            </span>
+                            <Badge variant="default" className="font-bold">
+                              Available
+                            </Badge>
+                          </button>
+                        );
+                      }
+                    })}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Reviews Section */}
+      <Card className="bg-card border-muted/40 shadow-sm mt-8">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+            <MessageSquare className="h-5 w-5 text-primary shrink-0" />
+            Reviews & Ratings ({court.reviewsCount || 0})
+          </CardTitle>
+          <CardDescription>
+            {court.reviewsCount > 0 ? (
+              <span className="flex items-center gap-1.5 text-sm font-medium mt-1">
+                Average Rating: 
+                <span className="flex items-center gap-0.5 text-amber-500 font-bold text-base">
+                  <Star className="h-4 w-4 fill-amber-400" />
+                  {court.averageRating?.toFixed(1) || "0.0"}
+                </span>
+              </span>
+            ) : (
+              "No reviews submitted yet for this court."
+            )}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-0">
+          {isReviewsLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="text-center py-10 text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+              Be the first to play on this court and write a review!
+            </div>
+          ) : (
+            <div className="divide-y divide-muted">
+              {reviews.map((rev) => (
+                <div key={rev.reviewId} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                    {rev.author.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="font-semibold text-sm text-foreground">{rev.author.fullName}</p>
+                        <div className="flex items-center gap-0.5 mt-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={cn(
+                                "h-3.5 w-3.5",
+                                i < rev.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20 fill-transparent"
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(rev.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    {rev.comment && (
+                      <p className="text-sm text-muted-foreground leading-relaxed italic">
+                        "{rev.comment}"
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Edit Form Modal */}
+      {isEditModalOpen && court && (
+        <CourtFormModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          clubId={clubId as string}
+          court={court}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/clubs/pages/CourtsPage.tsx
+```typescript
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSearchCourts } from "../hooks/useCourts";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  Search,
+  Users,
+  DollarSign,
+  MapPin,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+
+export const getSportName = (type: number) => {
+  switch (type) {
+    case 1: return "Football";
+    case 2: return "Padel";
+    case 3: return "Tennis";
+    case 4: return "Basketball";
+    case 5: return "Volleyball";
+    default: return "Sport";
+  }
+};
+
+export default function CourtsPage() {
+  const navigate = useNavigate();
+
+  // Search/Filters
+  const [searchValue, setSearchValue] = useState("");
+  const [sportFilter, setSportFilter] = useState<number | undefined>();
+  const [cityFilter, setCityFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+
+  // Query
+  const { data: courtsData, isLoading, isError, error } = useSearchCourts(
+    { searchValue },
+    sportFilter,
+    cityFilter || undefined,
+    dateFilter || undefined
+  );
+
+  const courts = courtsData?.items || [];
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-7xl space-y-8">
+      {/* Header */}
+      <div className="border-b pb-6">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Browse Courts</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Find and book courts by sport, location, and date.
+        </p>
+      </div>
+
+      {/* Filters Section */}
+      <Card className="bg-card border-muted/40">
+        <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="search">Search Name</Label>
+            <div className="relative">
+              <Input
+                id="search"
+                placeholder="Court name..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="pl-8"
+              />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="sport">Sport</Label>
+            <Select
+              value={sportFilter ? String(sportFilter) : "all"}
+              onValueChange={(val) => setSportFilter(val === "all" ? undefined : Number(val))}
+            >
+              <SelectTrigger id="sport">
+                <SelectValue placeholder="All Sports" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Sports</SelectItem>
+                <SelectItem value="1">Football</SelectItem>
+                <SelectItem value="2">Padel</SelectItem>
+                <SelectItem value="3">Tennis</SelectItem>
+                <SelectItem value="4">Basketball</SelectItem>
+                <SelectItem value="5">Volleyball</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="city">City</Label>
+            <Input
+              id="city"
+              placeholder="e.g. Cairo"
+              value={cityFilter}
+              onChange={(e) => setCityFilter(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Grid View */}
+      {isLoading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, i) => (
+            <Card key={i} className="overflow-hidden flex flex-col">
+              <Skeleton className="h-40 w-full rounded-none" />
+              <CardContent className="p-5 flex-1 flex flex-col space-y-4">
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-8 w-full mt-auto" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
+          <p>Failed to load courts. Please try again later.</p>
+          <p className="text-sm">{(error as { message?: string })?.message}</p>
+        </div>
+      ) : courts.length === 0 ? (
+        <div className="py-16 text-center text-muted-foreground bg-card border rounded-xl">
+          No courts found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {courts.map((court) => (
+            <Card 
+              key={court.courtId} 
+              className="overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col group relative cursor-pointer"
+              onClick={() => {
+                const clubId = court.club?.clubId || "unknown";
+                navigate(`/clubs/${clubId}/courts/${court.courtId}`);
+              }}
+            >
+              {/* Image Banner */}
+              <div 
+                className="h-40 w-full bg-muted relative bg-cover bg-center"
+                style={court.imageUrl ? { backgroundImage: `url(${court.imageUrl})` } : undefined}
+              >
+                {!court.imageUrl && (
+                  <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/30 font-bold text-4xl">
+                    {court.name?.substring(0, 2)?.toUpperCase()}
+                  </div>
+                )}
+
+                {/* Sport Badge */}
+                <Badge className="absolute top-2 left-2 uppercase font-bold tracking-wider text-xs">
+                  {getSportName(court.sportType)}
+                </Badge>
+              </div>
+
+              {/* Content */}
+              <CardContent className="p-5 flex-1 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div>
+                    <h3 className="font-semibold text-lg leading-tight text-foreground truncate" title={court.name}>
+                      {court.name || "Unnamed Court"}
+                    </h3>
+                    {court.club && (
+                      <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                        <MapPin className="h-3 w-3 shrink-0" /> {court.club.name}
+                      </p>
+                    )}
+                  </div>
+                  {court.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-2 min-h-[32px]">
+                      {court.description}
+                    </p>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-2 text-xs border-t pt-3">
+                    <div className="flex items-center gap-1.5 text-muted-foreground">
+                      <Users className="h-3.5 w-3.5 text-primary" />
+                      <span>Cap: <strong>{court.maxCapacity}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-muted-foreground justify-end">
+                      <DollarSign className="h-3.5 w-3.5 text-primary" />
+                      <span><strong>${court.pricePerHour}</strong>/hr</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <div className={cn(
+                      "w-2.5. w-2.5 h-2.5 rounded-full",
+                      court.isActive ? "bg-primary" : "bg-destructive"
+                    )} />
+                    <span className="text-xs font-semibold text-foreground/80">
+                      {court.isActive ? "Active" : "Inactive"}
+                    </span>
+                  </div>
+
+                  <Button size="sm" variant="outline" className="h-8">
+                    View Details
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/clubs/pages/OwnerClubDashboardPage.tsx
+```typescript
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useGetClub } from "@/features/clubs/hooks/useClubs";
+import {
+  useGetActiveSubscription,
+  useGetSubscriptionHistory,
+  useRenewSubscription,
+} from "@/features/subscriptions/hooks/useClubSubscriptions";
+import { SubscribeModal } from "@/features/subscriptions/components/SubscribeModal";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  ArrowLeft,
+  Building,
+  CreditCard,
+  Calendar,
+  Award,
+  RefreshCw,
+  Plus,
+} from "lucide-react";
+
+export default function OwnerClubDashboardPage() {
+  const { clubId } = useParams<{ clubId: string }>();
+  const [activeTab, setActiveTab] = useState<"overview" | "subscription">("overview");
+  const [isSubModalOpen, setIsSubModalOpen] = useState(false);
+
+  // Queries
+  const { data: club, isLoading: isClubLoading, isError: isClubError } = useGetClub(clubId as string);
+  const {
+    data: activeSub,
+    isLoading: isActiveSubLoading,
+    isError: isActiveSubError,
+    error: activeSubError,
+  } = useGetActiveSubscription(clubId as string);
+  const { data: subHistory, isLoading: isHistoryLoading } = useGetSubscriptionHistory(clubId as string);
+
+  // Mutations
+  const renewSub = useRenewSubscription();
+
+  if (isClubLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4 max-w-7xl space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-32 w-full" />
+      </div>
+    );
+  }
+
+  if (isClubError || !club) {
+    return (
+      <div className="container mx-auto py-8 px-4 text-center max-w-md">
+        <h2 className="text-2xl font-bold text-destructive mb-2">Club Not Found</h2>
+        <p className="text-muted-foreground mb-4">Could not retrieve the details for this club.</p>
+        <Button asChild variant="outline">
+          <Link to="/owner/clubs">Back to My Clubs</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const handleRenew = async () => {
+    if (confirm("Are you sure you want to renew your active subscription?")) {
+      try {
+        await renewSub.mutateAsync(clubId as string);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  // Check if error status is 404
+  const isNoSubscription =
+    isActiveSubError && (activeSubError as any)?.response?.status === 404;
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-7xl space-y-8">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-6">
+        <div className="flex items-center gap-4">
+          <Button asChild variant="ghost" size="icon" className="h-10 w-10">
+            <Link to="/clubs">
+              <ArrowLeft className="h-5 w-5" />
+            </Link>
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              {club.name}
+              <Badge variant={club.isActive ? "default" : "destructive"}>
+                {club.isActive ? "Active" : "Inactive"}
+              </Badge>
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">Owner Club Dashboard &bull; Manage your club's subscription.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs list */}
+      <div className="flex border-b border-muted">
+        <button
+          onClick={() => setActiveTab("overview")}
+          className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium transition-all ${
+            activeTab === "overview"
+              ? "border-primary text-primary"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <Building className="h-4 w-4" /> Overview
+        </button>
+        <button
+          onClick={() => setActiveTab("subscription")}
+          className={`flex items-center gap-2 px-6 py-3 border-b-2 font-medium transition-all ${
+            activeTab === "subscription"
+              ? "border-primary text-primary"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          <CreditCard className="h-4 w-4" /> Subscription
+        </button>
+      </div>
+
+      {/* Tab Contents */}
+      {activeTab === "overview" && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="md:col-span-2">
+            <CardHeader>
+              <CardTitle>Active Subscription</CardTitle>
+              <CardDescription>Details of your currently active membership plan.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {isActiveSubLoading ? (
+                <div className="space-y-4">
+                  <Skeleton className="h-6 w-1/3" />
+                  <Skeleton className="h-10 w-full" />
+                </div>
+              ) : isNoSubscription ? (
+                <div className="text-center py-8 space-y-4">
+                  <p className="text-muted-foreground">Your club does not have an active subscription.</p>
+                  <Button onClick={() => setIsSubModalOpen(true)}>
+                    <Plus className="mr-2 h-4 w-4" /> Subscribe Now
+                  </Button>
+                </div>
+              ) : activeSub ? (
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-primary/5 p-6 rounded-xl border border-primary/20">
+                    <div className="space-y-1">
+                      <p className="text-xs text-primary font-bold uppercase tracking-wider">Current Plan</p>
+                      <h3 className="text-2xl font-extrabold text-foreground">{activeSub.plan.name}</h3>
+                      <p className="text-sm text-muted-foreground">Allowed Courts: <strong>{activeSub.plan.maxCourts}</strong></p>
+                    </div>
+                    <div className="text-left sm:text-right">
+                      <p className="text-2xl font-black text-foreground">${activeSub.plan.price}</p>
+                      <p className="text-xs text-muted-foreground">Paid on {new Date(activeSub.startDate).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Start Date</p>
+                        <p className="font-semibold">{new Date(activeSub.startDate).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">End Date</p>
+                        <p className="font-semibold">{new Date(activeSub.endDate).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setIsSubModalOpen(true)}>
+                      Change Plan
+                    </Button>
+                    <Button onClick={handleRenew} disabled={renewSub.isPending}>
+                      <RefreshCw className="mr-2 h-4 w-4" /> Renew Subscription
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8 text-destructive">
+                  Error loading subscription details.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Usage Limits</CardTitle>
+              <CardDescription>Club resources utilization.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Courts created:</span>
+                  <span className="font-semibold">
+                    {club.courtsCount || 0} / {activeSub ? activeSub.plan.maxCourts : "0"}
+                  </span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full"
+                    style={{
+                      width: `${Math.min(
+                        ((club.courtsCount || 0) / (activeSub ? activeSub.plan.maxCourts : 1)) * 100,
+                        100
+                      )}%`,
+                    }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {activeTab === "subscription" && (
+        <Card>
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <CardTitle>Subscription History</CardTitle>
+              <CardDescription>A record of all your subscriptions and payments.</CardDescription>
+            </div>
+            {isNoSubscription && (
+              <Button onClick={() => setIsSubModalOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" /> Subscribe Now
+              </Button>
+            )}
+          </CardHeader>
+          <CardContent>
+            {isHistoryLoading ? (
+              <div className="space-y-2">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ) : !subHistory?.items || subHistory.items.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                No subscription history found.
+              </div>
+            ) : (
+              <div className="border rounded-lg overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-muted text-muted-foreground text-xs uppercase">
+                    <tr>
+                      <th className="p-4">Plan Name</th>
+                      <th className="p-4">Price</th>
+                      <th className="p-4">Start Date</th>
+                      <th className="p-4">End Date</th>
+                      <th className="p-4">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {subHistory.items.map((sub) => (
+                      <tr key={sub.subscriptionId} className="border-b bg-card">
+                        <td className="p-4 font-semibold">{sub.plan.name}</td>
+                        <td className="p-4">${sub.plan.price}</td>
+                        <td className="p-4">{new Date(sub.startDate).toLocaleDateString()}</td>
+                        <td className="p-4">{new Date(sub.endDate).toLocaleDateString()}</td>
+                        <td className="p-4">
+                          <Badge variant={sub.isActive ? "default" : "secondary"}>
+                            {sub.isActive ? "Active" : "Expired"}
+                          </Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Subscribe Modal */}
+      <SubscribeModal
+        isOpen={isSubModalOpen}
+        onClose={() => setIsSubModalOpen(false)}
+        clubId={club.clubId}
+        clubName={club.name}
+      />
+    </div>
+  );
+}
+```
+
+## File: src/features/matches/api/matchesApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
+import type {
+  FriendlyMatchResponse,
+  CreateFriendlyMatchRequest,
+  MatchJoinRequestResponse,
+  ReviewJoinRequestRequest,
+  JoinRequestStatusDto,
+  ParticipantSummary,
+} from "../types/matches";
+
+export const matchesApi = {
+  getMatches: (filters: RequestFilters, sport?: number, date?: string, city?: string) => {
+    return apiClient.get<PaginatedList<FriendlyMatchResponse>>("/matches", {
+      params: {
+        ...filters,
+        sport,
+        date,
+        city,
+      },
+    });
+  },
+
+  getMyMatches: (filters: RequestFilters, role?: string) => {
+    return apiClient.get<PaginatedList<FriendlyMatchResponse>>("/matches/my", {
+      params: {
+        ...filters,
+        role,
+      },
+    });
+  },
+
+  getMatch: (matchId: string) => {
+    return apiClient.get<FriendlyMatchResponse>(`/matches/${matchId}`);
+  },
+
+  createMatch: (data: CreateFriendlyMatchRequest) => {
+    return apiClient.post<FriendlyMatchResponse>("/matches", data);
+  },
+
+  updateMatch: (matchId: string, data: CreateFriendlyMatchRequest) => {
+    return apiClient.put<FriendlyMatchResponse>(`/matches/${matchId}`, data);
+  },
+
+  cancelMatch: (matchId: string) => {
+    return apiClient.delete<void>(`/matches/${matchId}`);
+  },
+
+  getParticipants: (matchId: string) => {
+    return apiClient.get<ParticipantSummary[]>(`/matches/${matchId}/participants`);
+  },
+
+  leaveMatch: (matchId: string) => {
+    return apiClient.post<void>(`/matches/${matchId}/leave`);
+  },
+
+  getCourtMatches: (courtId: string, filters: RequestFilters) => {
+    return apiClient.get<PaginatedList<FriendlyMatchResponse>>(`/courts/${courtId}/matches`, {
+      params: filters,
+    });
+  },
+
+  getMyJoinRequests: (filters: RequestFilters, status?: JoinRequestStatusDto) => {
+    return apiClient.get<PaginatedList<MatchJoinRequestResponse>>("/join-requests/my", {
+      params: {
+        ...filters,
+        status,
+      },
+    });
+  },
+
+  requestToJoin: (matchId: string, data: { FriendlyMatchId: string }) => {
+    return apiClient.post<MatchJoinRequestResponse>(`/matches/${matchId}/join-requests`, data);
+  },
+
+  getMatchJoinRequests: (matchId: string, filters: RequestFilters) => {
+    return apiClient.get<PaginatedList<MatchJoinRequestResponse>>(`/matches/${matchId}/join-requests`, {
+      params: filters,
+    });
+  },
+
+  getJoinRequest: (matchId: string, requestId: string) => {
+    return apiClient.get<MatchJoinRequestResponse>(`/matches/${matchId}/join-requests/${requestId}`);
+  },
+
+  reviewJoinRequest: (matchId: string, requestId: string, data: ReviewJoinRequestRequest) => {
+    return apiClient
+      .getAxiosInstance()
+      .patch<void>(`/matches/${matchId}/join-requests/${requestId}`, data)
+      .then((res) => res.data);
+  },
+
+  withdrawJoinRequest: (matchId: string, requestId: string) => {
+    return apiClient.delete<void>(`/matches/${matchId}/join-requests/${requestId}`);
+  },
+};
+```
+
+## File: src/features/matches/components/MatchFormModal.tsx
+```typescript
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { useCreateMatch, useUpdateMatch } from "../hooks/useMatches";
+import { useGetClubs, useGetClubCourts } from "@/features/clubs/hooks/useClubs";
+import { Trophy, Calendar, Clock, Users, Building, Target, FileText } from "lucide-react";
+import { SportType } from "@/features/clubs/types/clubs";
+import type { FriendlyMatchResponse } from "../types/matches";
+
+interface MatchFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  match?: FriendlyMatchResponse | null;
+}
+
+export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) {
+  const isEditing = !!match;
+  const createMatch = useCreateMatch();
+  const updateMatch = useUpdateMatch();
+
+  // Queries for club / court selection
+  const { data: clubsData, isLoading: isClubsLoading } = useGetClubs({ pageNumber: 1, pageSize: 100 }, { enabled: isOpen && !isEditing });
+  const clubs = clubsData?.items || [];
+
+  const [selectedClubId, setSelectedClubId] = useState("");
+  
+  const { data: courtsData, isLoading: isCourtsLoading } = useGetClubCourts(selectedClubId, {}, { enabled: isOpen && !!selectedClubId && !isEditing });
+  const courts = courtsData?.items || [];
+
+  // Form States
+  const [courtId, setCourtId] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [sportType, setSportType] = useState<string>("0");
+  const [requiredPlayers, setRequiredPlayers] = useState<number>(10);
+  const [note, setNote] = useState("");
+
+  // Prefill in edit mode
+  useEffect(() => {
+    if (isOpen) {
+      if (match) {
+        setCourtId(match.court.courtId);
+        setDate(match.date);
+        // Take first 5 chars for HH:MM format from TimeOnly HH:MM:SS
+        setStartTime(match.startTime.substring(0, 5));
+        setEndTime(match.endTime.substring(0, 5));
+        setSportType(match.sportType.toString());
+        setRequiredPlayers(match.requiredPlayers);
+        setNote(match.note || "");
+      } else {
+        setSelectedClubId("");
+        setCourtId("");
+        setDate(new Date().toISOString().split("T")[0]);
+        setStartTime("18:00");
+        setEndTime("19:00");
+        setSportType("0");
+        setRequiredPlayers(10);
+        setNote("");
+      }
+    }
+  }, [isOpen, match]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!courtId || !date || !startTime || !endTime) {
+      return;
+    }
+
+    // append seconds ":00" for TimeOnly .NET format
+    const formattedStartTime = startTime.length === 5 ? `${startTime}:00` : startTime;
+    const formattedEndTime = endTime.length === 5 ? `${endTime}:00` : endTime;
+
+    const data = {
+      courtId,
+      date,
+      startTime: formattedStartTime,
+      endTime: formattedEndTime,
+      sportType: Number(sportType),
+      requiredPlayers,
+      note: note.trim() || undefined,
+    };
+
+    try {
+      if (isEditing && match) {
+        await updateMatch.mutateAsync({
+          matchId: match.matchId,
+          data,
+        });
+      } else {
+        await createMatch.mutateAsync(data);
+      }
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{isEditing ? "Edit Friendly Match" : "Organize Friendly Match"}</DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update details of your friendly match reservation."
+              : "Create a match card so other players can request to join you."}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4 py-4">
+          {/* Club & Court Selection (Only visible when creating) */}
+          {!isEditing && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="match-club-select" className="flex items-center gap-1">
+                  <Building className="h-4 w-4 text-primary shrink-0" /> Select Facility Club
+                </Label>
+                <Select value={selectedClubId} onValueChange={setSelectedClubId}>
+                  <SelectTrigger id="match-club-select">
+                    <SelectValue placeholder={isClubsLoading ? "Loading clubs..." : "Choose a club..."} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {clubs.map((c) => (
+                      <SelectItem key={c.clubId} value={c.clubId}>
+                        {c.name} ({c.city})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="match-court-select" className="flex items-center gap-1">
+                  <Target className="h-4 w-4 text-primary shrink-0" /> Select Court
+                </Label>
+                <Select
+                  value={courtId}
+                  onValueChange={setCourtId}
+                  disabled={!selectedClubId || isCourtsLoading}
+                >
+                  <SelectTrigger id="match-court-select">
+                    <SelectValue
+                      placeholder={
+                        isCourtsLoading
+                          ? "Loading courts..."
+                          : !selectedClubId
+                          ? "Select a club first"
+                          : "Choose a court..."
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {courts.map((ct) => (
+                      <SelectItem key={ct.courtId} value={ct.courtId}>
+                        {ct.name} (${ct.pricePerHour}/hr)
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </>
+          )}
+
+          {/* Date */}
+          <div className="space-y-2">
+            <Label htmlFor="match-date" className="flex items-center gap-1">
+              <Calendar className="h-4 w-4 text-primary shrink-0" /> Date
+            </Label>
+            <Input
+              id="match-date"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              min={new Date().toISOString().split("T")[0]}
+              required
+            />
+          </div>
+
+          {/* Time range */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="match-start-time" className="flex items-center gap-1">
+                <Clock className="h-4 w-4 text-primary shrink-0" /> Start Time
+              </Label>
+              <Input
+                id="match-start-time"
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="match-end-time" className="flex items-center gap-1">
+                <Clock className="h-4 w-4 text-primary shrink-0" /> End Time
+              </Label>
+              <Input
+                id="match-end-time"
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Sport & Required Players */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="match-sport" className="flex items-center gap-1">
+                <Trophy className="h-4 w-4 text-primary shrink-0" /> Sport Type
+              </Label>
+              <Select value={sportType} onValueChange={setSportType}>
+                <SelectTrigger id="match-sport">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="0">Football</SelectItem>
+                  <SelectItem value="1">Basketball</SelectItem>
+                  <SelectItem value="2">Tennis</SelectItem>
+                  <SelectItem value="3">Padel</SelectItem>
+                  <SelectItem value="4">Volleyball</SelectItem>
+                  <SelectItem value="5">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="match-players" className="flex items-center gap-1">
+                <Users className="h-4 w-4 text-primary shrink-0" /> Required Players
+              </Label>
+              <Input
+                id="match-players"
+                type="number"
+                min={2}
+                max={50}
+                value={requiredPlayers}
+                onChange={(e) => setRequiredPlayers(Number(e.target.value))}
+                required
+              />
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-2">
+            <Label htmlFor="match-note" className="flex items-center gap-1">
+              <FileText className="h-4 w-4 text-primary shrink-0" /> Match Notes / Details
+            </Label>
+            <Textarea
+              id="match-note"
+              placeholder="e.g. Friendly 5v5 football match. Grass turf. Bringing my own ball. Bring green shirts if possible!"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              className="min-h-[80px] resize-none"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={createMatch.isPending || updateMatch.isPending || (!isEditing && !courtId)}
+            >
+              {createMatch.isPending || updateMatch.isPending ? "Saving..." : "Save Match"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/matches/hooks/useMatches.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { matchesApi } from "../api/matchesApi";
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+import type {
+  CreateFriendlyMatchRequest,
+  ReviewJoinRequestRequest,
+  JoinRequestStatusDto,
+} from "../types/matches";
+import { toast } from "sonner";
+
+export const MATCHES_QUERY_KEYS = {
+  all: ["matches"] as const,
+  list: (filters: RequestFilters, sport?: number, date?: string, city?: string) =>
+    [...MATCHES_QUERY_KEYS.all, "list", { filters, sport, date, city }] as const,
+  my: (filters: RequestFilters, role?: string) =>
+    [...MATCHES_QUERY_KEYS.all, "my", { filters, role }] as const,
+  detail: (matchId: string) => [...MATCHES_QUERY_KEYS.all, "detail", matchId] as const,
+  participants: (matchId: string) => [...MATCHES_QUERY_KEYS.all, "participants", matchId] as const,
+  requests: (matchId: string, filters: RequestFilters) =>
+    [...MATCHES_QUERY_KEYS.all, "requests", matchId, { filters }] as const,
+};
+
+export const useGetMatches = (filters: RequestFilters = {}, sport?: number, date?: string, city?: string) => {
+  return useQuery({
+    queryKey: MATCHES_QUERY_KEYS.list(filters, sport, date, city),
+    queryFn: () => matchesApi.getMatches(filters, sport, date, city),
+  });
+};
+
+export const useGetMyMatches = (filters: RequestFilters = {}, role?: string) => {
+  return useQuery({
+    queryKey: MATCHES_QUERY_KEYS.my(filters, role),
+    queryFn: () => matchesApi.getMyMatches(filters, role),
+  });
+};
+
+export const useGetMatch = (matchId: string) => {
+  return useQuery({
+    queryKey: MATCHES_QUERY_KEYS.detail(matchId),
+    queryFn: () => matchesApi.getMatch(matchId),
+    enabled: !!matchId,
+  });
+};
+
+export const useCreateMatch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateFriendlyMatchRequest) => matchesApi.createMatch(data),
+    onSuccess: () => {
+      toast.success("Friendly match created successfully!");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to create match: ${msg}`);
+    },
+  });
+};
+
+export const useUpdateMatch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ matchId, data }: { matchId: string; data: CreateFriendlyMatchRequest }) =>
+      matchesApi.updateMatch(matchId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Friendly match updated successfully.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update match: ${msg}`);
+    },
+  });
+};
+
+export const useCancelMatch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (matchId: string) => matchesApi.cancelMatch(matchId),
+    onSuccess: () => {
+      toast.success("Friendly match cancelled successfully.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to cancel match: ${msg}`);
+    },
+  });
+};
+
+export const useGetParticipants = (matchId: string) => {
+  return useQuery({
+    queryKey: MATCHES_QUERY_KEYS.participants(matchId),
+    queryFn: () => matchesApi.getParticipants(matchId),
+    enabled: !!matchId,
+  });
+};
+
+export const useLeaveMatch = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (matchId: string) => matchesApi.leaveMatch(matchId),
+    onSuccess: (_, matchId) => {
+      toast.success("You have successfully left the match.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(matchId) });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.participants(matchId) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to leave match: ${msg}`);
+    },
+  });
+};
+
+export const useRequestToJoin = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ matchId, data }: { matchId: string; data: { FriendlyMatchId: string } }) =>
+      matchesApi.requestToJoin(matchId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Join request submitted! Pending organizer approval.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Request to join failed: ${msg}`);
+    },
+  });
+};
+
+export const useGetMatchJoinRequests = (matchId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: MATCHES_QUERY_KEYS.requests(matchId, filters),
+    queryFn: () => matchesApi.getMatchJoinRequests(matchId, filters),
+    enabled: !!matchId,
+  });
+};
+
+export const useReviewJoinRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      matchId,
+      requestId,
+      data,
+    }: {
+      matchId: string;
+      requestId: string;
+      data: ReviewJoinRequestRequest;
+    }) => matchesApi.reviewJoinRequest(matchId, requestId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Join request status updated.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.participants(variables.matchId) });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Review failed: ${msg}`);
+    },
+  });
+};
+
+export const useWithdrawJoinRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ matchId, requestId }: { matchId: string; requestId: string }) =>
+      matchesApi.withdrawJoinRequest(matchId, requestId),
+    onSuccess: (_, variables) => {
+      toast.success("Join request withdrawn successfully.");
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
+      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to withdraw request: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/matches/pages/MatchDetailsPage.tsx
+```typescript
+import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import {
+  useGetMatch,
+  useCancelMatch,
+  useGetParticipants,
+  useLeaveMatch,
+  useRequestToJoin,
+  useGetMatchJoinRequests,
+  useReviewJoinRequest,
+  useWithdrawJoinRequest,
+} from "../hooks/useMatches";
+import { useQuery } from "@tanstack/react-query";
+import { matchesApi } from "../api/matchesApi";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  Trophy,
+  ArrowLeft,
+  Edit2,
+  Trash2,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Building,
+  User,
+  ExternalLink,
+  ShieldAlert,
+} from "lucide-react";
+import { MatchFormModal } from "../components/MatchFormModal";
+import { MatchStatusDto, JoinRequestStatusDto, SPORT_LABELS, SPORT_EMOJIS } from "../types/matches";
+import { toast } from "sonner";
+
+export default function MatchDetailsPage() {
+  const { matchId } = useParams<{ matchId: string }>();
+  const navigate = useNavigate();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // Queries
+  const { data: match, isLoading: isMatchLoading, isError: isMatchError, error: matchError } = useGetMatch(
+    matchId as string
+  );
+
+  const { data: participants, isLoading: isParticipantsLoading } = useGetParticipants(
+    matchId as string
+  );
+
+  // organizer query for join requests
+  const isOrganizer = match?.isOwner || false;
+  const { data: requestsData, isLoading: isRequestsLoading } = useGetMatchJoinRequests(
+    matchId as string,
+    { pageNumber: 1, pageSize: 50 },
+  );
+  const requests = requestsData?.items || [];
+
+  // Member query for pending join request ID (to support Withdraw action)
+  const { data: myRequestsData } = useQuery({
+    queryKey: ["join-requests", "my-pending"],
+    queryFn: () => matchesApi.getMyJoinRequests({ pageNumber: 1, pageSize: 100 }, 0), // 0 = Pending
+    enabled: !!matchId && !isOrganizer && (match?.iApplied || false),
+  });
+
+  // Mutations
+  const cancelMatch = useCancelMatch();
+  const requestToJoin = useRequestToJoin();
+  const leaveMatch = useLeaveMatch();
+  const withdrawJoin = useWithdrawJoinRequest();
+  const reviewRequest = useReviewJoinRequest();
+
+  const handleCancel = async () => {
+    if (!matchId) return;
+    if (confirm("Are you sure you want to cancel this friendly match? All participants will be notified.")) {
+      try {
+        await cancelMatch.mutateAsync(matchId);
+        navigate("/matches");
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleJoin = async () => {
+    if (!matchId) return;
+    try {
+      await requestToJoin.mutateAsync({
+        matchId,
+        data: { FriendlyMatchId: matchId },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleLeave = async () => {
+    if (!matchId) return;
+    if (confirm("Are you sure you want to leave this friendly match?")) {
+      try {
+        await leaveMatch.mutateAsync(matchId);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleWithdraw = async () => {
+    if (!matchId) return;
+    const request = myRequestsData?.items?.find((r) => r.match.matchId === matchId);
+    if (!request) {
+      toast.error("Could not find active request to withdraw.");
+      return;
+    }
+
+    if (confirm("Are you sure you want to withdraw your join request?")) {
+      try {
+        await withdrawJoin.mutateAsync({
+          matchId,
+          requestId: request.requestId,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleReview = async (requestId: string, approve: boolean) => {
+    if (!matchId) return;
+    try {
+      await reviewRequest.mutateAsync({
+        matchId,
+        requestId,
+        data: {
+          newStatus: approve ? JoinRequestStatusDto.Accepted : JoinRequestStatusDto.Rejected,
+        },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getStatusBadge = (status: MatchStatusDto) => {
+    switch (status) {
+      case MatchStatusDto.Open:
+        return <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">Open</Badge>;
+      case MatchStatusDto.Full:
+        return <Badge variant="default" className="bg-amber-600 hover:bg-amber-700">Full</Badge>;
+      case MatchStatusDto.InProgress:
+        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">In Progress</Badge>;
+      case MatchStatusDto.Completed:
+        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Completed</Badge>;
+      case MatchStatusDto.Cancelled:
+        return <Badge variant="destructive">Cancelled</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
+    }
+  };
+
+  const getRequestStatusBadge = (status: JoinRequestStatusDto) => {
+    switch (status) {
+      case JoinRequestStatusDto.Pending:
+        return <Badge variant="secondary">Pending Review</Badge>;
+      case JoinRequestStatusDto.Accepted:
+        return <Badge variant="default" className="bg-green-600 hover:bg-green-700">Accepted</Badge>;
+      case JoinRequestStatusDto.Rejected:
+        return <Badge variant="destructive">Rejected</Badge>;
+      case JoinRequestStatusDto.Withdrawn:
+        return <Badge variant="outline" className="text-muted-foreground">Withdrawn</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
+    }
+  };
+
+  const formatTime = (timeStr: string) => {
+    try {
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  if (isMatchLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4 max-w-4xl space-y-6">
+        <Skeleton className="h-10 w-32" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Skeleton className="h-96 md:col-span-2 rounded-xl" />
+          <Skeleton className="h-96 rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (isMatchError || !match) {
+    return (
+      <div className="container mx-auto py-8 px-4 max-w-md text-center space-y-4">
+        <ShieldAlert className="h-12 w-12 mx-auto text-destructive" />
+        <h2 className="text-2xl font-bold text-destructive">Match Not Found</h2>
+        <p className="text-muted-foreground">
+          {(matchError as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+            "The friendly match details could not be retrieved."}
+        </p>
+        <Button asChild variant="outline">
+          <Link to="/matches">Back to Matches</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-5xl space-y-8">
+      {/* Back and Management Navigation */}
+      <div className="flex items-center justify-between border-b pb-6">
+        <Button asChild variant="ghost" className="h-10">
+          <Link to="/matches">
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Matches
+          </Link>
+        </Button>
+
+        {isOrganizer && match.status !== MatchStatusDto.Cancelled && (
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setIsEditModalOpen(true)}>
+              <Edit2 className="mr-2 h-4 w-4" /> Edit Match
+            </Button>
+            <Button variant="destructive" size="sm" onClick={handleCancel} disabled={cancelMatch.isPending}>
+              <Trash2 className="mr-2 h-4 w-4" /> Cancel Match
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+        {/* Match General Info Card */}
+        <div className="md:col-span-2 space-y-6">
+          <div 
+            className="w-full h-72 rounded-2xl bg-muted overflow-hidden bg-cover bg-center border relative"
+            style={match.court.imageUrl ? { backgroundImage: `url(${match.court.imageUrl})` } : undefined}
+          >
+            {!match.court.imageUrl && (
+              <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/30 font-extrabold text-5xl bg-secondary/50">
+                {SPORT_LABELS[match.sportType]?.toUpperCase()}
+              </div>
+            )}
+            <Badge className="absolute top-4 left-4 uppercase font-extrabold tracking-wider px-3 py-1.5 text-xs shadow-md">
+              {SPORT_EMOJIS[match.sportType]} {SPORT_LABELS[match.sportType]}
+            </Badge>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                {match.court.name || "Friendly Match"}
+                {getStatusBadge(match.status)}
+              </h1>
+              {match.court.club && (
+                <p className="text-muted-foreground text-sm mt-1">
+                  Located at: <strong>{match.court.club.name}</strong> ({match.court.club.city})
+                </p>
+              )}
+            </div>
+
+            {match.note ? (
+              <p className="text-base text-foreground/80 leading-relaxed bg-muted/30 p-4 rounded-xl border border-muted/50">
+                {match.note}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground italic">No organizer notes provided for this match.</p>
+            )}
+
+            {/* Specifications Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="bg-card border-muted/40 shadow-sm">
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Roster Size</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {match.acceptedPlayersCount} / {match.requiredPlayers}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-card border-muted/40 shadow-sm">
+                <CardContent className="p-4 flex items-center gap-3">
+                  <div className="p-3 rounded-lg bg-primary/10 text-primary">
+                    <Clock className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Slots Available</p>
+                    <p className="text-xl font-bold text-foreground">{match.slotsRemaining} left</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Roster & Invites tab navigation */}
+            <Tabs defaultValue="participants" className="w-full pt-4">
+              <TabsList className="grid w-full sm:w-[350px] grid-cols-2">
+                <TabsTrigger value="participants">Participants ({participants?.length || 0})</TabsTrigger>
+                {isOrganizer && (
+                  <TabsTrigger value="requests">Join Requests ({requests.length})</TabsTrigger>
+                )}
+              </TabsList>
+
+              {/* Roster list content */}
+              <TabsContent value="participants" className="pt-4">
+                <Card className="bg-card border-muted/40">
+                  <CardContent className="p-6">
+                    {isParticipantsLoading ? (
+                      <div className="space-y-3">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                      </div>
+                    ) : !participants || participants.length === 0 ? (
+                      <p className="text-center py-6 text-sm text-muted-foreground">No players have joined this match roster yet.</p>
+                    ) : (
+                      <div className="divide-y divide-muted">
+                        {participants.map((player) => (
+                          <div key={player.playerId} className="flex items-center justify-between py-3 first:pt-0 last:pb-0 gap-4">
+                            <div className="flex items-center gap-3">
+                              <div className="h-9 w-9 rounded-full bg-primary/10 text-primary border flex items-center justify-center font-bold text-sm shrink-0">
+                                {player.profilePictureUrl ? (
+                                  <img src={player.profilePictureUrl} alt="" className="h-full w-full object-cover rounded-full" />
+                                ) : (
+                                  player.fullName.charAt(0).toUpperCase()
+                                )}
+                              </div>
+                              <div>
+                                <span className="font-semibold text-sm text-foreground flex items-center gap-1.5">
+                                  {player.fullName}
+                                  {player.playerId === match.organizer.userId && (
+                                    <Badge variant="secondary" className="text-[10px] py-0 px-1.5 h-4">Host</Badge>
+                                  )}
+                                </span>
+                                <p className="text-[10px] text-muted-foreground">Joined {new Date(player.joinedAt).toLocaleDateString()}</p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              {/* Join requests list content */}
+              {isOrganizer && (
+                <TabsContent value="requests" className="pt-4">
+                  <Card className="bg-card border-muted/40">
+                    <CardContent className="p-6">
+                      {isRequestsLoading ? (
+                        <div className="space-y-3">
+                          <Skeleton className="h-10 w-full" />
+                          <Skeleton className="h-10 w-full" />
+                        </div>
+                      ) : requests.length === 0 ? (
+                        <p className="text-center py-6 text-sm text-muted-foreground">No join requests received yet.</p>
+                      ) : (
+                        <div className="divide-y divide-muted">
+                          {requests.map((req) => (
+                            <div key={req.requestId} className="flex flex-col sm:flex-row sm:items-center justify-between py-4 first:pt-0 last:pb-0 gap-4">
+                              <div className="flex items-start gap-3">
+                                <div className="h-9 w-9 rounded-full bg-primary/10 text-primary border flex items-center justify-center font-bold text-sm shrink-0 mt-0.5">
+                                  {req.player.profilePhotoUrl ? (
+                                    <img src={req.player.profilePhotoUrl} alt="" className="h-full w-full object-cover rounded-full" />
+                                  ) : (
+                                    req.player.fullName.charAt(0).toUpperCase()
+                                  )}
+                                </div>
+                                <div className="space-y-0.5">
+                                  <span className="font-semibold text-sm text-foreground">{req.player.fullName}</span>
+                                  <p className="text-[11px] text-muted-foreground">{req.player.email}</p>
+                                  <p className="text-[10px] text-muted-foreground">Applied {new Date(req.createdAt).toLocaleDateString()}</p>
+                                  <div className="pt-1">{getRequestStatusBadge(req.status)}</div>
+                                </div>
+                              </div>
+
+                              {req.status === JoinRequestStatusDto.Pending && (
+                                <div className="flex gap-2 self-end sm:self-center shrink-0">
+                                  <Button
+                                    size="xs"
+                                    className="bg-green-600 hover:bg-green-700 text-white gap-1"
+                                    onClick={() => handleReview(req.requestId, true)}
+                                    disabled={reviewRequest.isPending}
+                                  >
+                                    <CheckCircle className="h-3 w-3" /> Accept
+                                  </Button>
+                                  <Button
+                                    size="xs"
+                                    variant="destructive"
+                                    className="gap-1"
+                                    onClick={() => handleReview(req.requestId, false)}
+                                    disabled={reviewRequest.isPending}
+                                  >
+                                    <XCircle className="h-3 w-3" /> Reject
+                                  </Button>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              )}
+            </Tabs>
+          </div>
+        </div>
+
+        {/* Date, Time & Organizer card */}
+        <div className="space-y-6">
+          <Card className="bg-card border-muted/40 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <Clock className="h-5 w-5 text-primary" /> Schedule & Match Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Date & Time */}
+              <div className="space-y-3.5 border-b pb-4">
+                <div className="flex items-center gap-3 text-sm">
+                  <Calendar className="h-5 w-5 text-primary shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Match Date</p>
+                    <p className="font-semibold text-foreground">{new Date(match.date).toLocaleDateString()}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 text-sm">
+                  <Clock className="h-5 w-5 text-primary shrink-0" />
+                  <div>
+                    <p className="text-xs text-muted-foreground uppercase font-bold">Match Time Range</p>
+                    <p className="font-semibold text-foreground">
+                      {formatTime(match.startTime)} - {formatTime(match.endTime)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Organizer Profile Card */}
+              <div className="space-y-3 border-b pb-4">
+                <p className="text-xs text-muted-foreground uppercase font-bold">Match Organizer</p>
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 text-primary border flex items-center justify-center font-bold text-sm shrink-0">
+                    {match.organizer.profilePhotoUrl ? (
+                      <img src={match.organizer.profilePhotoUrl} alt="" className="h-full w-full object-cover rounded-full" />
+                    ) : (
+                      match.organizer.fullName.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-foreground">{match.organizer.fullName}</p>
+                    <p className="text-xs text-muted-foreground">Match Organizer / Host</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contextual Actions Panel */}
+              <div className="space-y-3 pt-2">
+                {match.isOwner ? (
+                  <p className="text-xs text-center text-muted-foreground italic">You organized this match.</p>
+                ) : (
+                  <>
+                    {match.iParticipating && (
+                      <div className="space-y-3 text-center">
+                        <Badge className="bg-green-600 hover:bg-green-700 py-1.5 px-3 w-full justify-center">
+                          <CheckCircle className="mr-1.5 h-4 w-4" /> You are participating
+                        </Badge>
+                        <Button
+                          variant="outline"
+                          className="w-full text-destructive border-destructive hover:bg-destructive/10"
+                          onClick={handleLeave}
+                          disabled={leaveMatch.isPending}
+                        >
+                          Leave Match
+                        </Button>
+                      </div>
+                    )}
+
+                    {match.iApplied && (
+                      <div className="space-y-3 text-center">
+                        <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/20 py-1.5 px-3 w-full justify-center">
+                          <Clock className="mr-1.5 h-4 w-4" /> Request Awaiting Approval
+                        </Badge>
+                        <Button
+                          variant="outline"
+                          className="w-full text-destructive border-destructive hover:bg-destructive/10"
+                          onClick={handleWithdraw}
+                          disabled={withdrawJoin.isPending}
+                        >
+                          Withdraw Request
+                        </Button>
+                      </div>
+                    )}
+
+                    {match.canJoin && (
+                      <Button
+                        className="w-full bg-primary hover:bg-primary/95 shadow-md"
+                        onClick={handleJoin}
+                        disabled={requestToJoin.isPending}
+                      >
+                        Request to Join Match
+                      </Button>
+                    )}
+
+                    {!match.iParticipating && !match.iApplied && !match.canJoin && (
+                      <div className="flex items-start gap-2 p-3 bg-muted/40 border border-muted rounded-lg text-xs text-muted-foreground">
+                        <AlertCircle className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                        <p>This match is currently closed, full, or you do not satisfy the requirements to request joining.</p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Edit Match Form Modal */}
+      {isEditModalOpen && (
+        <MatchFormModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          match={match}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/matches/pages/MatchesPage.tsx
+```typescript
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  useGetMatches,
+  useGetMyMatches,
+  useLeaveMatch,
+  useRequestToJoin,
+  useWithdrawJoinRequest,
+} from "../hooks/useMatches";
+import { useQuery } from "@tanstack/react-query";
+import { matchesApi } from "../api/matchesApi";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  Users,
+  Trophy,
+  Plus,
+  Target,
+  AlertCircle,
+  Gamepad,
+  Search,
+  User,
+  ArrowRight,
+} from "lucide-react";
+import { MatchStatusDto, SPORT_LABELS, SPORT_EMOJIS } from "../types/matches";
+import { MatchFormModal } from "../components/MatchFormModal";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+
+export default function MatchesPage() {
+  const [activeTab, setActiveTab] = useState<string>("browse");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  // Browse Filters
+  const [sportFilter, setSportFilter] = useState<string>("all");
+  const [dateFilter, setDateFilter] = useState("");
+  const [cityFilter, setCityFilter] = useState("");
+
+  // My Matches Filters
+  const [myRoleFilter, setMyRoleFilter] = useState<string>("all");
+
+  const parsedSport = sportFilter === "all" ? undefined : Number(sportFilter);
+  const parsedDate = dateFilter || undefined;
+  const parsedCity = cityFilter.trim() || undefined;
+
+  // Queries
+  const { data: browseMatchesData, isLoading: isBrowseLoading, isError: isBrowseError } = useGetMatches(
+    { pageNumber: 1, pageSize: 50 },
+    parsedSport,
+    parsedDate,
+    parsedCity
+  );
+
+  const parsedRole = myRoleFilter === "all" ? undefined : myRoleFilter;
+  const { data: myMatchesData, isLoading: isMyLoading, isError: isMyError } = useGetMyMatches(
+    { pageNumber: 1, pageSize: 50 },
+    parsedRole
+  );
+
+  // Query to find user's pending requestIds for withdrawal
+  const { data: myRequestsData } = useQuery({
+    queryKey: ["join-requests", "my-pending"],
+    queryFn: () => matchesApi.getMyJoinRequests({ pageNumber: 1, pageSize: 100 }, 0), // 0 = Pending
+  });
+
+  const matches = activeTab === "browse" ? browseMatchesData?.items || [] : myMatchesData?.items || [];
+  const isLoading = activeTab === "browse" ? isBrowseLoading : isMyLoading;
+  const isError = activeTab === "browse" ? isBrowseError : isMyError;
+
+  // Mutations
+  const requestToJoin = useRequestToJoin();
+  const leaveMatch = useLeaveMatch();
+  const withdrawJoin = useWithdrawJoinRequest();
+
+  const handleJoin = async (matchId: string) => {
+    try {
+      await requestToJoin.mutateAsync({
+        matchId,
+        data: { FriendlyMatchId: matchId },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleLeave = async (matchId: string) => {
+    if (confirm("Are you sure you want to leave this friendly match?")) {
+      try {
+        await leaveMatch.mutateAsync(matchId);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const handleWithdraw = async (matchId: string) => {
+    // Find request ID from my pending requests
+    const request = myRequestsData?.items?.find((r) => r.match.matchId === matchId);
+    if (!request) {
+      toast.error("Could not find active request to withdraw.");
+      return;
+    }
+
+    if (confirm("Are you sure you want to withdraw your join request?")) {
+      try {
+        await withdrawJoin.mutateAsync({
+          matchId,
+          requestId: request.requestId,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+
+  const getStatusBadge = (status: MatchStatusDto) => {
+    switch (status) {
+      case MatchStatusDto.Open:
+        return <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">Open</Badge>;
+      case MatchStatusDto.Full:
+        return <Badge variant="default" className="bg-amber-600 hover:bg-amber-700">Full</Badge>;
+      case MatchStatusDto.InProgress:
+        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">In Progress</Badge>;
+      case MatchStatusDto.Completed:
+        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Completed</Badge>;
+      case MatchStatusDto.Cancelled:
+        return <Badge variant="destructive">Cancelled</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
+    }
+  };
+
+  const formatTime = (timeStr: string) => {
+    try {
+      const [hours, minutes] = timeStr.split(":");
+      const hr = parseInt(hours, 10);
+      const ampm = hr >= 12 ? "PM" : "AM";
+      const displayHr = hr % 12 || 12;
+      return `${displayHr}:${minutes} ${ampm}`;
+    } catch {
+      return timeStr;
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-6xl space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <Gamepad className="h-8 w-8 text-primary" /> Friendly Matches
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Join friendly matches, organize your own, and play sports with the community.
+          </p>
+        </div>
+        <Button onClick={() => setIsCreateModalOpen(true)} className="gap-1.5 self-start sm:self-auto shadow-md">
+          <Plus className="h-4.5 w-4.5" /> Organize Match
+        </Button>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
+        <TabsList className="grid w-full sm:w-[300px] grid-cols-2">
+          <TabsTrigger value="browse">Browse Matches</TabsTrigger>
+          <TabsTrigger value="my">My Matches</TabsTrigger>
+        </TabsList>
+
+        {/* Tab 1: Browse Filters */}
+        <TabsContent value="browse" className="space-y-6">
+          <Card className="bg-card border-muted/40 shadow-sm">
+            <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+              <div className="space-y-2">
+                <Label htmlFor="browse-sport-select">Sport Type</Label>
+                <Select value={sportFilter} onValueChange={setSportFilter}>
+                  <SelectTrigger id="browse-sport-select">
+                    <SelectValue placeholder="All Sports" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Sports</SelectItem>
+                    <SelectItem value="0">Football</SelectItem>
+                    <SelectItem value="1">Basketball</SelectItem>
+                    <SelectItem value="2">Tennis</SelectItem>
+                    <SelectItem value="3">Padel</SelectItem>
+                    <SelectItem value="4">Volleyball</SelectItem>
+                    <SelectItem value="5">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="browse-date-input">Date</Label>
+                <Input
+                  id="browse-date-input"
+                  type="date"
+                  value={dateFilter}
+                  onChange={(e) => setDateFilter(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="browse-city-input">City</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="browse-city-input"
+                    placeholder="e.g. Cairo"
+                    value={cityFilter}
+                    onChange={(e) => setCityFilter(e.target.value)}
+                    className="pl-9"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 2: My Matches Filters */}
+        <TabsContent value="my" className="space-y-6">
+          <Card className="bg-card border-muted/40 shadow-sm">
+            <CardContent className="pt-6 w-full sm:w-64 space-y-2">
+              <Label htmlFor="my-role-select">My Role</Label>
+              <Select value={myRoleFilter} onValueChange={setMyRoleFilter}>
+                <SelectTrigger id="my-role-select">
+                  <SelectValue placeholder="All Matches" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Matches</SelectItem>
+                  <SelectItem value="organizer">Organized by Me</SelectItem>
+                  <SelectItem value="participant">Joined by Me</SelectItem>
+                </SelectContent>
+              </Select>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Matches Grid/List */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-44 w-full rounded-xl" />
+            ))}
+          </div>
+        ) : isError ? (
+          <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20 flex flex-col items-center justify-center gap-2">
+            <AlertCircle className="h-8 w-8" />
+            <span>Failed to load friendly matches. Please try again.</span>
+          </div>
+        ) : matches.length === 0 ? (
+          <div className="py-16 text-center text-muted-foreground bg-card border rounded-xl space-y-2">
+            <Gamepad className="h-10 w-10 mx-auto text-muted-foreground/40" />
+            <h3 className="text-base font-semibold">No Matches Available</h3>
+            <p className="text-sm">We couldn't find any matches matching your criteria.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {matches.map((match) => (
+              <Card key={match.matchId} className="bg-card hover:border-muted-foreground/20 hover:shadow-md transition-all border-muted/50 overflow-hidden flex flex-col shadow-sm">
+                <CardHeader className="p-6 pb-4 flex flex-row items-start justify-between gap-4">
+                  <div className="space-y-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="secondary" className="rounded-full">
+                        {SPORT_EMOJIS[match.sportType]} {SPORT_LABELS[match.sportType]}
+                      </Badge>
+                      {getStatusBadge(match.status)}
+                    </div>
+                    <CardTitle className="text-lg font-bold text-foreground pt-1 truncate">
+                      {match.court.name || "Friendly Match"}
+                    </CardTitle>
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      {match.court.club?.name || "Sportiva Club"} ({match.court.club?.city})
+                    </p>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-mono font-bold text-muted-foreground block">Slots Left</span>
+                    <span className="text-2xl font-black text-primary">{match.slotsRemaining}</span>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="p-6 pt-0 flex-1 flex flex-col justify-between gap-6">
+                  {/* Date/Time & Roster Preview */}
+                  <div className="space-y-4">
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-foreground/80 bg-muted/30 px-4 py-2.5 rounded-xl border border-muted/30">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="h-4 w-4 text-primary shrink-0" />
+                        <span>{new Date(match.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="h-4 w-4 text-primary shrink-0" />
+                        <span>
+                          {formatTime(match.startTime)} - {formatTime(match.endTime)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Players Preview Row */}
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary shrink-0" />
+                        <span className="font-semibold text-muted-foreground">
+                          Roster: {match.acceptedPlayersCount} / {match.requiredPlayers} players
+                        </span>
+                      </div>
+
+                      {/* Small avatar group preview */}
+                      <div className="flex -space-x-1.5 overflow-hidden">
+                        {match.participantsPreview?.map((p) => (
+                          <div
+                            key={p.playerId}
+                            className="inline-block h-6 w-6 rounded-full ring-2 ring-background bg-primary/10 border text-[9px] font-bold text-primary flex items-center justify-center truncate shrink-0"
+                            title={p.fullName}
+                          >
+                            {p.profilePictureUrl ? (
+                              <img src={p.profilePictureUrl} alt="" className="h-full w-full object-cover rounded-full" />
+                            ) : (
+                              p.fullName.charAt(0).toUpperCase()
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions & Organizer Footer */}
+                  <div className="flex items-center justify-between gap-4 border-t pt-4 border-muted">
+                    <div className="flex items-center gap-2 text-xs truncate">
+                      <div className="h-7 w-7 rounded-full bg-primary/10 text-primary border flex items-center justify-center font-bold text-xs shrink-0">
+                        {match.organizer.profilePhotoUrl ? (
+                          <img src={match.organizer.profilePhotoUrl} alt="" className="h-full w-full object-cover rounded-full" />
+                        ) : (
+                          match.organizer.fullName.charAt(0).toUpperCase()
+                        )}
+                      </div>
+                      <div className="truncate">
+                        <p className="font-semibold text-foreground truncate">{match.organizer.fullName}</p>
+                        <p className="text-[10px] text-muted-foreground">Organizer</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      {match.isOwner ? (
+                        <Button asChild size="sm" variant="outline" className="gap-1 shadow-sm">
+                          <Link to={`/matches/${match.matchId}`}>
+                            Manage <ArrowRight className="h-3.5 w-3.5" />
+                          </Link>
+                        </Button>
+                      ) : (
+                        <>
+                          {match.iParticipating && (
+                            <div className="flex items-center gap-2">
+                              <Badge className="bg-green-600 hover:bg-green-700">Joined</Badge>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-destructive border-destructive hover:bg-destructive/10"
+                                onClick={() => handleLeave(match.matchId)}
+                                disabled={leaveMatch.isPending}
+                              >
+                                Leave
+                              </Button>
+                            </div>
+                          )}
+
+                          {match.iApplied && (
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/20">Pending</Badge>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-destructive border-destructive hover:bg-destructive/10"
+                                onClick={() => handleWithdraw(match.matchId)}
+                                disabled={withdrawJoin.isPending}
+                              >
+                                Cancel Request
+                              </Button>
+                            </div>
+                          )}
+
+                          {match.canJoin && (
+                            <Button
+                              size="sm"
+                              className="bg-primary hover:bg-primary/95 shadow-sm"
+                              onClick={() => handleJoin(match.matchId)}
+                              disabled={requestToJoin.isPending}
+                            >
+                              Join Match
+                            </Button>
+                          )}
+                          
+                          {!match.iParticipating && !match.iApplied && !match.canJoin && (
+                            <Button asChild size="sm" variant="ghost">
+                              <Link to={`/matches/${match.matchId}`}>
+                                Details
+                              </Link>
+                            </Button>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </Tabs>
+
+      {/* Organize Match Modal */}
+      {isCreateModalOpen && (
+        <MatchFormModal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/matches/types/matches.ts
+```typescript
+import type { SportType } from "@/features/clubs/types/clubs";
+
+export const SPORT_LABELS: Record<number, string> = {
+  0: "Football",
+  1: "Basketball",
+  2: "Tennis",
+  3: "Padel",
+  4: "Volleyball",
+  5: "Other",
+};
+
+export const SPORT_EMOJIS: Record<number, string> = {
+  0: "⚽",
+  1: "🏀",
+  2: "🎾",
+  3: "🎾",
+  4: "🏐",
+  5: "🏅",
+};
+
+
+export enum MatchStatusDto {
+  Open = 0,
+  Full = 1,
+  InProgress = 2,
+  Completed = 3,
+  Cancelled = 4,
+}
+
+export enum JoinRequestStatusDto {
+  Pending = 0,
+  Accepted = 1,
+  Rejected = 2,
+  Withdrawn = 3,
+}
+
+export interface FriendlyMatchResponse {
+  matchId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  sportType: number; // maps to SportType enum
+  requiredPlayers: number;
+  acceptedPlayersCount: number;
+  slotsRemaining: number;
+  status: MatchStatusDto;
+  note?: string;
+  court: {
+    courtId: string;
+    name?: string;
+    imageUrl?: string;
+    pricePerHour?: number;
+    club?: {
+      clubId: string;
+      name?: string;
+      city?: string;
+      logoUrl?: string;
+    };
+  };
+  organizer: {
+    userId: string;
+    fullName: string;
+    profilePhotoUrl?: string;
+  };
+  isOwner: boolean;
+  iParticipating: boolean;
+  iApplied: boolean;
+  canJoin: boolean;
+  participantsPreview: ParticipantSummary[];
+}
+
+export interface ParticipantSummary {
+  playerId: string;
+  fullName: string;
+  profilePictureUrl?: string;
+  joinedAt: string;
+}
+
+export interface CreateFriendlyMatchRequest {
+  courtId: string;
+  date: string; // DateOnly format
+  startTime: string; // TimeOnly format
+  endTime: string; // TimeOnly format
+  sportType: number; // SportTypeDto
+  requiredPlayers: number;
+  note?: string;
+}
+
+export interface MatchJoinRequestResponse {
+  requestId: string;
+  status: JoinRequestStatusDto;
+  player: {
+    userId: string;
+    fullName: string;
+    profilePhotoUrl?: string;
+    email?: string;
+  };
+  match: {
+    matchId: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    sportType: number;
+    court: {
+      courtId: string;
+      name?: string;
+      imageUrl?: string;
+      pricePerHour?: number;
+      club: {
+        clubId: string;
+        name: string;
+        logoUrl?: string;
+        city: string;
+        governorate: string;
+      };
+    };
+  };
+  isMine: boolean;
+  createdAt: string;
+}
+
+export interface ReviewJoinRequestRequest {
+  newStatus: JoinRequestStatusDto; // Accepted or Rejected
+}
+```
+
+## File: src/features/memberships/api/membershipsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
+import type { MembershipUpgradeResponse, CreateMembershipUpgradeRequest, RequestStatusDto } from "../types/memberships";
+
+export const membershipsApi = {
+  getMyUpgradeRequest: () => {
+    return apiClient
+      .getAxiosInstance()
+      .get<MembershipUpgradeResponse>("/me/membership-request")
+      .then((res) => res.data);
+  },
+
+  submitUpgradeRequest: (data: CreateMembershipUpgradeRequest) => {
+    return apiClient.post<MembershipUpgradeResponse>("/membership-requests", data);
+  },
+
+  getUpgradeRequests: (filters: RequestFilters, status?: RequestStatusDto) => {
+    return apiClient.get<PaginatedList<MembershipUpgradeResponse>>("/membership-requests", {
+      params: {
+        ...filters,
+        status,
+      },
+    });
+  },
+
+  getUpgradeRequest: (requestId: string) => {
+    return apiClient.get<MembershipUpgradeResponse>(`/membership-requests/${requestId}`);
+  },
+
+  approveUpgradeRequest: (requestId: string) => {
+    return apiClient.post<void>(`/membership-requests/${requestId}/approve`);
+  },
+
+  rejectUpgradeRequest: (requestId: string) => {
+    return apiClient.post<void>(`/membership-requests/${requestId}/reject`);
+  },
+};
+```
+
+## File: src/features/memberships/components/MembershipUpgradeModal.tsx
+```typescript
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+import { useSubmitUpgradeRequest } from "../hooks/useMemberships";
+import { Building, User, Phone, MapPin, Link2, FileText } from "lucide-react";
+
+interface MembershipUpgradeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function MembershipUpgradeModal({ isOpen, onClose }: MembershipUpgradeModalProps) {
+  const submitRequest = useSubmitUpgradeRequest();
+
+  // Form state
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isClubOwner, setIsClubOwner] = useState(true);
+  const [clubName, setClubName] = useState("");
+  const [address, setAddress] = useState("");
+  const [locationUrl, setLocationUrl] = useState("");
+  const [note, setNote] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!fullName || !phone) {
+      return;
+    }
+
+    try {
+      await submitRequest.mutateAsync({
+        fullName,
+        phone,
+        isClubOwner,
+        clubName: isClubOwner ? clubName : undefined,
+        address: isClubOwner ? address : undefined,
+        locationUrl: isClubOwner ? locationUrl : undefined,
+        note: note.trim() || undefined,
+      });
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Request Account Upgrade</DialogTitle>
+          <DialogDescription>
+            Request to upgrade your account to Club Owner to register and manage sports clubs and courts.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-4 py-4">
+          {/* Full Name */}
+          <div className="space-y-2">
+            <Label htmlFor="upgrade-name" className="flex items-center gap-1">
+              <User className="h-4 w-4 text-primary shrink-0" /> Full Name
+            </Label>
+            <Input
+              id="upgrade-name"
+              placeholder="Enter your full name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Phone */}
+          <div className="space-y-2">
+            <Label htmlFor="upgrade-phone" className="flex items-center gap-1">
+              <Phone className="h-4 w-4 text-primary shrink-0" /> Phone Number
+            </Label>
+            <Input
+              id="upgrade-phone"
+              placeholder="e.g. +20 123 456 7890"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* Is Club Owner Checkbox */}
+          <div className="flex items-start gap-2.5 p-3 bg-muted/40 rounded-lg border">
+            <Checkbox
+              id="upgrade-owner"
+              checked={isClubOwner}
+              onCheckedChange={(checked) => setIsClubOwner(!!checked)}
+              className="mt-1"
+            />
+            <div className="space-y-1">
+              <Label htmlFor="upgrade-owner" className="font-bold text-sm cursor-pointer">
+                Upgrade to Club Owner
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                Check this option if you plan to register club facilities and host court listings.
+              </p>
+            </div>
+          </div>
+
+          {/* Club Owner Specific Fields */}
+          {isClubOwner && (
+            <div className="space-y-4 border-l-2 border-primary/30 pl-4 ml-1.5 mt-2 transition-all">
+              {/* Proposed Club Name */}
+              <div className="space-y-2">
+                <Label htmlFor="upgrade-club-name" className="flex items-center gap-1">
+                  <Building className="h-4 w-4 text-primary shrink-0" /> Proposed Club Name
+                </Label>
+                <Input
+                  id="upgrade-club-name"
+                  placeholder="e.g. Al Ahly Sports Club"
+                  value={clubName}
+                  onChange={(e) => setClubName(e.target.value)}
+                  required={isClubOwner}
+                />
+              </div>
+
+              {/* Club Address */}
+              <div className="space-y-2">
+                <Label htmlFor="upgrade-address" className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4 text-primary shrink-0" /> Address
+                </Label>
+                <Input
+                  id="upgrade-address"
+                  placeholder="e.g. Nasr City, Cairo"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required={isClubOwner}
+                />
+              </div>
+
+              {/* Location URL */}
+              <div className="space-y-2">
+                <Label htmlFor="upgrade-location" className="flex items-center gap-1">
+                  <Link2 className="h-4 w-4 text-primary shrink-0" /> Google Maps Link (Optional)
+                </Label>
+                <Input
+                  id="upgrade-location"
+                  placeholder="https://maps.google.com/..."
+                  value={locationUrl}
+                  onChange={(e) => setLocationUrl(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Notes */}
+          <div className="space-y-2">
+            <Label htmlFor="upgrade-note" className="flex items-center gap-1">
+              <FileText className="h-4 w-4 text-primary shrink-0" /> Cover Note / Message
+            </Label>
+            <Textarea
+              id="upgrade-note"
+              placeholder="Introduce yourself or share details about your sports facility..."
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              className="min-h-[80px] resize-none"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={submitRequest.isPending}>
+              {submitRequest.isPending ? "Submitting..." : "Submit Request"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/memberships/hooks/useMemberships.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { membershipsApi } from "../api/membershipsApi";
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+import type { CreateMembershipUpgradeRequest, RequestStatusDto } from "../types/memberships";
+import { toast } from "sonner";
+
+export const MEMBERSHIPS_QUERY_KEYS = {
+  all: ["memberships"] as const,
+  my: () => [...MEMBERSHIPS_QUERY_KEYS.all, "my"] as const,
+  list: (filters: RequestFilters, status?: RequestStatusDto) =>
+    [...MEMBERSHIPS_QUERY_KEYS.all, "list", { filters, status }] as const,
+  detail: (requestId: string) => [...MEMBERSHIPS_QUERY_KEYS.all, "detail", requestId] as const,
+};
+
+export const useGetMyUpgradeRequest = () => {
+  return useQuery({
+    queryKey: MEMBERSHIPS_QUERY_KEYS.my(),
+    queryFn: () => membershipsApi.getMyUpgradeRequest(),
+    retry: false, // If user has no request, it returns 404 which is normal, no need to retry
+  });
+};
+
+export const useSubmitUpgradeRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateMembershipUpgradeRequest) => membershipsApi.submitUpgradeRequest(data),
+    onSuccess: () => {
+      toast.success("Upgrade request submitted successfully! Pending admin approval.");
+      queryClient.invalidateQueries({ queryKey: MEMBERSHIPS_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to submit request: ${msg}`);
+    },
+  });
+};
+
+export const useGetUpgradeRequests = (filters: RequestFilters = {}, status?: RequestStatusDto) => {
+  return useQuery({
+    queryKey: MEMBERSHIPS_QUERY_KEYS.list(filters, status),
+    queryFn: () => membershipsApi.getUpgradeRequests(filters, status),
+  });
+};
+
+export const useApproveUpgradeRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (requestId: string) => membershipsApi.approveUpgradeRequest(requestId),
+    onSuccess: () => {
+      toast.success("Upgrade request approved successfully!");
+      queryClient.invalidateQueries({ queryKey: MEMBERSHIPS_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to approve request: ${msg}`);
+    },
+  });
+};
+
+export const useRejectUpgradeRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (requestId: string) => membershipsApi.rejectUpgradeRequest(requestId),
+    onSuccess: () => {
+      toast.success("Upgrade request rejected successfully.");
+      queryClient.invalidateQueries({ queryKey: MEMBERSHIPS_QUERY_KEYS.all });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to reject request: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/memberships/pages/AdminUpgradeRequestsPage.tsx
+```typescript
+import { useState } from "react";
+import {
+  useGetUpgradeRequests,
+  useApproveUpgradeRequest,
+  useRejectUpgradeRequest,
+} from "../hooks/useMemberships";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import { Tabs, TabsList, TabsTrigger } from "@/shared/components/ui/tabs";
+import {
+  User,
+  Phone,
+  Building,
+  MapPin,
+  Link2,
+  FileText,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertCircle,
+  ShieldAlert,
+} from "lucide-react";
+import { RequestStatusDto } from "../types/memberships";
+
+export default function AdminUpgradeRequestsPage() {
+  const [activeTab, setActiveTab] = useState<string>("all");
+
+  const parsedStatus =
+    activeTab === "all"
+      ? undefined
+      : activeTab === "pending"
+      ? RequestStatusDto.Pending
+      : activeTab === "approved"
+      ? RequestStatusDto.Approved
+      : RequestStatusDto.Rejected;
+
+  // Query
+  const { data: requestsData, isLoading, isError } = useGetUpgradeRequests(
+    { pageNumber: 1, pageSize: 50 },
+    parsedStatus
+  );
+  const requests = requestsData?.items || [];
+
+  // Mutations
+  const approveMutation = useApproveUpgradeRequest();
+  const rejectMutation = useRejectUpgradeRequest();
+
+  const handleApprove = async (requestId: string) => {
+    if (confirm("Are you sure you want to approve this upgrade request?")) {
+      try {
+        await approveMutation.mutateAsync(requestId);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleReject = async (requestId: string) => {
+    if (confirm("Are you sure you want to reject this upgrade request?")) {
+      try {
+        await rejectMutation.mutateAsync(requestId);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const getStatusBadge = (status: RequestStatusDto) => {
+    switch (status) {
+      case RequestStatusDto.Pending:
+        return (
+          <Badge variant="secondary" className="gap-1">
+            <Clock className="h-3 w-3" /> Pending
+          </Badge>
+        );
+      case RequestStatusDto.Approved:
+        return (
+          <Badge variant="default" className="bg-green-600 hover:bg-green-700 gap-1">
+            <CheckCircle className="h-3 w-3" /> Approved
+          </Badge>
+        );
+      case RequestStatusDto.Rejected:
+        return (
+          <Badge variant="destructive" className="gap-1">
+            <XCircle className="h-3 w-3" /> Rejected
+          </Badge>
+        );
+      default:
+        return <Badge variant="outline">Unknown</Badge>;
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-5xl space-y-8">
+      {/* Header */}
+      <div className="border-b pb-6">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <ShieldAlert className="h-8 w-8 text-primary" />
+          Account Upgrade Requests
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Review and manage user upgrade requests to Club Owner roles.
+        </p>
+      </div>
+
+      {/* Tabs Filter */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full sm:w-[400px] grid-cols-4">
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="pending">Pending</TabsTrigger>
+          <TabsTrigger value="approved">Approved</TabsTrigger>
+          <TabsTrigger value="rejected">Rejected</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      {/* Requests List */}
+      {isLoading ? (
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <Skeleton key={i} className="h-32 w-full rounded-xl" />
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20 flex flex-col items-center justify-center gap-2">
+          <AlertCircle className="h-8 w-8" />
+          <span>Failed to load upgrade requests. Please try again later.</span>
+        </div>
+      ) : requests.length === 0 ? (
+        <div className="py-16 text-center text-muted-foreground bg-card border rounded-xl space-y-2">
+          <FileText className="h-10 w-10 mx-auto text-muted-foreground/40" />
+          <h3 className="text-base font-semibold">No Requests Found</h3>
+          <p className="text-sm">There are no membership upgrade requests matching this filter.</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {requests.map((req) => (
+            <Card key={req.requestId} className="bg-card hover:border-muted-foreground/20 transition-all border-muted/50 overflow-hidden shadow-sm">
+              <CardContent className="p-6 flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div className="space-y-4 flex-1">
+                  {/* Header Row */}
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">
+                      {req.isClubOwner ? "Club Owner Role" : "General Role"}
+                    </span>
+                    {getStatusBadge(req.status)}
+                    <span className="text-xs text-muted-foreground">
+                      Submitted on {new Date(req.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  {/* Profile & Form Fields */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                    {/* Requested By */}
+                    <div className="flex items-start gap-2">
+                      <User className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-foreground">{req.fullName}</p>
+                        <p className="text-xs text-muted-foreground">User: {req.requestedBy.fullName}</p>
+                        <p className="text-xs text-muted-foreground">{req.requestedBy.email}</p>
+                      </div>
+                    </div>
+
+                    {/* Phone */}
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-primary shrink-0" />
+                      <div>
+                        <p className="font-semibold text-foreground">{req.phone}</p>
+                        <p className="text-xs text-muted-foreground">Contact Phone</p>
+                      </div>
+                    </div>
+
+                    {/* Club Details */}
+                    {req.isClubOwner && req.clubName && (
+                      <div className="flex items-start gap-2">
+                        <Building className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-foreground">{req.clubName}</p>
+                          {req.address && (
+                            <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                              <MapPin className="h-3.5 w-3.5 shrink-0" /> {req.address}
+                            </p>
+                          )}
+                          {req.locationUrl && (
+                            <a
+                              href={req.locationUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary hover:underline flex items-center gap-1 mt-0.5"
+                            >
+                              <Link2 className="h-3.5 w-3.5 shrink-0" /> Maps Link
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Note */}
+                  {req.note && (
+                    <div className="bg-muted/40 p-3 rounded-lg border text-xs text-muted-foreground flex items-start gap-2 max-w-3xl">
+                      <FileText className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <span className="font-bold text-foreground mr-1">Cover Note:</span>
+                        "{req.note}"
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions Panel */}
+                {req.status === RequestStatusDto.Pending && (
+                  <div className="flex flex-row md:flex-col gap-2 shrink-0 self-end md:self-start pt-4 md:pt-0 border-t md:border-t-0 border-muted w-full md:w-auto md:justify-end">
+                    <Button
+                      size="sm"
+                      className="bg-green-600 hover:bg-green-700 text-white flex-1 md:flex-initial"
+                      onClick={() => handleApprove(req.requestId)}
+                      disabled={approveMutation.isPending || rejectMutation.isPending}
+                    >
+                      <CheckCircle className="mr-1.5 h-4 w-4" /> Approve
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="flex-1 md:flex-initial"
+                      onClick={() => handleReject(req.requestId)}
+                      disabled={approveMutation.isPending || rejectMutation.isPending}
+                    >
+                      <XCircle className="mr-1.5 h-4 w-4" /> Reject
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/memberships/types/memberships.ts
+```typescript
+export enum RequestStatusDto {
+  Pending = 0,
+  Approved = 1,
+  Rejected = 2,
+}
+
+export interface MembershipUpgradeResponse {
+  requestId: string;
+  status: RequestStatusDto;
+  fullName: string;
+  phone: string;
+  isClubOwner: boolean;
+  clubName?: string;
+  address?: string;
+  locationUrl?: string;
+  note?: string;
+  requestedBy: {
+    userId: string;
+    fullName: string;
+    email: string;
+    profilePhotoUrl?: string;
+  };
+  isMine: boolean;
+  createdAt: string;
+  reviewedAt?: string | null;
+}
+
+export interface CreateMembershipUpgradeRequest {
+  fullName: string;
+  phone: string;
+  isClubOwner: boolean;
+  clubName?: string;
+  address?: string;
+  locationUrl?: string;
+  note?: string;
+}
+```
+
+## File: src/features/profile/components/AboutMeWidget.tsx
+```typescript
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { User, Calendar, Trophy, Activity } from "lucide-react";
+
+interface AboutMeWidgetProps {
+  bio: string | null;
+  createdAt: string;
+}
+
+export function AboutMeWidget({ bio, createdAt }: AboutMeWidgetProps) {
+  const formattedJoinedDate = () => {
+    try {
+      const date = new Date(createdAt);
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+    } catch {
+      return "Feb 14, 2023"; // fallback
+    }
+  };
+
+  return (
+    <Card className="bg-card border-muted/40 shadow-sm">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-base font-bold flex items-center gap-2 text-foreground">
+          <User className="h-4.5 w-4.5 text-primary shrink-0" />
+          About Me
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {/* Bio description */}
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          {bio || "Competitive player with 8+ years of experience. Love organizing friendly matches and bringing people together through sports."}
+        </p>
+
+        {/* Details list */}
+        <div className="space-y-3.5 border-t pt-4 border-muted/65 text-sm">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Calendar className="h-4 w-4 text-primary shrink-0" />
+              <span>Joined</span>
+            </div>
+            <span className="font-semibold text-foreground">{formattedJoinedDate()}</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Trophy className="h-4 w-4 text-primary shrink-0" />
+              <span>Matches Played</span>
+            </div>
+            <span className="font-semibold text-foreground">67</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Activity className="h-4 w-4 text-primary shrink-0" />
+              <span>Favorite Position</span>
+            </div>
+            <span className="font-semibold text-foreground">Midfielder</span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## File: src/features/profile/components/PreferredSportsWidget.tsx
+```typescript
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Target } from "lucide-react";
+import type { SportTypeDto } from "../types/profile";
+import { cn } from "@/lib/utils";
+
+interface PreferredSportsWidgetProps {
+  preferredSport: SportTypeDto | null;
+}
+
+export function PreferredSportsWidget({ preferredSport }: PreferredSportsWidgetProps) {
+  const sports = [
+    { type: "Football" as SportTypeDto, emoji: "⚽", label: "Football" },
+    { type: "Basketball" as SportTypeDto, emoji: "🏀", label: "Basketball" },
+    { type: "Tennis" as SportTypeDto, emoji: "🎾", label: "Tennis" },
+    { type: "Padel" as SportTypeDto, emoji: "🏸", label: "Padel" },
+  ];
+
+  return (
+    <Card className="bg-card border-muted/40 shadow-sm">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-base font-bold flex items-center gap-2 text-foreground">
+          <Target className="h-4.5 w-4.5 text-primary shrink-0" />
+          Preferred Sports
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center gap-3.5 justify-start">
+          {sports.map((sport) => {
+            const isPreferred = preferredSport === sport.type;
+            return (
+              <div
+                key={sport.label}
+                className={cn(
+                  "h-12 w-12 rounded-full border-2 flex items-center justify-center text-xl transition-all shadow-sm",
+                  isPreferred
+                    ? "border-primary bg-primary/10 scale-110 shadow-md ring-2 ring-primary/20"
+                    : "border-muted bg-muted/30 text-muted-foreground hover:bg-muted/65"
+                )}
+                title={sport.label}
+              >
+                {sport.emoji}
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## File: src/features/reviews/api/reviewsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
+import type { ReviewResponse, CreateReviewRequest } from "../types/reviews";
+
+export const reviewsApi = {
+  getReview: (reviewId: string) => {
+    return apiClient.get<ReviewResponse>(`/reviews/${reviewId}`);
+  },
+
+  getMyReviews: (filters: RequestFilters) => {
+    return apiClient.get<PaginatedList<ReviewResponse>>("/reviews/my", {
+      params: filters,
+    });
+  },
+
+  createReview: (data: CreateReviewRequest) => {
+    return apiClient.post<ReviewResponse>("/reviews", data);
+  },
+
+  updateReview: (reviewId: string, data: CreateReviewRequest) => {
+    return apiClient.put<ReviewResponse>(`/reviews/${reviewId}`, data);
+  },
+
+  deleteReview: (reviewId: string) => {
+    return apiClient.delete<void>(`/reviews/${reviewId}`);
+  },
+
+  getBookingReview: (bookingId: string) => {
+    return apiClient.get<ReviewResponse>(`/bookings/${bookingId}/review`);
+  },
+
+  getCourtReviews: (courtId: string, filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<ReviewResponse>>(`/courts/${courtId}/reviews`, {
+      params: filters,
+    });
+  },
+
+  getClubReviews: (clubId: string, filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<ReviewResponse>>(`/clubs/${clubId}/reviews`, {
+      params: filters,
+    });
+  },
+};
+```
+
+## File: src/features/reviews/components/ReviewFormModal.tsx
+```typescript
+import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Label } from "@/shared/components/ui/label";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { useCreateReview, useUpdateReview } from "../hooks/useReviews";
+import { Star } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface ReviewFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  bookingId: string;
+  review?: {
+    reviewId: string;
+    rating: number;
+    comment?: string;
+  } | null;
+}
+
+export function ReviewFormModal({ isOpen, onClose, bookingId, review }: ReviewFormModalProps) {
+  const isEditing = !!review;
+  const createReview = useCreateReview();
+  const updateReview = useUpdateReview();
+
+  const [rating, setRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      if (review) {
+        setRating(review.rating);
+        setComment(review.comment || "");
+      } else {
+        setRating(0);
+        setComment("");
+      }
+      setHoverRating(0);
+    }
+  }, [isOpen, review]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rating === 0) {
+      return;
+    }
+
+    try {
+      if (isEditing && review) {
+        await updateReview.mutateAsync({
+          reviewId: review.reviewId,
+          data: {
+            bookingId,
+            rating,
+            comment: comment.trim() || undefined,
+          },
+        });
+      } else {
+        await createReview.mutateAsync({
+          bookingId,
+          rating,
+          comment: comment.trim() || undefined,
+        });
+      }
+      onClose();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[450px]">
+        <DialogHeader>
+          <DialogTitle>{isEditing ? "Edit Your Review" : "Rate & Review Court"}</DialogTitle>
+          <DialogDescription>
+            Share your experience to help other players choose their courts.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-6 py-4">
+          {/* Star selector */}
+          <div className="flex flex-col items-center gap-2 justify-center py-4 bg-muted/20 rounded-xl border border-dashed border-muted">
+            <Label className="text-xs uppercase font-bold text-muted-foreground tracking-wider mb-1">
+              Select Rating
+            </Label>
+            <div className="flex items-center gap-1.5">
+              {[1, 2, 3, 4, 5].map((star) => {
+                const active = star <= (hoverRating || rating);
+                return (
+                  <Star
+                    key={star}
+                    className={cn(
+                      "h-8 w-8 cursor-pointer transition-colors",
+                      active ? "fill-amber-400 text-amber-400 animate-pulse-subtle" : "text-muted-foreground/30 fill-transparent"
+                    )}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    onClick={() => setRating(star)}
+                  />
+                );
+              })}
+            </div>
+            {rating > 0 && (
+              <span className="text-sm font-semibold mt-2 text-foreground/80">
+                {rating === 5
+                  ? "Excellent! ⭐⭐⭐⭐⭐"
+                  : rating === 4
+                  ? "Very Good! ⭐⭐⭐⭐"
+                  : rating === 3
+                  ? "Good ⭐⭐⭐"
+                  : rating === 2
+                  ? "Fair ⭐⭐"
+                  : "Poor ⭐"}
+              </span>
+            )}
+          </div>
+
+          {/* Comment */}
+          <div className="space-y-2">
+            <Label htmlFor="review-comment">Write a Comment (Optional)</Label>
+            <Textarea
+              id="review-comment"
+              placeholder="Tell us what you liked or disliked about the court, grass quality, lighting, etc."
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              className="min-h-[100px] resize-none"
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={rating === 0 || createReview.isPending || updateReview.isPending}
+            >
+              {createReview.isPending || updateReview.isPending ? "Submitting..." : "Submit Review"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/reviews/hooks/useReviews.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { reviewsApi } from "../api/reviewsApi";
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+import type { CreateReviewRequest } from "../types/reviews";
+import { toast } from "sonner";
+
+export const REVIEWS_QUERY_KEYS = {
+  all: ["reviews"] as const,
+  my: (filters: RequestFilters) => [...REVIEWS_QUERY_KEYS.all, "my", { filters }] as const,
+  detail: (reviewId: string) => [...REVIEWS_QUERY_KEYS.all, "detail", reviewId] as const,
+  bookingScoped: (bookingId: string) => [...REVIEWS_QUERY_KEYS.all, "booking", bookingId] as const,
+  courtScoped: (courtId: string) => [...REVIEWS_QUERY_KEYS.all, "court", courtId] as const,
+  courtList: (courtId: string, filters: RequestFilters) =>
+    [...REVIEWS_QUERY_KEYS.courtScoped(courtId), "list", { filters }] as const,
+  clubScoped: (clubId: string) => [...REVIEWS_QUERY_KEYS.all, "club", clubId] as const,
+  clubList: (clubId: string, filters: RequestFilters) =>
+    [...REVIEWS_QUERY_KEYS.clubScoped(clubId), "list", { filters }] as const,
+};
+
+export const useGetReview = (reviewId: string) => {
+  return useQuery({
+    queryKey: REVIEWS_QUERY_KEYS.detail(reviewId),
+    queryFn: () => reviewsApi.getReview(reviewId),
+    enabled: !!reviewId,
+  });
+};
+
+export const useGetMyReviews = (filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: REVIEWS_QUERY_KEYS.my(filters),
+    queryFn: () => reviewsApi.getMyReviews(filters),
+  });
+};
+
+export const useCreateReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateReviewRequest) => reviewsApi.createReview(data),
+    onSuccess: () => {
+      toast.success("Review submitted successfully! Thank you for your feedback.");
+      queryClient.invalidateQueries({ queryKey: REVIEWS_QUERY_KEYS.all });
+      // Invalidate bookings because CanReview/ExistingReview details change
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      // Invalidate courts/clubs because average rating and count change
+      queryClient.invalidateQueries({ queryKey: ["courts"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to submit review: ${msg}`);
+    },
+  });
+};
+
+export const useUpdateReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ reviewId, data }: { reviewId: string; data: CreateReviewRequest }) =>
+      reviewsApi.updateReview(reviewId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Review updated successfully.");
+      queryClient.invalidateQueries({ queryKey: REVIEWS_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: REVIEWS_QUERY_KEYS.detail(variables.reviewId) });
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["courts"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update review: ${msg}`);
+    },
+  });
+};
+
+export const useDeleteReview = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (reviewId: string) => reviewsApi.deleteReview(reviewId),
+    onSuccess: () => {
+      toast.success("Review deleted successfully.");
+      queryClient.invalidateQueries({ queryKey: REVIEWS_QUERY_KEYS.all });
+      queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["courts"] });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to delete review: ${msg}`);
+    },
+  });
+};
+
+export const useGetBookingReview = (bookingId: string) => {
+  return useQuery({
+    queryKey: REVIEWS_QUERY_KEYS.bookingScoped(bookingId),
+    queryFn: () => reviewsApi.getBookingReview(bookingId),
+    enabled: !!bookingId,
+  });
+};
+
+export const useGetCourtReviews = (courtId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: REVIEWS_QUERY_KEYS.courtList(courtId, filters),
+    queryFn: () => reviewsApi.getCourtReviews(courtId, filters),
+    enabled: !!courtId,
+  });
+};
+
+export const useGetClubReviews = (clubId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: REVIEWS_QUERY_KEYS.clubList(clubId, filters),
+    queryFn: () => reviewsApi.getClubReviews(clubId, filters),
+    enabled: !!clubId,
+  });
+};
+```
+
+## File: src/features/reviews/types/reviews.ts
+```typescript
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+
+export interface ReviewResponse {
+  reviewId: string;
+  rating: number;
+  comment?: string;
+  court: {
+    courtId: string;
+    name?: string;
+  };
+  author: {
+    userId: string;
+    fullName: string;
+    profilePhotoUrl?: string;
+  };
+  isOwner: boolean;
+  createdAt: string;
+}
+
+export interface CreateReviewRequest {
+  bookingId: string;
+  rating: number;
+  comment?: string;
+}
+```
+
+## File: src/features/subscriptions/api/clubSubscriptionsApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
+import type {
+  ClubSubscriptionResponse,
+  CreateClubSubscriptionRequest,
+} from "../types/clubSubscriptions";
+
+export const clubSubscriptionsApi = {
+  getActiveSubscription: (clubId: string) => {
+    return apiClient.get<ClubSubscriptionResponse>(`/clubs/${clubId}/subscriptions/active`);
+  },
+
+  getSubscriptionHistory: (clubId: string, filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<ClubSubscriptionResponse>>(`/clubs/${clubId}/subscriptions`, {
+      params: filters,
+    });
+  },
+
+  subscribe: (clubId: string, data: CreateClubSubscriptionRequest) => {
+    return apiClient.post<ClubSubscriptionResponse>(`/clubs/${clubId}/subscriptions`, data);
+  },
+
+  renewSubscription: (clubId: string) => {
+    return apiClient.post<ClubSubscriptionResponse>(`/clubs/${clubId}/subscriptions/renew`);
+  },
+};
+```
+
+## File: src/features/subscriptions/api/plansApi.ts
+```typescript
+import { apiClient } from "@/lib/api/client";
+import type {
+  SubscriptionPlanResponse,
+  CreateSubscriptionPlanRequest,
+  UpdateSubscriptionPlanRequest,
+} from "../types/plans";
+
+export const plansApi = {
+  getPlans: () => {
+    return apiClient.get<SubscriptionPlanResponse[]>("/subscription-plans");
+  },
+
+  getPlan: (planId: string) => {
+    return apiClient.get<SubscriptionPlanResponse>(`/subscription-plans/${planId}`);
+  },
+
+  createPlan: (data: CreateSubscriptionPlanRequest) => {
+    return apiClient.post<SubscriptionPlanResponse>("/subscription-plans", data);
+  },
+
+  updatePlan: (planId: string, data: UpdateSubscriptionPlanRequest) => {
+    return apiClient.put<SubscriptionPlanResponse>(`/subscription-plans/${planId}`, data);
+  },
+
+  deletePlan: (planId: string) => {
+    return apiClient.delete<void>(`/subscription-plans/${planId}`);
+  },
+};
+```
+
+## File: src/features/subscriptions/components/PlanFormModal.tsx
+```typescript
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { useCreatePlan, useUpdatePlan } from "../hooks/usePlans";
+import type { SubscriptionPlanResponse } from "../types/plans";
+
+const planSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  price: z.coerce.number().min(0, "Price must be non-negative"),
+  maxCourts: z.coerce.number().int().min(1, "Must allow at least 1 court"),
+  durationInDays: z.coerce.number().int().min(1, "Must last at least 1 day"),
+  isActive: z.boolean().optional(),
+});
+
+type PlanFormValues = z.infer<typeof planSchema>;
+
+interface PlanFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  plan?: SubscriptionPlanResponse | null;
+}
+
+export function PlanFormModal({ isOpen, onClose, plan }: PlanFormModalProps) {
+  const isEditing = !!plan;
+  const createPlan = useCreatePlan();
+  const updatePlan = useUpdatePlan();
+
+  const form = useForm<PlanFormValues>({
+    resolver: zodResolver(planSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      price: 0,
+      maxCourts: 1,
+      durationInDays: 30,
+      isActive: true,
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
+
+  useEffect(() => {
+    if (isOpen) {
+      if (plan) {
+        setValue("name", plan.name || "");
+        setValue("description", plan.description || "");
+        setValue("price", plan.price || 0);
+        setValue("maxCourts", plan.maxCourts || 1);
+        setValue("durationInDays", plan.durationInDays || 30);
+        setValue("isActive", plan.isActive ?? true);
+      } else {
+        reset();
+      }
+    }
+  }, [isOpen, plan, reset, setValue]);
+
+  const onSubmit = async (values: PlanFormValues) => {
+    try {
+      if (isEditing && plan) {
+        await updatePlan.mutateAsync({
+          planId: plan.planId,
+          data: {
+            name: values.name,
+            description: values.description,
+            price: values.price,
+            maxCourts: values.maxCourts,
+            durationInDays: values.durationInDays,
+            isActive: values.isActive ?? true,
+          },
+        });
+      } else {
+        await createPlan.mutateAsync({
+          name: values.name,
+          description: values.description,
+          price: values.price,
+          maxCourts: values.maxCourts,
+          durationInDays: values.durationInDays,
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to save plan", error);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{isEditing ? "Edit Subscription Plan" : "Create New Subscription Plan"}</DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update the plan's details below."
+              : "Fill out the information below to add a new subscription plan."}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Plan Name *</Label>
+            <Input id="name" {...register("name")} placeholder="e.g. Standard Monthly" />
+            {errors.name && (
+              <span className="text-xs text-destructive">{errors.name.message as string}</span>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              {...register("description")}
+              placeholder="e.g. Best for medium-sized clubs"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="price">Price ($) *</Label>
+              <Input id="price" type="number" step="0.01" {...register("price")} />
+              {errors.price && (
+                <span className="text-xs text-destructive">{errors.price.message as string}</span>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="durationInDays">Duration (Days) *</Label>
+              <Input id="durationInDays" type="number" {...register("durationInDays")} />
+              {errors.durationInDays && (
+                <span className="text-xs text-destructive">{errors.durationInDays.message as string}</span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="maxCourts">Maximum Courts *</Label>
+            <Input id="maxCourts" type="number" {...register("maxCourts")} />
+            {errors.maxCourts && (
+              <span className="text-xs text-destructive">{errors.maxCourts.message as string}</span>
+            )}
+          </div>
+
+          {isEditing && (
+            <div className="flex items-center space-x-2 mt-4">
+              <Checkbox
+                id="isActive"
+                onCheckedChange={(checked) => setValue("isActive", !!checked)}
+                defaultChecked={plan?.isActive}
+              />
+              <Label htmlFor="isActive" className="cursor-pointer">
+                Active status
+              </Label>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting || createPlan.isPending || updatePlan.isPending}
+            >
+              {isSubmitting || createPlan.isPending || updatePlan.isPending ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/subscriptions/components/SelectClubModal.tsx
+```typescript
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { useGetMyClubs } from "@/features/clubs/hooks/useClubs";
+import { useSubscribeToPlan } from "../hooks/useClubSubscriptions";
+import { Building, AlertCircle } from "lucide-react";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+
+interface SelectClubModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  planId: string;
+  planName: string;
+}
+
+export function SelectClubModal({ isOpen, onClose, planId, planName }: SelectClubModalProps) {
+  const { data: clubsData, isLoading, isError } = useGetMyClubs();
+  const subscribeMutation = useSubscribeToPlan();
+  const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
+
+  const clubs = clubsData?.items || [];
+
+  const handleSubscribe = async () => {
+    if (!selectedClubId) return;
+    try {
+      await subscribeMutation.mutateAsync({
+        clubId: selectedClubId,
+        data: { planId },
+      });
+      onClose();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Subscribe to {planName}</DialogTitle>
+          <DialogDescription>
+            Select which of your clubs you would like to subscribe to the <strong>{planName}</strong> plan.
+          </DialogDescription>
+        </DialogHeader>
+
+        {isLoading ? (
+          <div className="space-y-3 py-4">
+            <Skeleton className="h-16 w-full" />
+            <Skeleton className="h-16 w-full" />
+          </div>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-destructive p-4 bg-destructive/10 rounded-lg">
+            <AlertCircle className="h-5 w-5" />
+            <span>Failed to load your clubs. Please try again.</span>
+          </div>
+        ) : clubs.length === 0 ? (
+          <div className="text-center py-8 space-y-4">
+            <p className="text-muted-foreground text-sm">
+              You do not have any registered clubs. An admin must create a club and assign you as the owner first.
+            </p>
+            <Button onClick={onClose} variant="outline" className="w-full">
+              Close
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4 py-4">
+            <div className="grid gap-2 max-h-[300px] overflow-y-auto pr-1">
+              {clubs.map((club) => {
+                const isSelected = selectedClubId === club.clubId;
+                return (
+                  <div
+                    key={club.clubId}
+                    onClick={() => setSelectedClubId(club.clubId)}
+                    className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                      isSelected
+                        ? "border-primary bg-primary/5"
+                        : "border-muted hover:border-muted-foreground/35 bg-card"
+                    }`}
+                  >
+                    {club.logoUrl ? (
+                      <img
+                        src={club.logoUrl}
+                        alt={club.name}
+                        className="h-10 w-10 rounded-full object-cover border"
+                      />
+                    ) : (
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold border ${
+                        isSelected ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
+                      }`}>
+                        {club.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm truncate text-foreground">{club.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {club.city || club.governorate || "No location specified"}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button variant="outline" onClick={onClose} type="button">
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubscribe}
+                disabled={!selectedClubId || subscribeMutation.isPending}
+              >
+                {subscribeMutation.isPending ? "Subscribing..." : "Confirm & Pay"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/subscriptions/components/SubscribeModal.tsx
+```typescript
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { useGetPlans } from "../hooks/usePlans";
+import { useSubscribeToPlan } from "../hooks/useClubSubscriptions";
+import { Rocket, Check, AlertCircle } from "lucide-react";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+
+interface SubscribeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  clubId: string;
+  clubName: string;
+}
+
+export function SubscribeModal({ isOpen, onClose, clubId, clubName }: SubscribeModalProps) {
+  const { data: plans, isLoading, isError } = useGetPlans();
+  const subscribeMutation = useSubscribeToPlan();
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+
+  const activePlans = plans?.filter((p) => p.isActive) || [];
+
+  const handleSubscribe = async () => {
+    if (!selectedPlanId) return;
+    try {
+      await subscribeMutation.mutateAsync({
+        clubId,
+        data: { planId: selectedPlanId },
+      });
+      onClose();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Subscribe {clubName}</DialogTitle>
+          <DialogDescription>
+            Choose a subscription plan to enable court bookings and activate your club's profile.
+          </DialogDescription>
+        </DialogHeader>
+
+        {isLoading ? (
+          <div className="space-y-4 py-4">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+        ) : isError ? (
+          <div className="flex items-center gap-2 text-destructive p-4 bg-destructive/10 rounded-lg">
+            <AlertCircle className="h-5 w-5" />
+            <span>Failed to load subscription plans. Please try again.</span>
+          </div>
+        ) : activePlans.length === 0 ? (
+          <div className="text-center py-6 text-muted-foreground">
+            No active plans are currently available for subscription.
+          </div>
+        ) : (
+          <div className="space-y-4 py-4">
+            <div className="grid gap-3">
+              {activePlans.map((plan) => {
+                const isSelected = selectedPlanId === plan.planId;
+                return (
+                  <div
+                    key={plan.planId}
+                    onClick={() => setSelectedPlanId(plan.planId)}
+                    className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                      isSelected
+                        ? "border-primary bg-primary/5"
+                        : "border-muted hover:border-muted-foreground/35 bg-card"
+                    }`}
+                  >
+                    <div className="flex gap-3 items-center">
+                      <div className={`p-2 rounded-lg ${isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                        <Rocket className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground">{plan.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Up to {plan.maxCourts} courts &bull; {plan.durationInDays} days
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-lg text-foreground">${plan.price}</p>
+                      <p className="text-xs text-muted-foreground">/{plan.durationInDays} days</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button variant="outline" onClick={onClose} type="button">
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubscribe}
+                disabled={!selectedPlanId || subscribeMutation.isPending}
+              >
+                {subscribeMutation.isPending ? "Subscribing..." : "Confirm Subscription"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/subscriptions/hooks/useClubSubscriptions.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { clubSubscriptionsApi } from "../api/clubSubscriptionsApi";
+import type { RequestFilters } from "@/features/clubs/types/clubs";
+import type { CreateClubSubscriptionRequest } from "../types/clubSubscriptions";
+import { toast } from "sonner";
+
+export const CLUB_SUB_QUERY_KEYS = {
+  all: ["clubSubscriptions"] as const,
+  active: (clubId: string) => [...CLUB_SUB_QUERY_KEYS.all, clubId, "active"] as const,
+  history: (clubId: string, filters: RequestFilters) =>
+    [...CLUB_SUB_QUERY_KEYS.all, clubId, "history", { filters }] as const,
+};
+
+export const useGetActiveSubscription = (clubId: string) => {
+  return useQuery({
+    queryKey: CLUB_SUB_QUERY_KEYS.active(clubId),
+    queryFn: () => clubSubscriptionsApi.getActiveSubscription(clubId),
+    enabled: !!clubId,
+    retry: false, // If no active subscription is found, it will throw a 404, we don't want to retry endlessly.
+  });
+};
+
+export const useGetSubscriptionHistory = (clubId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: CLUB_SUB_QUERY_KEYS.history(clubId, filters),
+    queryFn: () => clubSubscriptionsApi.getSubscriptionHistory(clubId, filters),
+    enabled: !!clubId,
+  });
+};
+
+export const useSubscribeToPlan = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, data }: { clubId: string; data: CreateClubSubscriptionRequest }) =>
+      clubSubscriptionsApi.subscribe(clubId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Subscribed to plan successfully!");
+      queryClient.invalidateQueries({ queryKey: CLUB_SUB_QUERY_KEYS.active(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] }); // Invalidate clubs query as subscription status changes activeSubscription field in ClubResponse
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to subscribe: ${msg}`);
+    },
+  });
+};
+
+export const useRenewSubscription = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (clubId: string) => clubSubscriptionsApi.renewSubscription(clubId),
+    onSuccess: (_, clubId) => {
+      toast.success("Subscription renewed successfully!");
+      queryClient.invalidateQueries({ queryKey: CLUB_SUB_QUERY_KEYS.active(clubId) });
+      queryClient.invalidateQueries({ queryKey: ["clubs"] });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to renew subscription: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/subscriptions/hooks/usePlans.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { plansApi } from "../api/plansApi";
+import type { CreateSubscriptionPlanRequest, UpdateSubscriptionPlanRequest } from "../types/plans";
+import { toast } from "sonner";
+
+export const PLANS_QUERY_KEYS = {
+  all: ["plans"] as const,
+  lists: () => [...PLANS_QUERY_KEYS.all, "list"] as const,
+  details: () => [...PLANS_QUERY_KEYS.all, "detail"] as const,
+  detail: (id: string) => [...PLANS_QUERY_KEYS.details(), id] as const,
+};
+
+export const useGetPlans = () => {
+  return useQuery({
+    queryKey: PLANS_QUERY_KEYS.lists(),
+    queryFn: () => plansApi.getPlans(),
+  });
+};
+
+export const useGetPlan = (planId: string) => {
+  return useQuery({
+    queryKey: PLANS_QUERY_KEYS.detail(planId),
+    queryFn: () => plansApi.getPlan(planId),
+    enabled: !!planId,
+  });
+};
+
+export const useCreatePlan = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateSubscriptionPlanRequest) => plansApi.createPlan(data),
+    onSuccess: () => {
+      toast.success("Subscription plan created successfully");
+      queryClient.invalidateQueries({ queryKey: PLANS_QUERY_KEYS.lists() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to create plan: ${msg}`);
+    },
+  });
+};
+
+export const useUpdatePlan = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ planId, data }: { planId: string; data: UpdateSubscriptionPlanRequest }) =>
+      plansApi.updatePlan(planId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Subscription plan updated successfully");
+      queryClient.invalidateQueries({ queryKey: PLANS_QUERY_KEYS.lists() });
+      queryClient.invalidateQueries({ queryKey: PLANS_QUERY_KEYS.detail(variables.planId) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update plan: ${msg}`);
+    },
+  });
+};
+
+export const useDeletePlan = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (planId: string) => plansApi.deletePlan(planId),
+    onSuccess: () => {
+      toast.success("Subscription plan deleted successfully");
+      queryClient.invalidateQueries({ queryKey: PLANS_QUERY_KEYS.lists() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to delete plan: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/subscriptions/pages/AdminPlansPage.tsx
+```typescript
+import { useState } from "react";
+import { useGetPlans, useDeletePlan } from "../hooks/usePlans";
+import { PlanFormModal } from "../components/PlanFormModal";
+import type { SubscriptionPlanResponse } from "../types/plans";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Plus, Edit2, Trash2, Calendar, ShieldCheck, ShieldAlert, Award } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+
+export default function AdminPlansPage() {
+  const { data: plans, isLoading, isError } = useGetPlans();
+  const deletePlan = useDeletePlan();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlanResponse | null>(null);
+
+  const handleCreate = () => {
+    setSelectedPlan(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (plan: SubscriptionPlanResponse) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (planId: string) => {
+    if (confirm("Are you sure you want to delete this subscription plan?")) {
+      await deletePlan.mutateAsync(planId);
+    }
+  };
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-7xl">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Subscription Plans</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Create and manage your subscription plans for sport clubs.</p>
+        </div>
+        <Button onClick={handleCreate} className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90">
+          <Plus className="mr-2 h-4 w-4" /> Add Plan
+        </Button>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i}>
+              <CardHeader className="gap-2">
+                <Skeleton className="h-6 w-1/3" />
+                <Skeleton className="h-4 w-1/2" />
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Skeleton className="h-8 w-24" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
+          Failed to load subscription plans.
+        </div>
+      ) : plans?.length === 0 ? (
+        <div className="py-12 text-center text-muted-foreground bg-card rounded-xl border border-muted">
+          No subscription plans found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {plans?.map((plan) => (
+            <Card key={plan.planId} className="flex flex-col relative overflow-hidden transition-shadow hover:shadow-md">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-xl font-bold">{plan.name}</CardTitle>
+                    <CardDescription className="mt-1.5">{plan.description || "No description provided."}</CardDescription>
+                  </div>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      plan.isActive
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                    }`}
+                  >
+                    {plan.isActive ? "Active" : "Inactive"}
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent className="flex-1 flex flex-col justify-between pt-0">
+                <div className="space-y-4">
+                  <div className="flex items-baseline gap-1 text-foreground">
+                    <span className="text-3xl font-extrabold tracking-tight">${plan.price}</span>
+                    <span className="text-sm font-semibold text-muted-foreground">/{plan.durationInDays} days</span>
+                  </div>
+
+                  <div className="space-y-2 text-sm text-muted-foreground border-t pt-4">
+                    <div className="flex items-center gap-2">
+                      <Award className="h-4 w-4 text-primary" />
+                      <span>Max Courts: <strong>{plan.maxCourts}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>Duration: <strong>{plan.durationInDays} days</strong></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 mt-6 pt-4 border-t">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => handleEdit(plan)}>
+                    <Edit2 className="mr-1.5 h-3.5 w-3.5" /> Edit
+                  </Button>
+                  <Button variant="destructive" size="sm" className="flex-1" onClick={() => handleDelete(plan.planId)}>
+                    <Trash2 className="mr-1.5 h-3.5 w-3.5" /> Delete
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <PlanFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        plan={selectedPlan}
+      />
+    </div>
+  );
+}
+```
+
+## File: src/features/subscriptions/pages/PlansPage.tsx
+```typescript
+import { useState } from "react";
+import { useGetPlans } from "../hooks/usePlans";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Check, Rocket } from "lucide-react";
+import { isOwner } from "@/lib/jwt";
+import { toast } from "sonner";
+import { SelectClubModal } from "../components/SelectClubModal";
+import type { SubscriptionPlanResponse } from "../types/plans";
+
+export default function PlansPage() {
+  const { data: plans, isLoading, isError } = useGetPlans();
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlanResponse | null>(null);
+
+  // Only display active plans to public
+  const activePlans = plans?.filter((plan) => plan.isActive) || [];
+
+  const handleSubscribeClick = (plan: SubscriptionPlanResponse) => {
+    if (!isOwner()) {
+      toast.error("Only Club Owners can subscribe to pricing plans.");
+      return;
+    }
+    setSelectedPlan(plan);
+  };
+
+  return (
+    <div className="container mx-auto py-12 px-4 max-w-7xl">
+      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
+          Simple, Transparent Pricing
+        </h1>
+        <p className="text-xl text-muted-foreground">
+          Choose the perfect plan to manage your sports club and court bookings.
+        </p>
+      </div>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardHeader className="space-y-2">
+                <Skeleton className="h-6 w-1/3" />
+                <Skeleton className="h-4 w-2/3" />
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Skeleton className="h-10 w-24" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                </div>
+                <Skeleton className="h-10 w-full" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
+          Failed to load subscription plans. Please try again later.
+        </div>
+      ) : activePlans.length === 0 ? (
+        <div className="py-12 text-center text-muted-foreground bg-card rounded-xl border border-muted">
+          No subscription plans are currently available.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch justify-center">
+          {activePlans.map((plan) => {
+            const isPopular = plan.name.toLowerCase().includes("popular") || plan.name.toLowerCase().includes("pro");
+            return (
+              <Card 
+                key={plan.planId} 
+                className={`flex flex-col relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                  isPopular ? "border-primary shadow-md scale-105" : ""
+                }`}
+              >
+                {isPopular && (
+                  <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1 rounded-bl-lg uppercase tracking-wider">
+                    Popular
+                  </div>
+                )}
+                <CardHeader className="pb-8">
+                  <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                    <Rocket className={`h-5 w-5 ${isPopular ? "text-primary" : "text-muted-foreground"}`} />
+                    {plan.name}
+                  </CardTitle>
+                  <CardDescription className="min-h-[40px] mt-2">
+                    {plan.description || "Everything you need to manage your club facilities."}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1 flex flex-col justify-between pt-0">
+                  <div className="space-y-6">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-extrabold tracking-tight">${plan.price}</span>
+                      <span className="text-sm font-semibold text-muted-foreground">/{plan.durationInDays} days</span>
+                    </div>
+
+                    <ul className="space-y-3.5 text-sm">
+                      <li className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-green-500 shrink-0" />
+                        <span>Manage up to <strong>{plan.maxCourts}</strong> court{plan.maxCourts > 1 ? "s" : ""}</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-green-500 shrink-0" />
+                        <span>Valid for <strong>{plan.durationInDays}</strong> days</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-green-500 shrink-0" />
+                        <span>Online bookings enabled</span>
+                      </li>
+                      <li className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-green-500 shrink-0" />
+                        <span>24/7 Premium support</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 pt-6 border-t">
+                    <Button 
+                      className="w-full text-md font-semibold py-6"
+                      variant={isPopular ? "default" : "outline"}
+                      onClick={() => handleSubscribeClick(plan)}
+                    >
+                      Subscribe Now
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {selectedPlan && (
+        <SelectClubModal
+          isOpen={!!selectedPlan}
+          onClose={() => setSelectedPlan(null)}
+          planId={selectedPlan.planId}
+          planName={selectedPlan.name}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+## File: src/features/subscriptions/types/clubSubscriptions.ts
+```typescript
+export interface SubscriptionPlanSummary {
+  planId: string;
+  name: string;
+  price: number;
+  maxCourts: number;
+}
+
+export interface ClubSummary {
+  clubId: string;
+  name: string;
+  logoUrl?: string;
+}
+
+export interface SubscriptionPaymentSummary {
+  paymentId: string;
+  amount: number;
+  status: number; // 1 = Pending, 2 = Paid, 3 = Failed, etc.
+  transactionId?: string;
+  paidAt?: string;
+}
+
+export interface ClubSubscriptionResponse {
+  subscriptionId: string;
+  club: ClubSummary;
+  plan: SubscriptionPlanSummary;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+  paymentsCount: number;
+  lastPayment?: SubscriptionPaymentSummary;
+}
+
+export interface ClubSubscriptionSummary {
+  subscriptionId: string;
+  plan: SubscriptionPlanSummary;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+}
+
+export interface CreateClubSubscriptionRequest {
+  planId: string;
+}
+```
+
+## File: src/features/subscriptions/types/plans.ts
+```typescript
+export interface SubscriptionPlanResponse {
+  planId: string;
+  name: string;
+  description?: string;
+  price: number;
+  maxCourts: number;
+  durationInDays: number;
+  isActive: boolean;
+  expiresAt?: string;
+  createdAt: string;
+}
+
+export interface CreateSubscriptionPlanRequest {
+  name: string;
+  description?: string;
+  price: number;
+  maxCourts: number;
+  durationInDays: number;
+}
+
+export interface UpdateSubscriptionPlanRequest {
+  name: string;
+  description?: string;
+  price: number;
+  maxCourts: number;
+  durationInDays: number;
+  isActive: boolean;
+}
+```
+
+## File: src/shared/components/ui/tabs.tsx
+```typescript
+import * as React from "react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
+
+import { cn } from "@/lib/utils"
+
+const Tabs = TabsPrimitive.Root
+
+const TabsList = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={cn(
+      "inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground",
+      className
+    )}
+    {...props}
+  />
+))
+TabsList.displayName = TabsPrimitive.List.displayName
+
+const TabsTrigger = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    className={cn(
+      "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow",
+      className
+    )}
+    {...props}
+  />
+))
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
+
+const TabsContent = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Content
+    ref={ref}
+    className={cn(
+      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      className
+    )}
+    {...props}
+  />
+))
+TabsContent.displayName = TabsPrimitive.Content.displayName
+
+export { Tabs, TabsList, TabsTrigger, TabsContent }
+```
+
+## File: .gitignore
 ```
 # Logs
 logs
@@ -196,14 +6663,12 @@ dist-ssr
 ```
 
 ## File: .husky/pre-commit
-
 ```
 npx lint-staged
 npx tsc --noEmit
 ```
 
 ## File: .lintstagedrc.json
-
 ```json
 {
   "*.{js,ts,tsx}": ["eslint --fix", "prettier --write"],
@@ -212,7 +6677,6 @@ npx tsc --noEmit
 ```
 
 ## File: .prettierrc
-
 ```
 {
   "semi": true,
@@ -225,7 +6689,6 @@ npx tsc --noEmit
 ```
 
 ## File: components.json
-
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -252,7 +6715,6 @@ npx tsc --noEmit
 ```
 
 ## File: eslint.config.js
-
 ```javascript
 import js from "@eslint/js";
 import globals from "globals";
@@ -298,7 +6760,6 @@ export default defineConfig([
 ```
 
 ## File: index.html
-
 ```html
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -316,7 +6777,6 @@ export default defineConfig([
 ```
 
 ## File: package.json
-
 ```json
 {
   "name": "sportiva",
@@ -394,7 +6854,6 @@ export default defineConfig([
 ```
 
 ## File: repomix.config.json
-
 ```json
 {
   "output": {
@@ -424,7 +6883,6 @@ export default defineConfig([
 ```
 
 ## File: src/app/App.tsx
-
 ```typescript
 // src/app/App.tsx
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -454,7 +6912,6 @@ export default App;
 ```
 
 ## File: src/app/main.tsx
-
 ```typescript
 // src/app/main.tsx
 import { createRoot } from "react-dom/client";
@@ -469,157 +6926,7 @@ createRoot(document.getElementById("root")!).render(
 );
 ```
 
-## File: src/app/routes/index.tsx
-
-```typescript
-// src/app/routes/index.tsx
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "@/features/auth/hooks/useAuth";
-import PublicLayout from "@/shared/components/navigation/PublicLayout";
-import AppLayout from "@/shared/components/navigation/AppLayout";
-import ScrollToTop from "@/shared/components/navigation/ScrollToTop";
-import { AuthLayout } from "@/features/auth/components/AuthLayout";
-import NotFoundPage from "@/shared/components/NotFoundPage";
-
-// Home
-import HomePage from "@/features/home/pages/HomePage";
-
-// Auth
-import LoginPage from "@/features/auth/pages/LoginPage";
-import RegisterPage from "@/features/auth/pages/RegisterPage";
-import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
-import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
-import VerifyEmailPage from "@/features/auth/pages/VerifyEmailPage";
-import ConfirmEmailPage from "@/features/auth/pages/ConfirmEmailPage";
-import OAuthCallbackPage from "@/features/auth/pages/OAuthCallbackPage";
-
-// Profile
-import ProfilePage from "@/features/profile/pages/ProfilePage";
-import EditProfilePage from "@/features/profile/pages/EditProfilePage";
-import FollowersPage from "@/features/profile/pages/FollowersPage";
-import FollowingPage from "@/features/profile/pages/FollowingPage";
-
-// Posts
-import PostsPage from "@/features/posts/pages/PostsPage";
-import MyPostsPage from "@/features/posts/pages/MyPostsPage";
-
-const MainRouter = () => {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<PublicLayout />}>
-          <Route
-            index
-            element={isAuthenticated ? <Navigate to="/profile" replace /> : <HomePage />}
-          />
-        </Route>
-
-        {/* Protected */}
-        <Route element={<AppLayout />}>
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/my/followers" element={<FollowersPage />} />
-          <Route path="/profile/my/following" element={<FollowingPage />} />
-          <Route path="/profile/:userId/followers" element={<FollowersPage />} />
-          <Route path="/profile/:userId/following" element={<FollowingPage />} />
-          <Route path="/profile/:userId" element={<ProfilePage />} />
-          <Route path="/edit-profile" element={<EditProfilePage />} />
-          <Route path="/posts" element={<PostsPage />} />
-          <Route path="/posts/my" element={<MyPostsPage />} />
-        </Route>
-
-        {/* Auth */}
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <AuthLayout variant="login">
-                <LoginPage />
-              </AuthLayout>
-            )
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <AuthLayout variant="register">
-                <RegisterPage />
-              </AuthLayout>
-            )
-          }
-        />
-        <Route
-          path="/forgot-password"
-          element={
-            <AuthLayout variant="forgot">
-              <ForgotPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/auth/forgetPassword"
-          element={
-            <AuthLayout variant="reset">
-              <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/resetPassword"
-          element={
-            <AuthLayout variant="reset">
-              <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/emailConfirmation"
-          element={
-            <AuthLayout variant="verify">
-              <VerifyEmailPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/auth/emailConfirmation"
-          element={
-            <AuthLayout variant="verify">
-              <ConfirmEmailPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/confirm-email"
-          element={
-            <AuthLayout variant="verify">
-              <ConfirmEmailPage />
-            </AuthLayout>
-          }
-        />
-        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
-
-        {/* 404 */}
-        <Route path="*" element={<PublicLayout />}>
-          <Route index element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </>
-  );
-};
-
-export default MainRouter;
-```
-
 ## File: src/features/auth/components/AuthLayout.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/auth/components/AuthLayout.tsx
 import React from "react";
@@ -776,7 +7083,6 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
 ```
 
 ## File: src/features/auth/components/EmailVerificationForm.tsx
-
 ```typescript
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -1106,7 +7412,6 @@ export const EmailVerificationForm = () => {
 ```
 
 ## File: src/features/auth/components/ForgotPasswordForm.tsx
-
 ```typescript
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -1239,7 +7544,6 @@ export const ForgotPasswordForm = () => {
 ```
 
 ## File: src/features/auth/components/LoginForm.tsx
-
 ```typescript
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -1475,7 +7779,6 @@ export const LoginForm = () => {
 ```
 
 ## File: src/features/auth/components/RegisterForm.tsx
-
 ```typescript
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -1774,7 +8077,6 @@ export const RegisterForm = () => {
 ```
 
 ## File: src/features/auth/components/ResetPasswordForm.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/auth/components/ResetPasswordForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -1977,8 +8279,50 @@ export const ResetPasswordForm = () => {
 };
 ```
 
-## File: src/features/auth/context/AuthContext.tsx
+## File: src/features/auth/components/RoleProtectedRoute.tsx
+```typescript
+import React from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { UserRole } from "@/features/auth/types/auth";
+import { getUserRoles } from "@/lib/jwt";
 
+interface RoleProtectedRouteProps {
+  allowedRoles: UserRole[];
+  children?: React.ReactNode;
+  fallbackPath?: string;
+}
+
+export const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({
+  allowedRoles,
+  children,
+  fallbackPath = "/unauthorized",
+}) => {
+  const { isAuthenticated, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    // Or return a loading spinner here
+    return null;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  const userRoles = getUserRoles();
+  const hasRequiredRole = allowedRoles.some((role) => userRoles.includes(role));
+
+  if (!hasRequiredRole) {
+    // If authenticated but unauthorized, redirect to fallback
+    return <Navigate to={fallbackPath} replace />;
+  }
+
+  return children ? <>{children}</> : <Outlet />;
+};
+```
+
+## File: src/features/auth/context/AuthContext.tsx
 ```typescript
 // src/features/auth/context/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useCallback } from "react";
@@ -2117,7 +8461,6 @@ export const useAuthContext = (): AuthContextType => {
 ```
 
 ## File: src/features/auth/hooks/useAuth.ts
-
 ```typescript
 // src/features/auth/hooks/useAuth.ts
 import { useAuthContext } from "../context/AuthContext";
@@ -2195,7 +8538,6 @@ export const useAuth = () => {
 ```
 
 ## File: src/features/auth/hooks/useAuthMutations.ts
-
 ```typescript
 // src/features/auth/hooks/useAuthMutations.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -2392,7 +8734,6 @@ export const useResendConfirmEmail = () => {
 ```
 
 ## File: src/features/auth/pages/ConfirmEmailPage.tsx
-
 ```typescript
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -2620,7 +8961,6 @@ export default ConfirmEmailPage;
 ```
 
 ## File: src/features/auth/pages/ForgotPasswordPage.tsx
-
 ```typescript
 import React from "react";
 import { ForgotPasswordForm } from "@/features/auth/components/ForgotPasswordForm";
@@ -2637,7 +8977,6 @@ export default ForgotPassword;
 ```
 
 ## File: src/features/auth/pages/LoginPage.tsx
-
 ```typescript
 import React from "react";
 import { LoginForm } from "@/features/auth/components/LoginForm";
@@ -2654,7 +8993,6 @@ export default Login;
 ```
 
 ## File: src/features/auth/pages/OAuthCallbackPage.tsx
-
 ```typescript
 import React, { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -2710,7 +9048,6 @@ export default OAuthCallback;
 ```
 
 ## File: src/features/auth/pages/RegisterPage.tsx
-
 ```typescript
 import React from "react";
 import { RegisterForm } from "@/features/auth/components/RegisterForm";
@@ -2727,7 +9064,6 @@ export default Register;
 ```
 
 ## File: src/features/auth/pages/ResetPasswordPage.tsx
-
 ```typescript
 import React from "react";
 import { ResetPasswordForm } from "@/features/auth/components/ResetPasswordForm";
@@ -2744,7 +9080,6 @@ export default ResetPassword;
 ```
 
 ## File: src/features/auth/pages/VerifyEmailPage.tsx
-
 ```typescript
 import React from "react";
 import { EmailVerificationForm } from "@/features/auth/components/EmailVerificationForm";
@@ -2761,7 +9096,6 @@ export default VerifyEmail;
 ```
 
 ## File: src/features/auth/schemas/authSchemas.ts
-
 ```typescript
 import { z } from "zod";
 
@@ -2816,7 +9150,6 @@ export const resendConfirmationEmailSchema = z.object({
 ```
 
 ## File: src/features/auth/services/authApi.ts
-
 ```typescript
 // src/features/auth/services/authApi.ts
 import axios from "axios";
@@ -2871,7 +9204,6 @@ export const authApi = {
 ```
 
 ## File: src/features/auth/services/authService.ts
-
 ```typescript
 // src/features/auth/services/authService.ts
 import type { RefreshTokenResponse, User } from "../types/auth";
@@ -3068,115 +9400,1181 @@ class AuthService {
 export const authService = new AuthService();
 ```
 
-## File: src/features/auth/types/auth.ts
-
+## File: src/features/clubs/api/clubsApi.ts
 ```typescript
-// src/features/auth/types/auth.ts
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+import { apiClient } from "@/lib/api/client";
+import type {
+  ClubResponse,
+  CreateClubRequest,
+  UpdateClubRequest,
+  RequestFilters,
+  PaginatedList,
+  CourtResponse,
+} from "../types/clubs";
 
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-}
-
-export interface ForgetPasswordRequest {
-  email: string;
-}
-
-export interface ResetPasswordRequest {
-  email: string;
-  code: string;
-  newPassword: string;
-}
-
-export interface ResendConfirmationEmailRequest {
-  email: string;
-}
-
-export interface ConfirmationEmailRequest {
-  userId: string;
-  code: string;
-}
-
-export interface RefreshTokenRequest {
-  token: string;
-  refreshToken: string;
-}
-
-export interface RevokeRefreshTokenRequest {
-  token: string;
-  refreshToken: string;
-}
-
-export interface LoginResponse {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  token: string;
-  refreshToken: string;
-  expiresIn: number;
-  refreshTokenExpiration: string;
-}
-
-export interface RefreshTokenResponse {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  token: string;
-  refreshToken: string;
-  expiresIn: number;
-  refreshTokenExpiration: string;
-}
-
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  userName?: string;
-  isEmailConfirmed?: boolean;
-}
-
-export interface ApiError {
-  message: string;
-  errors?: Record<string, string[]>;
-  statusCode: number;
-  type?: string;
-  title?: string;
-  traceId?: string;
-}
-
-export interface ApiResponse<T = unknown> {
-  data?: T;
-  message?: string;
-  success: boolean;
-}
-
-export interface AuthState {
-  user: User | null;
-  token: string | null;
-  refreshToken: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-}
-
-export const QUERY_KEYS = {
-  auth: {
-    user: ["auth", "user"] as const,
-    profile: ["auth", "profile"] as const,
+export const clubsApi = {
+  getClubs: (filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<ClubResponse>>("/clubs", { params: filters });
   },
-} as const;
+
+  getClub: (clubId: string) => {
+    return apiClient.get<ClubResponse>(`/clubs/${clubId}`);
+  },
+
+  getClubCourts: (clubId: string, filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<CourtResponse>>(`/clubs/${clubId}/courts`, {
+      params: filters,
+    });
+  },
+
+  getMyClubs: (filters?: RequestFilters) => {
+    return apiClient.get<PaginatedList<ClubResponse>>("/clubs/me", { params: filters });
+  },
+
+  createClub: (data: CreateClubRequest) => {
+    const formData = new FormData();
+    formData.append("Name", data.name);
+    if (data.logo) formData.append("Logo", data.logo);
+    if (data.governorate) formData.append("Governorate", data.governorate);
+    if (data.city) formData.append("City", data.city);
+    if (data.address) formData.append("Address", data.address);
+    if (data.phoneNumber) formData.append("PhoneNumber", data.phoneNumber);
+    if (data.email) formData.append("Email", data.email);
+
+    return apiClient.post<ClubResponse>("/clubs", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  updateClub: (clubId: string, data: UpdateClubRequest) => {
+    const formData = new FormData();
+    if (data.name !== undefined) formData.append("Name", data.name);
+    if (data.logo) formData.append("Logo", data.logo);
+    if (data.governorate !== undefined) formData.append("Governorate", data.governorate);
+    if (data.city !== undefined) formData.append("City", data.city);
+    if (data.address !== undefined) formData.append("Address", data.address);
+    if (data.phoneNumber !== undefined) formData.append("PhoneNumber", data.phoneNumber);
+    if (data.email !== undefined) formData.append("Email", data.email);
+    if (data.isActive !== undefined) formData.append("IsActive", String(data.isActive));
+
+    return apiClient.put<ClubResponse>(`/clubs/${clubId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  deleteClub: (clubId: string) => {
+    return apiClient.delete<void>(`/clubs/${clubId}`);
+  },
+
+  toggleClubStatus: (clubId: string) => {
+    return apiClient
+      .getAxiosInstance()
+      .patch<void>(`/clubs/${clubId}/status`)
+      .then((res) => res.data);
+  },
+};
+```
+
+## File: src/features/clubs/components/ClubFormModal.tsx
+```typescript
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { useCreateClub, useUpdateClub } from "../hooks/useClubs";
+import type { ClubResponse } from "../types/clubs";
+import { Checkbox } from "@/shared/components/ui/checkbox";
+
+const clubSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  governorate: z.string().optional(),
+  city: z.string().optional(),
+  address: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  email: z.string().email("Invalid email address").optional().or(z.literal("")),
+  isActive: z.boolean().optional(),
+});
+
+type ClubFormValues = z.infer<typeof clubSchema>;
+
+interface ClubFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  club?: ClubResponse | null;
+}
+
+export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
+  const isEditing = !!club;
+  const createClub = useCreateClub();
+  const updateClub = useUpdateClub();
+  const [logoFile, setLogoFile] = React.useState<File | null>(null);
+
+  const form = useForm<ClubFormValues>({
+    resolver: zodResolver(clubSchema),
+    defaultValues: {
+      name: "",
+      governorate: "",
+      city: "",
+      address: "",
+      phoneNumber: "",
+      email: "",
+      isActive: true,
+    },
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = form;
+
+  useEffect(() => {
+    if (isOpen) {
+      if (club) {
+        setValue("name", club.name || "");
+        setValue("governorate", club.governorate || "");
+        setValue("city", club.city || "");
+        setValue("address", club.address || "");
+        setValue("phoneNumber", club.phoneNumber || "");
+        setValue("email", club.email || "");
+        setValue("isActive", club.isActive ?? true);
+      } else {
+        reset();
+      }
+      setLogoFile(null);
+    }
+  }, [isOpen, club, reset, setValue]);
+
+  const onSubmit = async (values: ClubFormValues) => {
+    try {
+      if (isEditing && club) {
+        await updateClub.mutateAsync({
+          clubId: club.clubId,
+          data: {
+            ...values,
+            logo: logoFile || undefined,
+          },
+        });
+      } else {
+        await createClub.mutateAsync({
+          ...values,
+          logo: logoFile || undefined,
+        });
+      }
+      onClose();
+    } catch (error) {
+      console.error("Failed to save club", error);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setLogoFile(e.target.files[0]);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>{isEditing ? "Edit Club" : "Create New Club"}</DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? "Update the club's details below."
+              : "Fill out the information below to add a new club."}
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Name *</Label>
+            <Input id="name" {...register("name")} placeholder="Club Name" />
+            {errors.name && (
+              <span className="text-xs text-destructive">{errors.name.message as string}</span>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="logo">Logo</Label>
+            <Input id="logo" type="file" accept="image/*" onChange={handleFileChange} />
+            <p className="text-xs text-muted-foreground">Optional. Upload a club logo.</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="governorate">Governorate</Label>
+              <Input id="governorate" {...register("governorate")} placeholder="e.g. Cairo" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="city">City</Label>
+              <Input id="city" {...register("city")} placeholder="e.g. Nasr City" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="address">Address</Label>
+            <Input id="address" {...register("address")} placeholder="Full address" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone Number</Label>
+              <Input id="phoneNumber" {...register("phoneNumber")} placeholder="Phone number" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" {...register("email")} placeholder="Contact email" />
+              {errors.email && (
+                <span className="text-xs text-destructive">{errors.email.message as string}</span>
+              )}
+            </div>
+          </div>
+
+          {isEditing && (
+            <div className="flex items-center space-x-2 mt-4">
+              <Checkbox
+                id="isActive"
+                onCheckedChange={(checked) => setValue("isActive", !!checked)}
+                defaultChecked={club?.isActive}
+              />
+              <Label htmlFor="isActive" className="cursor-pointer">
+                Active status
+              </Label>
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2 pt-4">
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting || createClub.isPending || updateClub.isPending}
+            >
+              {isSubmitting || createClub.isPending || updateClub.isPending ? "Saving..." : "Save"}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## File: src/features/clubs/hooks/useClubs.ts
+```typescript
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { clubsApi } from "../api/clubsApi";
+import type { CreateClubRequest, UpdateClubRequest, RequestFilters } from "../types/clubs";
+import { toast } from "sonner";
+
+export const CLUBS_QUERY_KEYS = {
+  all: ["clubs"] as const,
+  lists: () => [...CLUBS_QUERY_KEYS.all, "list"] as const,
+  list: (filters: RequestFilters) => [...CLUBS_QUERY_KEYS.lists(), { filters }] as const,
+  details: () => [...CLUBS_QUERY_KEYS.all, "detail"] as const,
+  detail: (id: string) => [...CLUBS_QUERY_KEYS.details(), id] as const,
+  myClubs: () => [...CLUBS_QUERY_KEYS.all, "myClubs"] as const,
+  myClubsList: (filters: RequestFilters) => [...CLUBS_QUERY_KEYS.myClubs(), { filters }] as const,
+};
+
+export const useGetClubs = (filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: CLUBS_QUERY_KEYS.list(filters),
+    queryFn: () => clubsApi.getClubs(filters),
+    ...options,
+  });
+};
+
+export const useGetClub = (clubId: string) => {
+  return useQuery({
+    queryKey: CLUBS_QUERY_KEYS.detail(clubId),
+    queryFn: () => clubsApi.getClub(clubId),
+    enabled: !!clubId,
+  });
+};
+
+export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}) => {
+  return useQuery({
+    queryKey: [...CLUBS_QUERY_KEYS.detail(clubId), "courts", filters],
+    queryFn: () => clubsApi.getClubCourts(clubId, filters),
+    enabled: !!clubId,
+  });
+};
+
+export const useGetMyClubs = (filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: CLUBS_QUERY_KEYS.myClubsList(filters),
+    queryFn: () => clubsApi.getMyClubs(filters),
+    ...options,
+  });
+};
+
+export const useCreateClub = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateClubRequest) => clubsApi.createClub(data),
+    onSuccess: () => {
+      toast.success("Club created successfully");
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.lists() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to create club: ${msg}`);
+    },
+  });
+};
+
+export const useUpdateClub = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ clubId, data }: { clubId: string; data: UpdateClubRequest }) =>
+      clubsApi.updateClub(clubId, data),
+    onSuccess: (_, variables) => {
+      toast.success("Club updated successfully");
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.lists() });
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.detail(variables.clubId) });
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.myClubs() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update club: ${msg}`);
+    },
+  });
+};
+
+export const useDeleteClub = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (clubId: string) => clubsApi.deleteClub(clubId),
+    onSuccess: () => {
+      toast.success("Club deleted successfully");
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.lists() });
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.myClubs() });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to delete club: ${msg}`);
+    },
+  });
+};
+
+export const useToggleClubStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (clubId: string) => clubsApi.toggleClubStatus(clubId),
+    onSuccess: (_, clubId) => {
+      toast.success("Club status updated successfully");
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.lists() });
+      queryClient.invalidateQueries({ queryKey: CLUBS_QUERY_KEYS.detail(clubId) });
+    },
+    onError: (error: unknown) => {
+      const apiError = error as { response?: { data?: { message?: string } } };
+      const msg = apiError.response?.data?.message || "An error occurred";
+      toast.error(`Failed to update club status: ${msg}`);
+    },
+  });
+};
+```
+
+## File: src/features/clubs/pages/ClubDetailsPage.tsx
+```typescript
+import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useGetClub, useGetClubCourts, useDeleteClub } from "../hooks/useClubs";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { MapPin, Phone, Mail, ArrowLeft, Building2, Edit2, Trash2, Star, MessageSquare } from "lucide-react";
+import { isAdmin } from "@/lib/jwt";
+import { ClubFormModal } from "../components/ClubFormModal";
+import { useGetClubReviews } from "@/features/reviews/hooks/useReviews";
+import { cn } from "@/lib/utils";
+
+export default function ClubDetailsPage() {
+  const { clubId } = useParams<{ clubId: string }>();
+  const navigate = useNavigate();
+  const { data: club, isLoading, isError, error } = useGetClub(clubId as string);
+
+  const { data: reviewsData, isLoading: isReviewsLoading } = useGetClubReviews(clubId as string);
+  const reviews = reviewsData?.items || [];
+  const deleteClub = useDeleteClub();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDelete = async () => {
+    if (confirm("Are you sure you want to delete this club?")) {
+      await deleteClub.mutateAsync(clubId as string);
+      navigate("/clubs");
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto max-w-4xl py-8 px-4">
+        <Skeleton className="mb-8 h-8 w-32" />
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-6">
+              <Skeleton className="h-24 w-24 rounded-full" />
+              <div className="space-y-4">
+                <Skeleton className="h-8 w-64" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-3/4" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="container mx-auto max-w-4xl py-8 px-4">
+        <Button asChild variant="ghost" className="mb-4">
+          <Link to="/clubs">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Clubs
+          </Link>
+        </Button>
+        <div className="rounded-lg border border-destructive bg-destructive/10 p-8 text-center text-destructive">
+          <h2 className="mb-2 text-xl font-bold">Club not found</h2>
+          <p>
+            {(error as { response?: { data?: { message?: string } } })?.response?.data?.message ||
+              "The club you're looking for doesn't exist or an error occurred."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!club) return null;
+
+  const canManage = isAdmin();
+
+  return (
+    <div className="container mx-auto max-w-4xl py-8 px-4">
+      <div className="flex items-center justify-between mb-6">
+        <Button asChild variant="ghost">
+          <Link to="/clubs">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Clubs
+          </Link>
+        </Button>
+
+        {canManage && (
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={() => setIsModalOpen(true)}>
+              <Edit2 className="mr-2 h-4 w-4" /> Edit Club
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              <Trash2 className="mr-2 h-4 w-4" /> Delete
+            </Button>
+          </div>
+        )}
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center gap-6">
+          {club.logoUrl ? (
+            <img
+              src={club.logoUrl}
+              alt={`${club.name} logo`}
+              className="h-24 w-24 rounded-full object-cover border-4 border-background shadow-sm"
+            />
+          ) : (
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary border-4 border-background shadow-sm text-3xl font-bold">
+              {club.name?.charAt(0)?.toUpperCase()}
+            </div>
+          )}
+          <div className="flex-1">
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="text-3xl">{club.name}</CardTitle>
+                <CardDescription className="flex items-center gap-1 mt-2 text-base">
+                  <MapPin className="h-4 w-4" />
+                  {club.address ? `${club.address}, ` : ""}
+                  {club.city ? `${club.city}, ` : ""}
+                  {club.governorate || "Location not specified"}
+                </CardDescription>
+              </div>
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold ${
+                  club.isActive
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                }`}
+              >
+                {club.isActive ? "Active" : "Inactive"}
+              </span>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="mt-6 border-t pt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-muted-foreground" />
+                Contact Information
+              </h3>
+              <div className="space-y-3 pl-7">
+                {club.phoneNumber && (
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-5 w-5 text-muted-foreground" />
+                    <span>{club.phoneNumber}</span>
+                  </div>
+                )}
+                {club.email && (
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-5 w-5 text-muted-foreground" />
+                    <a href={`mailto:${club.email}`} className="text-primary hover:underline">
+                      {club.email}
+                    </a>
+                  </div>
+                )}
+                {!club.phoneNumber && !club.email && (
+                  <p className="text-sm text-muted-foreground">No contact information available.</p>
+                )}
+              </div>
+            </div>
+
+            {club.owner && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Club Management</h3>
+                <div className="flex items-center gap-3">
+                  {club.owner.profilePictureUrl ? (
+                    <img
+                      src={club.owner.profilePictureUrl}
+                      alt={club.owner.fullName}
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-secondary-foreground font-medium">
+                      {club.owner.fullName.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-medium">{club.owner.fullName}</p>
+                    <p className="text-xs text-muted-foreground">Club Owner</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold mb-6">Courts</h2>
+        <CourtsList clubId={clubId as string} />
+      </div>
+
+      <Card className="bg-card border-muted/40 shadow-sm mt-12">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
+            <MessageSquare className="h-5 w-5 text-primary shrink-0" />
+            Club Reviews ({reviews.length})
+          </CardTitle>
+          <CardDescription>What players say about this club's facilities</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-0">
+          {isReviewsLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ) : reviews.length === 0 ? (
+            <div className="text-center py-10 text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+              No reviews submitted yet for this club.
+            </div>
+          ) : (
+            <div className="divide-y divide-muted">
+              {reviews.map((rev) => (
+                <div key={rev.reviewId} className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm border border-primary/20">
+                    {rev.author.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="space-y-1.5 flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="font-semibold text-sm text-foreground">{rev.author.fullName}</p>
+                        <div className="flex items-center gap-0.5 mt-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={cn(
+                                "h-3.5 w-3.5",
+                                i < rev.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/20 fill-transparent"
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(rev.createdAt).toLocaleDateString()}
+                        </span>
+                        {rev.court?.name && (
+                          <p className="text-[11px] text-primary font-medium mt-0.5">
+                            Court: {rev.court.name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {rev.comment && (
+                      <p className="text-sm text-muted-foreground leading-relaxed italic">
+                        "{rev.comment}"
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <ClubFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        initialData={club}
+      />
+    </div>
+  );
+}
+
+function CourtsList({ clubId }: { clubId: string }) {
+  const { data, isLoading, isError } = useGetClubCourts(clubId);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-48 rounded-xl" />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-destructive p-4 bg-destructive/10 rounded-lg">
+        Failed to load courts.
+      </div>
+    );
+  }
+
+  if (!data?.items || data.items.length === 0) {
+    return (
+      <div className="text-muted-foreground p-8 text-center bg-card rounded-lg border">
+        No courts found for this club.
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {data.items.map((court) => (
+        <Link key={court.courtId} to={`/clubs/${clubId}/courts/${court.courtId}`} className="block transition-transform hover:-translate-y-1">
+          <Card className="overflow-hidden flex flex-col h-full cursor-pointer hover:shadow-md transition-shadow">
+            {court.imageUrl ? (
+              <div className="h-40 bg-muted">
+                <img src={court.imageUrl} alt={court.name} className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="h-40 bg-muted flex items-center justify-center text-muted-foreground font-medium">
+                No Image
+              </div>
+            )}
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl flex justify-between items-start">
+                <span className="truncate">{court.name || "Unnamed Court"}</span>
+                <span className="text-sm font-bold text-primary shrink-0">
+                  ${court.pricePerHour}/hr
+                </span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1">
+              {court.description && (
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{court.description}</p>
+              )}
+              <div className="flex flex-col gap-2 text-sm mt-auto">
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Capacity:</span>
+                  <span className="font-medium">{court.maxCapacity} players</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-muted-foreground">Status:</span>
+                  <span
+                    className={
+                      court.isActive ? "text-green-600 font-medium" : "text-red-600 font-medium"
+                    }
+                  >
+                    {court.isActive ? "Active" : "Inactive"}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      ))}
+    </div>
+  );
+}
+```
+
+## File: src/features/clubs/pages/ClubsPage.tsx
+```typescript
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useGetClubs, useGetMyClubs, useDeleteClub, useToggleClubStatus } from "../hooks/useClubs";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { MapPin, Filter, Plus, Settings, MoreVertical, Edit2, Trash2, ShieldOff, ShieldCheck } from "lucide-react";
+import { Input } from "@/shared/components/ui/input";
+import { Skeleton } from "@/shared/components/ui/skeleton";
+import { isAdmin, isOwner } from "@/lib/jwt";
+import { ClubFormModal } from "../components/ClubFormModal";
+import type { ClubResponse } from "../types/clubs";
+import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/shared/components/ui/dropdown-menu";
+
+export default function ClubsPage() {
+  const navigate = useNavigate();
+  const admin = isAdmin();
+  const owner = isOwner();
+
+  const [searchValue, setSearchValue] = useState("");
+  const [sortColumn, setSortColumn] = useState<string | undefined>();
+  const [sortDirection, setSortDirection] = useState<"Asc" | "Desc" | undefined>();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedClub, setSelectedClub] = useState<ClubResponse | null>(null);
+
+  // Queries
+  const publicQuery = useGetClubs({ searchValue, sortColumn, sortDirection }, { enabled: !owner });
+  const myQuery = useGetMyClubs({ searchValue, sortColumn, sortDirection }, { enabled: owner });
+  const { data, isLoading, isError, error } = owner ? myQuery : publicQuery;
+
+  // Mutations (Admin only)
+  const deleteClub = useDeleteClub();
+  const toggleStatus = useToggleClubStatus();
+
+  const handleCreate = () => {
+    setSelectedClub(null);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (club: ClubResponse) => {
+    setSelectedClub(club);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (clubId: string) => {
+    if (confirm("Are you sure you want to delete this club?")) {
+      await deleteClub.mutateAsync(clubId);
+    }
+  };
+
+  const handleToggleStatus = async (clubId: string) => {
+    await toggleStatus.mutateAsync(clubId);
+  };
+
+  // Dynamic titles and text
+  const title = admin ? "Manage Clubs" : owner ? "My Clubs" : "Sports Clubs";
+  const subtitle = admin
+    ? "View and manage all registered padel clubs."
+    : owner
+    ? "Manage your sports clubs and facilities."
+    : "Discover and join sports clubs near you.";
+  const searchPlaceholder = owner ? "Search my clubs..." : "Search clubs...";
+
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-7xl">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{title}</h1>
+          <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3 items-center">
+          <div className="relative w-full sm:w-64">
+            <Input
+              className="w-full pl-9 bg-card border-muted-foreground/20"
+              placeholder={searchPlaceholder}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="w-full sm:w-auto bg-card text-foreground border-muted-foreground/20">
+                <Filter className="mr-2 h-4 w-4" /> 
+                {sortColumn === "Name" ? "Name" : sortColumn === "CreatedAt" ? "Date" : "Filters"}
+                {sortDirection === "Desc" ? " (Desc)" : sortDirection === "Asc" ? " (Asc)" : ""}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => { setSortColumn(undefined); setSortDirection(undefined); }}>
+                Clear Filters
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { setSortColumn("Name"); setSortDirection("Asc"); }}>
+                Name (A-Z)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { setSortColumn("Name"); setSortDirection("Desc"); }}>
+                Name (Z-A)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { setSortColumn("CreatedAt"); setSortDirection("Desc"); }}>
+                Newest First
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => { setSortColumn("CreatedAt"); setSortDirection("Asc"); }}>
+                Oldest First
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {admin && (
+            <Button onClick={handleCreate} className="w-full sm:w-auto">
+              <Plus className="mr-2 h-4 w-4" /> Add Club
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {isLoading ? (
+          [...Array(8)].map((_, i) => (
+            <div key={i} className="rounded-xl border bg-card overflow-hidden shadow-sm flex flex-col">
+              <Skeleton className="h-32 w-full rounded-none" />
+              <div className="p-5 flex-1 flex flex-col relative">
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </div>
+                <div className="mt-auto pt-4 space-y-3">
+                  <Skeleton className="h-4 w-1/4" />
+                </div>
+              </div>
+            </div>
+          ))
+        ) : isError ? (
+          <div className="col-span-full py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
+            <p>Failed to load clubs. Please try again later.</p>
+            <p className="text-sm">{(error as { message?: string })?.message}</p>
+          </div>
+        ) : data?.items?.length === 0 ? (
+          <div className="col-span-full py-12 text-center text-muted-foreground bg-card rounded-xl border border-muted flex flex-col items-center justify-center">
+            {owner ? (
+              <>
+                <Settings className="h-12 w-12 mb-4 text-muted-foreground/50 animate-spin-slow" />
+                <h3 className="text-lg font-semibold mb-2">No Clubs Found</h3>
+                <p className="max-w-sm text-sm">
+                  {searchValue
+                    ? "No clubs match your search criteria."
+                    : "You haven't been assigned as an owner to any clubs yet."}
+                </p>
+              </>
+            ) : (
+              <p className="text-sm">No clubs found matching your criteria.</p>
+            )}
+          </div>
+        ) : (
+          data?.items.map((club) => (
+            <div 
+              key={club.clubId} 
+              className="rounded-xl border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col group relative cursor-pointer"
+              onClick={() => navigate(`/clubs/${club.clubId}`)}
+            >
+              {/* Banner as the logo image */}
+              <div 
+                className="h-32 w-full bg-muted relative bg-cover bg-center"
+                style={club.logoUrl ? { backgroundImage: `url(${club.logoUrl})` } : undefined}
+              >
+                {!club.logoUrl && (
+                  <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/30 font-bold text-4xl">
+                    {club.name?.substring(0, 2)?.toUpperCase()}
+                  </div>
+                )}
+
+                {/* Actions (Role based) */}
+                {admin && (
+                  <div className="absolute top-2 right-2 z-20" onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 bg-background/50 hover:bg-background/80 backdrop-blur-sm rounded-full text-foreground/70 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem onClick={() => handleEdit(club)}>
+                          <Edit2 className="mr-2 h-4 w-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleToggleStatus(club.clubId)}>
+                          {club.isActive ? (
+                            <><ShieldOff className="mr-2 h-4 w-4" /> Deactivate</>
+                          ) : (
+                            <><ShieldCheck className="mr-2 h-4 w-4" /> Activate</>
+                          )}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => handleDelete(club.clubId)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                )}
+
+                {owner && (
+                  <div className="absolute top-2 right-2 z-20" onClick={(e) => e.stopPropagation()}>
+                    <Button 
+                      asChild 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 bg-background/50 hover:bg-background/80 backdrop-blur-sm rounded-full text-foreground/70 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Link to={`/owner/clubs/${club.clubId}/dashboard`}>
+                        <Settings className="h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-5 flex-1 flex flex-col relative">
+                <div className="flex flex-col flex-1">
+                  {/* Header Row */}
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h3 className="font-semibold text-lg leading-tight truncate text-foreground" title={club.name}>
+                      {club.name}
+                    </h3>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center text-sm text-muted-foreground mb-4">
+                    <MapPin className="mr-1 h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">
+                      {club.city && club.governorate
+                        ? `${club.city}, ${club.governorate}`
+                        : club.city || club.governorate || "Location not provided"}
+                    </span>
+                  </div>
+
+                  {/* Status */}
+                  <div className="flex items-center gap-2 mt-auto pt-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className={cn(
+                        "w-2.5 h-2.5 rounded-full",
+                        club.isActive ? "bg-primary" : "bg-destructive"
+                      )} />
+                      <span className="text-sm font-medium text-foreground/80">
+                        {club.isActive ? "Active" : "Inactive"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <ClubFormModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        club={selectedClub}
+      />
+    </div>
+  );
+}
+```
+
+## File: src/features/clubs/types/clubs.ts
+```typescript
+export interface ClubResponse {
+  clubId: string;
+  name: string;
+  logoUrl?: string;
+  governorate?: string;
+  city?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+  isActive: boolean;
+  owner?: {
+    id: string;
+    fullName: string;
+    profilePictureUrl?: string;
+  };
+  courtsCount?: number;
+  reviewsCount?: number;
+  averageRating?: number;
+  isOwner?: boolean;
+  canManageCourts?: boolean;
+  activeSubscription?: unknown;
+  createdAt?: string;
+}
+
+export interface CourtResponse {
+  courtId: string;
+  name?: string;
+  description?: string;
+  imageUrl?: string;
+  sportType: number;
+  maxCapacity: number;
+  pricePerHour: number;
+  isActive: boolean;
+  club?: {
+    clubId: string;
+    name: string;
+    logoUrl?: string;
+  };
+  canBook: boolean;
+  canManage: boolean;
+  reviewsCount: number;
+  averageRating: number;
+  createdAt: string;
+}
+
+export interface CreateClubRequest {
+  name: string;
+  logo?: File;
+  governorate?: string;
+  city?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+}
+
+export interface UpdateClubRequest {
+  name?: string;
+  logo?: File;
+  governorate?: string;
+  city?: string;
+  address?: string;
+  phoneNumber?: string;
+  email?: string;
+  isActive?: boolean;
+}
+
+export interface RequestFilters {
+  pageNumber?: number;
+  pageSize?: number;
+  searchValue?: string;
+  sortColumn?: string;
+  sortDirection?: "Asc" | "Desc";
+  // Add other filters if needed
+}
+
+export interface PaginatedList<T> {
+  items: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface CreateCourtRequest {
+  clubId: string;
+  name?: string;
+  description?: string;
+  image?: File;
+  sportType: number;
+  maxCapacity: number;
+  pricePerHour: number;
+}
+
+export interface UpdateCourtRequest {
+  name?: string;
+  description?: string;
+  image?: File;
+  sportType?: number;
+  maxCapacity?: number;
+  pricePerHour?: number;
+  isActive?: boolean;
+}
+
+export enum SportType {
+  Football = 1,
+  Padel = 2,
+  Tennis = 3,
+  Basketball = 4,
+  Volleyball = 5,
+}
+
+export interface TimeSlotSummary {
+  timeSlotId: string;
+  day: string; // DateOnly as string
+  startTime: string; // TimeOnly as string (e.g. HH:mm:ss)
+  endTime: string; // TimeOnly as string
+  isBooked: boolean;
+}
+
+export interface TimeSlotResponse {
+  timeSlotId: string;
+  court?: {
+    courtId: string;
+    name: string;
+  };
+  day: string; // DateOnly as string
+  startTime: string; // TimeOnly as string
+  endTime: string; // TimeOnly as string
+  isActive: boolean;
+  isBooked: boolean;
+  createdAt: string;
+}
+
+export interface SetTimeSlotsAvailabilityRequest {
+  slotIds: string[];
+  isActive: boolean;
+}
 ```
 
 ## File: src/features/home/components/AudienceSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/AudienceSection.tsx
 import { Building, UserCircle } from "lucide-react";
@@ -3273,7 +10671,6 @@ export const AudienceSection = () => {
 ```
 
 ## File: src/features/home/components/CTASection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/CTASection.tsx
 import { Button } from "@/shared/components/ui/button";
@@ -3317,7 +10714,6 @@ export const CTASection = () => {
 ```
 
 ## File: src/features/home/components/FeatureCard.tsx
-
 ```typescript
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -3370,7 +10766,6 @@ export const FeatureCard = ({
 ```
 
 ## File: src/features/home/components/FeatureList.tsx
-
 ```typescript
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -3401,7 +10796,6 @@ export const FeatureList = ({ features, className }: FeatureListProps) => {
 ```
 
 ## File: src/features/home/components/FeaturesSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/FeaturesSection.tsx
 import { MapPin, CalendarCheck, Clock, Star, Users, RefreshCw } from "lucide-react";
@@ -3523,7 +10917,6 @@ export const FeaturesSection = () => {
 ```
 
 ## File: src/features/home/components/HeroSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/HeroSection.tsx
 import { Button } from "@/shared/components/ui/button";
@@ -3706,14 +11099,13 @@ export const HeroSection = ({ onGetStarted, onBrowseCourts }: HeroSectionProps) 
 ```
 
 ## File: src/features/home/components/HowItWorksSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/HowItWorksSection.tsx
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FileEdit, Sparkles, Target, ArrowRight } from "lucide-react";
+import { Search, CalendarCheck, Trophy, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -3725,7 +11117,7 @@ export const HowItWorksSection = () => {
       stepNumber: 1,
       title: "Find a Venue",
       description: "Search for sports venues by sport, location, and price in just a few clicks.",
-      icon: FileEdit,
+      icon: Search,
       gradient: "from-primary to-primary/70",
       accentTitle: "text-primary/40",
     },
@@ -3734,7 +11126,7 @@ export const HowItWorksSection = () => {
       title: "Pick Your Slot",
       description:
         "Browse real-time court availability and select the timing that works best for you and your team.",
-      icon: Sparkles,
+      icon: CalendarCheck,
       gradient: "from-chart-2 to-chart-2/70",
       accentTitle: "text-chart-2/40",
     },
@@ -3742,7 +11134,7 @@ export const HowItWorksSection = () => {
       stepNumber: 3,
       title: "Play & Enjoy",
       description: "Confirm your booking instantly, show up at the venue, and enjoy your game.",
-      icon: Target,
+      icon: Trophy,
       gradient: "from-primary/80 to-primary/50",
       accentTitle: "text-primary/30",
     },
@@ -3811,7 +11203,6 @@ export const HowItWorksSection = () => {
 ```
 
 ## File: src/features/home/components/index.ts
-
 ```typescript
 // src/features/home/components/index.ts
 export { HeroSection } from "./HeroSection";
@@ -3828,7 +11219,6 @@ export { StepCard } from "./StepCard";
 ```
 
 ## File: src/features/home/components/SocialProofSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/SocialProofSection.tsx
 import { useRef } from "react";
@@ -3977,7 +11367,6 @@ export const SocialProofSection = () => {
 ```
 
 ## File: src/features/home/components/StatCard.tsx
-
 ```typescript
 import { cn } from "@/lib/utils";
 import { Users } from "lucide-react";
@@ -4006,7 +11395,6 @@ export const StatCard = ({ value, label, className }: StatCardProps) => {
 ```
 
 ## File: src/features/home/components/StatsSection.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/components/StatsSection.tsx
 import { useRef } from "react";
@@ -4069,7 +11457,6 @@ export const StatsSection = () => {
 ```
 
 ## File: src/features/home/components/StepCard.tsx
-
 ```typescript
 import { cn } from "@/lib/utils";
 
@@ -4113,7 +11500,6 @@ export const StepCard = ({
 ```
 
 ## File: src/features/home/pages/HomePage.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/home/pages/HomePage.tsx
 import React from "react";
@@ -4143,7 +11529,6 @@ export default Home;
 ```
 
 ## File: src/features/posts/components/CommentsSection.tsx
-
 ```typescript
 // src/features/posts/components/CommentsSection.tsx
 import { useState } from "react";
@@ -4544,7 +11929,6 @@ export const CommentsSection = ({ postId }: CommentsSectionProps) => {
 ```
 
 ## File: src/features/posts/components/CreatePostBar.tsx
-
 ```typescript
 // src/features/posts/components/CreatePostBar.tsx
 import { ImagePlus } from "lucide-react";
@@ -4629,7 +12013,6 @@ export const CreatePostBar = ({ onOpen, onOpenPhoto }: CreatePostBarProps) => {
 ```
 
 ## File: src/features/posts/components/CreatePostModal.tsx
-
 ```typescript
 // src/features/posts/components/CreatePostModal.tsx
 import { useEffect, useRef, useState } from "react";
@@ -4828,7 +12211,6 @@ export const CreatePostModal = ({ open, onOpenChange }: CreatePostModalProps) =>
 ```
 
 ## File: src/features/posts/components/EditPostModal.tsx
-
 ```typescript
 // src/features/posts/components/EditPostModal.tsx
 import { useEffect } from "react";
@@ -4964,7 +12346,6 @@ export const EditPostModal = ({ post, open, onOpenChange }: EditPostModalProps) 
 ```
 
 ## File: src/features/posts/components/LikesListModal.tsx
-
 ```typescript
 // src/features/posts/components/LikesListModal.tsx
 import { X } from "lucide-react";
@@ -5078,7 +12459,6 @@ export const LikesListModal = ({ postId, open, onOpenChange }: LikesListModalPro
 ```
 
 ## File: src/features/posts/components/PostCard.tsx
-
 ```typescript
 // src/features/posts/components/PostCard.tsx
 import { useState } from "react";
@@ -5318,7 +12698,6 @@ export const PostCard = ({ post }: PostCardProps) => {
 ```
 
 ## File: src/features/posts/hooks/usePaginatedPosts.ts
-
 ```typescript
 import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -5370,7 +12749,6 @@ export const usePaginatedPosts = () => {
 ```
 
 ## File: src/features/posts/hooks/usePaginatedUserPosts.ts
-
 ```typescript
 import { useState, useEffect } from "react";
 import { useUserPosts } from "./usePosts";
@@ -5418,7 +12796,6 @@ export const usePaginatedUserPosts = (userId: string) => {
 ```
 
 ## File: src/features/posts/hooks/usePosts.ts
-
 ```typescript
 // src/features/posts/hooks/usePosts.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -5776,7 +13153,6 @@ export const useToggleReplyLike = () => {
 ```
 
 ## File: src/features/posts/pages/MyPostsPage.tsx
-
 ```typescript
 // src/features/posts/pages/MyPostsPage.tsx
 import { useState } from "react";
@@ -5863,7 +13239,6 @@ export default MyPostsPage;
 ```
 
 ## File: src/features/posts/pages/PostsPage.tsx
-
 ```typescript
 // src/features/posts/pages/PostsPage.tsx
 import { useState } from "react";
@@ -5944,7 +13319,6 @@ export default PostsPage;
 ```
 
 ## File: src/features/posts/services/commentService.ts
-
 ```typescript
 // src/features/posts/services/commentService.ts
 import { apiClient } from "@/lib/api/client";
@@ -6099,7 +13473,6 @@ export const commentService = new CommentService();
 ```
 
 ## File: src/features/posts/services/postService.ts
-
 ```typescript
 // src/features/posts/services/postService.ts
 import { apiClient } from "@/lib/api/client";
@@ -6237,7 +13610,6 @@ export const postService = new PostService();
 ```
 
 ## File: src/features/posts/types/comment.ts
-
 ```typescript
 // src/features/posts/types/comment.ts
 import type { PostsQueryParams } from "./post";
@@ -6303,7 +13675,6 @@ export type CommentsQueryParams = PostsQueryParams;
 ```
 
 ## File: src/features/posts/types/post.ts
-
 ```typescript
 export interface PostAuthor {
   userId: string;
@@ -6365,7 +13736,6 @@ export interface PostLikerResponse {
 ```
 
 ## File: src/features/profile/components/FollowButton.tsx
-
 ```typescript
 // src/features/profile/components/FollowButton.tsx
 import { useEffect, useState } from "react";
@@ -6434,7 +13804,6 @@ export const FollowButton = ({ userId, isFollowing, isMe, className }: FollowBut
 ```
 
 ## File: src/features/profile/components/ProfileStats.tsx
-
 ```typescript
 // src/features/profile/components/ProfileStats.tsx
 import { Link } from "react-router-dom";
@@ -6509,7 +13878,6 @@ export const ProfileStats = ({
 ```
 
 ## File: src/features/profile/hooks/usePaginatedFollowers.ts
-
 ```typescript
 import { useState, useEffect } from "react";
 import { useFollowers } from "./useProfile";
@@ -6559,7 +13927,6 @@ export const usePaginatedFollowers = (profileOwnerId: string) => {
 ```
 
 ## File: src/features/profile/hooks/usePaginatedFollowing.ts
-
 ```typescript
 import { useState, useEffect } from "react";
 import { useFollowing } from "./useProfile";
@@ -6609,7 +13976,6 @@ export const usePaginatedFollowing = (profileOwnerId: string) => {
 ```
 
 ## File: src/features/profile/hooks/useProfile.ts
-
 ```typescript
 // src/features/profile/hooks/useProfile.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6738,7 +14104,6 @@ export const useSearchUsers = (filters?: RequestFilters) => {
 ```
 
 ## File: src/features/profile/pages/EditProfilePage.tsx
-
 ```typescript
 // src/features/profile/pages/EditProfilePage.tsx
 import { useEffect, useRef, useState } from "react";
@@ -7063,7 +14428,6 @@ export default EditProfilePage;
 ```
 
 ## File: src/features/profile/pages/FollowersPage.tsx
-
 ```typescript
 // src/features/profile/pages/FollowersPage.tsx
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -7240,7 +14604,6 @@ export default FollowersPage;
 ```
 
 ## File: src/features/profile/pages/FollowingPage.tsx
-
 ```typescript
 // src/features/profile/pages/FollowingPage.tsx
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -7417,15 +14780,25 @@ export default FollowingPage;
 ```
 
 ## File: src/features/profile/pages/ProfilePage.tsx
-
 ```typescript
-// src/features/profile/pages/ProfilePage.tsx
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { FileText, MapPin, Pencil } from "lucide-react";
+import {
+  FileText,
+  MapPin,
+  Pencil,
+  Clock,
+  XCircle,
+  Globe,
+  CheckCircle2,
+  Calendar,
+  Trophy,
+  Activity,
+  Award,
+} from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useMyProfile, useProfile } from "@/features/profile/hooks/useProfile";
 import { FollowButton } from "@/features/profile/components/FollowButton";
-import { ProfileStats } from "@/features/profile/components/ProfileStats";
 import { PostCard } from "@/features/posts/components/PostCard";
 import { usePaginatedUserPosts } from "@/features/posts/hooks/usePaginatedUserPosts";
 import type { SportTypeDto } from "@/features/profile/types/profile";
@@ -7433,15 +14806,14 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-
-const SPORT_LABELS: Record<SportTypeDto, { emoji: string; label: string }> = {
-  Football: { emoji: "⚽", label: "Football" },
-  Basketball: { emoji: "🏀", label: "Basketball" },
-  Tennis: { emoji: "🎾", label: "Tennis" },
-  Padel: { emoji: "🎾", label: "Padel" },
-  Volleyball: { emoji: "🏐", label: "Volleyball" },
-  Other: { emoji: "🏅", label: "Other" },
-};
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs";
+import { isMember } from "@/lib/jwt";
+import { useGetMyUpgradeRequest } from "@/features/memberships/hooks/useMemberships";
+import { RequestStatusDto } from "@/features/memberships/types/memberships";
+import { MembershipUpgradeModal } from "@/features/memberships/components/MembershipUpgradeModal";
+import { AboutMeWidget } from "../components/AboutMeWidget";
+import { PreferredSportsWidget } from "../components/PreferredSportsWidget";
+import { SPORT_LABELS, SPORT_EMOJIS } from "@/features/matches/types/matches";
 
 const getInitials = (name: string) =>
   name
@@ -7450,6 +14822,15 @@ const getInitials = (name: string) =>
     .join("")
     .slice(0, 2)
     .toUpperCase();
+
+const SPORT_NAME_EMOJIS: Record<string, string> = {
+  Football: "⚽",
+  Basketball: "🏀",
+  Tennis: "🎾",
+  Padel: "🏸",
+  Volleyball: "🏐",
+  Other: "🏅",
+};
 
 const PostSkeleton = () => (
   <div className="space-y-3 rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -7464,7 +14845,7 @@ const PostSkeleton = () => (
   </div>
 );
 
-const ProfilePage = () => {
+export default function ProfilePage() {
   const { userId: routeUserId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -7476,6 +14857,11 @@ const ProfilePage = () => {
     ? myProfileQuery
     : otherProfileQuery;
 
+  const member = isMember();
+  const { data: upgradeRequest } = useGetMyUpgradeRequest();
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("posts");
+
   const profileUserId = profile?.userId ?? routeUserId ?? user?.id ?? "";
 
   const {
@@ -7486,18 +14872,18 @@ const ProfilePage = () => {
     loadMore,
     page,
   } = usePaginatedUserPosts(profileUserId);
+
   const location = [profile?.city, profile?.country].filter(Boolean).join(", ");
-  const sport = profile?.preferredSport ? SPORT_LABELS[profile.preferredSport] : null;
 
   if (profileLoading) {
     return (
-      <div className="mx-auto w-full max-w-4xl p-4 sm:p-6" aria-busy="true">
-        <Card className="overflow-hidden py-0 shadow-sm">
-          <Skeleton className="h-40 w-full rounded-none sm:h-52" />
+      <div className="mx-auto w-full max-w-5xl p-4 sm:p-6" aria-busy="true">
+        <Card className="overflow-hidden py-0 shadow-sm border-muted/40">
+          <Skeleton className="h-44 sm:h-52 w-full rounded-none" />
           <CardContent className="space-y-4 pt-0">
             <div className="-mt-12 flex gap-4">
-              <Skeleton className="h-20 w-20 shrink-0 rounded-full sm:h-24 sm:w-24" />
-              <div className="mt-12 flex-1 space-y-2 sm:mt-14">
+              <Skeleton className="h-24 w-24 shrink-0 rounded-full border-4 border-card" />
+              <div className="mt-12 flex-1 space-y-2">
                 <Skeleton className="h-7 w-48" />
                 <Skeleton className="h-4 w-32" />
               </div>
@@ -7520,151 +14906,318 @@ const ProfilePage = () => {
     );
   }
 
-  return (
-    <div className="mx-auto w-full max-w-4xl p-4 pb-8 sm:p-6">
-      <Card className="overflow-hidden py-0 shadow-sm">
-        <div className="relative">
-          <div className="relative h-36 w-full overflow-hidden sm:h-44 md:h-52">
-            {profile.coverImageUrl ? (
-              <img src={profile.coverImageUrl} alt="" className="h-full w-full object-cover" />
-            ) : (
-              <div className="h-full w-full bg-gradient-to-br from-muted to-muted/60" />
-            )}
-          </div>
+  const isOwnProfile = profile.isMe || isOwnRoute;
 
-          <CardContent className="relative px-4 pb-0 sm:px-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div className="-mt-12 shrink-0 sm:-mt-14">
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-5xl space-y-8">
+      {/* 1. Header Profile Card */}
+      <Card className="overflow-hidden py-0 shadow-sm border-muted/50 bg-card">
+        {/* Cover Photo */}
+        <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-muted">
+          {profile.coverImageUrl ? (
+            <img src={profile.coverImageUrl} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <div className="h-full w-full bg-gradient-to-r from-emerald-600/20 to-emerald-700/40 dark:from-emerald-950/40 dark:to-emerald-900/60" />
+          )}
+        </div>
+
+        {/* Profile Info details overlay area */}
+        <CardContent className="relative px-6 pb-6 pt-0">
+          <div className="flex flex-col lg:flex-row items-start lg:justify-between gap-6">
+            {/* Left: Avatar overlapping cover */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-4 -mt-16 sm:-mt-20 shrink-0">
+              <div className="relative">
                 {profile.profilePictureUrl ? (
                   <img
                     src={profile.profilePictureUrl}
                     alt={profile.fullName}
-                    className="h-20 w-20 rounded-full border-4 border-card object-cover shadow-md sm:h-24 sm:w-24"
+                    className="h-28 w-28 rounded-full border-4 border-card object-cover shadow-md bg-card"
                   />
                 ) : (
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-card bg-muted text-xl font-bold text-muted-foreground shadow-md sm:h-24 sm:w-24 sm:text-2xl">
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full border-4 border-card bg-muted text-3xl font-extrabold text-muted-foreground shadow-md bg-card">
                     {getInitials(profile.fullName)}
                   </div>
                 )}
+                {/* Active online status badge indicator */}
+                <span className="absolute bottom-1 right-2 h-4.5 w-4.5 rounded-full bg-green-500 border-2 border-card shadow" />
               </div>
 
-              <div className="flex shrink-0 sm:pb-1">
-                {profile.isMe ? (
-                  <Button asChild variant="outline" className="w-full rounded-full sm:w-auto">
+              {/* Text profile metadata */}
+              <div className="text-center sm:text-left space-y-1.5 pb-2">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center justify-center sm:justify-start gap-1.5">
+                  {profile.fullName}
+                  <CheckCircle2 className="h-5 w-5 fill-green-500 text-white shrink-0" title="Verified Player" />
+                </h1>
+                
+                {profile.bio && (
+                  <p className="text-sm text-muted-foreground max-w-md line-clamp-2">
+                    {profile.bio}
+                  </p>
+                )}
+
+                {/* City / Country row */}
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 text-xs text-muted-foreground">
+                  {location && (
+                    <span className="flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5 text-primary shrink-0" />
+                      {location}
+                    </span>
+                  )}
+                  <span className="flex items-center gap-1">
+                    <Globe className="h-3.5 w-3.5 text-primary shrink-0" />
+                    Egypt
+                  </span>
+                </div>
+
+                {/* Sports Badge Pills */}
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 pt-1">
+                  {profile.preferredSport !== null && (
+                    <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1 rounded-full px-2.5 py-0.5 text-xs">
+                      {SPORT_NAME_EMOJIS[profile.preferredSport] || "⚽"}{" "}
+                      {profile.preferredSport}
+                    </Badge>
+                  )}
+                  {profile.preferredCity && (
+                    <Badge variant="outline" className="border-emerald-600/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5 gap-1 rounded-full px-2.5 py-0.5 text-xs">
+                      <MapPin className="h-3 w-3 shrink-0" /> {profile.preferredCity}
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Stats Section & Action Buttons */}
+            <div className="w-full lg:w-auto flex flex-col items-center lg:items-end gap-4 lg:pt-4 border-t lg:border-t-0 pt-4 border-muted/55">
+              {/* Counters */}
+              <div className="flex items-center gap-8 sm:gap-10 justify-center">
+                <div className="flex flex-col items-center">
+                  <span className="text-xl sm:text-2xl font-black text-foreground">{profile.postsCount}</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Posts</span>
+                </div>
+                <Link to={`/profile/${profile.userId}/followers`} className="flex flex-col items-center hover:opacity-85">
+                  <span className="text-xl sm:text-2xl font-black text-foreground">
+                    {profile.followersCount >= 1000 ? `${(profile.followersCount / 1000).toFixed(1)}K` : profile.followersCount}
+                  </span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Followers</span>
+                </Link>
+                <Link to={`/profile/${profile.userId}/following`} className="flex flex-col items-center hover:opacity-85">
+                  <span className="text-xl sm:text-2xl font-black text-foreground">{profile.followingCount}</span>
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">Following</span>
+                </Link>
+              </div>
+
+              {/* Edit / Follow button */}
+              <div className="w-full sm:w-auto flex items-center justify-center gap-2">
+                {isOwnProfile ? (
+                  <Button asChild variant="outline" size="sm" className="w-full sm:w-auto rounded-xl gap-1.5 shadow-sm border-muted-foreground/35 hover:border-primary">
                     <Link to="/edit-profile">
-                      <Pencil className="h-4 w-4" aria-hidden="true" />
+                      <Pencil className="h-4 w-4 shrink-0" />
                       Edit Profile
                     </Link>
                   </Button>
                 ) : (
-                  <FollowButton
-                    userId={profile.userId}
-                    isFollowing={profile.isFollowing}
-                    isMe={profile.isMe}
-                    className="w-full sm:w-auto"
-                  />
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <FollowButton
+                      userId={profile.userId}
+                      isFollowing={profile.isFollowing}
+                      isMe={profile.isMe}
+                      className="w-full sm:w-40 rounded-xl"
+                    />
+                    {profile.canSendMessage && (
+                      <Button variant="outline" size="sm" className="rounded-xl shadow-sm border-muted-foreground/35 shrink-0">
+                        Chat
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
 
-            <div className="mt-4 space-y-3">
-              <h1 className="text-xl font-bold text-foreground sm:text-2xl">{profile.fullName}</h1>
+      {/* 2. Upgrade Membership Promo Banner */}
+      {isOwnProfile && member && (
+        <>
+          {!upgradeRequest && (
+            <Card className="bg-emerald-600/5 dark:bg-emerald-950/15 border border-emerald-600/15 shadow-sm rounded-2xl overflow-hidden">
+              <CardContent className="p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-emerald-600/10 dark:bg-emerald-500/15 rounded-xl text-emerald-600 dark:text-emerald-400 shrink-0">
+                    <Award className="h-6 w-6" />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <h3 className="font-bold text-base text-foreground">Unlock more with Sportiva Owner</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Get court bookings, manage sports facilities, and grow your sports community.
+                    </p>
+                  </div>
+                </div>
+                <Button 
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow shrink-0 w-full sm:w-auto font-semibold"
+                  onClick={() => setIsUpgradeModalOpen(true)}
+                >
+                  Upgrade to Owner
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-              {location && (
-                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="h-4 w-4 shrink-0" aria-hidden="true" />
-                  <span>{location}</span>
-                </p>
+          {upgradeRequest && upgradeRequest.status === RequestStatusDto.Pending && (
+            <Card className="bg-amber-500/5 border border-amber-500/15 shadow-sm rounded-2xl overflow-hidden">
+              <CardContent className="p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-amber-500/10 rounded-xl text-amber-500 shrink-0">
+                    <Clock className="h-6 w-6" />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <h3 className="font-bold text-base text-foreground">Upgrade Request Under Review</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Our admins are currently checking your details. We will notify you once approved.
+                    </p>
+                  </div>
+                </div>
+                <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/20 py-2 px-4 rounded-xl shrink-0">
+                  Upgrade Pending
+                </Badge>
+              </CardContent>
+            </Card>
+          )}
+
+          {upgradeRequest && upgradeRequest.status === RequestStatusDto.Rejected && (
+            <Card className="bg-destructive/5 border border-destructive/15 shadow-sm rounded-2xl overflow-hidden">
+              <CardContent className="p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 bg-destructive/10 rounded-xl text-destructive shrink-0">
+                    <XCircle className="h-6 w-6" />
+                  </div>
+                  <div className="text-center sm:text-left">
+                    <h3 className="font-bold text-base text-foreground">Upgrade Request Declined</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Your owner account request was not approved. Review note details and try again.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+                  <Badge variant="destructive" className="py-2 px-4 rounded-xl">
+                    Declined
+                  </Badge>
+                  <Button 
+                    variant="outline" 
+                    className="rounded-xl shadow border-muted-foreground/35"
+                    onClick={() => setIsUpgradeModalOpen(true)}
+                  >
+                    Re-apply
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </>
+      )}
+
+      {/* 3. Main Grid Body Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Left Column: Feed Section */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Tabs header bar */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-4">
+            <TabsList className="bg-transparent p-0 h-auto border-b border-muted flex justify-start gap-6 rounded-none w-full">
+              {["posts", "about", "activities", "favorites"].map((tab) => (
+                <TabsTrigger
+                  key={tab}
+                  value={tab}
+                  className="bg-transparent border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:text-foreground rounded-none px-1 pb-3 text-sm font-semibold capitalize text-muted-foreground transition-all shrink-0 hover:text-foreground"
+                >
+                  {tab}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            <TabsContent value="posts" className="space-y-6 outline-none">
+              {postsLoading && page === 1 ? (
+                <div className="space-y-4">
+                  {Array.from({ length: 3 }).map((_, index) => (
+                    <PostSkeleton key={index} />
+                  ))}
+                </div>
+              ) : posts.length === 0 ? (
+                <Card className="py-16 text-center text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+                  <FileText className="h-10 w-10 mx-auto text-muted-foreground/35 mb-2" />
+                  <h3 className="text-base font-semibold">No posts yet</h3>
+                  <p className="text-sm">Share your sports moments and connect with the community.</p>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  {posts.map((post) => (
+                    <PostCard key={post.postId} post={post} />
+                  ))}
+                </div>
               )}
 
-              <div className="flex flex-wrap items-center gap-2">
-                {sport && (
-                  <Badge variant="secondary" className="rounded-full px-3 py-1">
-                    <span aria-hidden="true">{sport.emoji}</span>
-                    {sport.label}
-                  </Badge>
-                )}
-                {profile.preferredCity && (
-                  <Badge variant="outline" className="rounded-full px-3 py-1">
-                    Preferred: {profile.preferredCity}
-                  </Badge>
-                )}
+              {hasMore && (
+                <div className="mt-6 flex justify-center">
+                  <Button
+                    variant="outline"
+                    onClick={loadMore}
+                    disabled={isFetching}
+                    className="rounded-xl px-6 border-muted-foreground/35"
+                  >
+                    {isFetching ? "Loading..." : "Load more"}
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="about" className="outline-none">
+              {/* Stack widgets on mobile tabs view */}
+              <div className="space-y-6 lg:hidden">
+                <AboutMeWidget bio={profile.bio} createdAt={profile.createdAt} />
+                <PreferredSportsWidget preferredSport={profile.preferredSport} />
               </div>
+              <div className="hidden lg:block text-center py-12 text-sm text-muted-foreground border border-dashed rounded-xl">
+                Please check the sidebar widget on the right for information about the player.
+              </div>
+            </TabsContent>
 
-              {profile.bio && (
-                <p className="max-w-2xl text-sm leading-relaxed text-foreground sm:text-base">
-                  {profile.bio}
-                </p>
-              )}
-            </div>
+            <TabsContent value="activities" className="outline-none">
+              <Card className="py-16 text-center text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+                <Trophy className="h-10 w-10 mx-auto text-muted-foreground/35 mb-2" />
+                <h3 className="text-base font-semibold">No Activities logged</h3>
+                <p className="text-sm">Match activities will display here once completed.</p>
+              </Card>
+            </TabsContent>
 
-            <ProfileStats
-              postsCount={profile.postsCount}
-              followersCount={profile.followersCount}
-              followingCount={profile.followingCount}
-              userId={profile.userId}
-            />
-          </CardContent>
+            <TabsContent value="favorites" className="outline-none">
+              <Card className="py-16 text-center text-muted-foreground bg-muted/20 border border-dashed rounded-xl">
+                <Activity className="h-10 w-10 mx-auto text-muted-foreground/35 mb-2" />
+                <h3 className="text-base font-semibold">No Favorites yet</h3>
+                <p className="text-sm">Your favorite courts and clubs will display here.</p>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
 
-        <section className="px-4 pb-6 sm:px-6" aria-labelledby="profile-posts-heading">
-          <div className="mb-5 flex items-center gap-3">
-            <h2
-              id="profile-posts-heading"
-              className="shrink-0 text-base font-semibold text-foreground sm:text-lg"
-            >
-              Posts
-            </h2>
-            <div className="h-px flex-1 bg-border" aria-hidden="true" />
-          </div>
+        {/* Right Column: Widgets Stack (Desktop Sidebar) */}
+        <div className="hidden lg:flex flex-col gap-6 lg:col-span-1">
+          <AboutMeWidget bio={profile.bio} createdAt={profile.createdAt} />
+          <PreferredSportsWidget preferredSport={profile.preferredSport} />
+        </div>
+      </div>
 
-          {postsLoading && page === 1 ? (
-            <div className="space-y-4" aria-busy="true">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <PostSkeleton key={index} />
-              ))}
-            </div>
-          ) : posts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-12 text-center sm:py-16">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                <FileText className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
-              </div>
-              <p className="font-semibold text-foreground">No posts yet</p>
-              <p className="mt-1 max-w-xs text-sm text-muted-foreground">
-                Share your sports moments and connect with the community.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {posts.map((post) => (
-                <PostCard key={post.postId} post={post} />
-              ))}
-            </div>
-          )}
-
-          {hasMore && (
-            <div className="mt-6 flex justify-center">
-              <Button
-                variant="outline"
-                onClick={loadMore}
-                disabled={isFetching}
-                className="rounded-full px-6"
-              >
-                {isFetching ? "Loading..." : "Load more"}
-              </Button>
-            </div>
-          )}
-        </section>
-      </Card>
+      {/* Upgrade Modal */}
+      {isUpgradeModalOpen && (
+        <MembershipUpgradeModal
+          isOpen={isUpgradeModalOpen}
+          onClose={() => setIsUpgradeModalOpen(false)}
+        />
+      )}
     </div>
   );
-};
-
-export default ProfilePage;
+}
 ```
 
 ## File: src/features/profile/schemas/profileSchemas.ts
-
 ```typescript
 // src/features/profile/schemas/profileSchemas.ts
 import { z } from "zod";
@@ -7692,7 +15245,6 @@ export type UpdateProfileFormValues = z.infer<typeof updateProfileSchema>;
 ```
 
 ## File: src/features/profile/services/profileService.ts
-
 ```typescript
 // src/features/profile/services/profileService.ts
 import { apiClient } from "@/lib/api/client";
@@ -7758,7 +15310,6 @@ export const profileService = new ProfileService();
 ```
 
 ## File: src/features/profile/types/profile.ts
-
 ```typescript
 // src/features/profile/types/profile.ts
 
@@ -7801,6 +15352,7 @@ export interface UserProfileResponse {
   isMe: boolean;
   isFollowing: boolean;
   canSendMessage: boolean;
+  createdAt: string;
 }
 
 export interface ToggleFollowResponse {
@@ -7829,7 +15381,6 @@ export interface UpdateProfileCoverRequest {
 ```
 
 ## File: src/lib/api/client.ts
-
 ```typescript
 // src/lib/api/client.ts
 import axios, {
@@ -8096,7 +15647,6 @@ export const apiClient = new ApiClient();
 ```
 
 ## File: src/lib/api/errors.ts
-
 ```typescript
 // src/lib/api/errors.ts
 import axios, { AxiosError } from "axios";
@@ -8330,7 +15880,6 @@ export const setFormErrors = <T extends Record<string, unknown>>(
 ```
 
 ## File: src/lib/api/index.ts
-
 ```typescript
 // src/lib/api/index.ts
 export { apiClient } from "./client";
@@ -8338,7 +15887,6 @@ export * from "./errors";
 ```
 
 ## File: src/lib/env.ts
-
 ```typescript
 // src/lib/env.ts
 function normalizeApiBaseUrl(raw: string | undefined): string {
@@ -8360,97 +15908,7 @@ export const env = {
 } as const;
 ```
 
-## File: src/lib/jwt.ts
-
-```typescript
-// src/lib/jwt.ts
-import { authService } from "@/features/auth/services/authService";
-
-export interface JwtPayload {
-  sub: string;
-  email: string;
-  given_name: string;
-  family_name: string;
-  jti: string;
-  roles: string[];
-  permissions: string[];
-  exp: number;
-  iss: string;
-  aud: string;
-  [key: string]: unknown; // Allow additional properties
-}
-
-export const decodeJwt = (token: string): JwtPayload | null => {
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return null;
-    const payload = parts[1];
-    const paddedPayload = payload + "=".repeat((4 - (payload.length % 4)) % 4);
-    const decodedPayload = atob(paddedPayload.replace(/-/g, "+").replace(/_/g, "/"));
-    return JSON.parse(decodedPayload) as JwtPayload;
-  } catch (error) {
-    console.error("Failed to decode JWT:", error);
-    return null;
-  }
-};
-
-export const getUserRoles = (): string[] => {
-  const token = authService.getToken();
-  if (!token) return [];
-  const decoded = decodeJwt(token);
-  if (!decoded) return [];
-  const roles =
-    decoded.roles ||
-    decoded.role ||
-    decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
-    decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"] ||
-    [];
-  return Array.isArray(roles) ? (roles as string[]) : [roles as string];
-};
-
-export const getUserPermissions = (): string[] => {
-  const token = authService.getToken();
-  if (!token) return [];
-  const decoded = decodeJwt(token);
-  if (!decoded) return [];
-  const permissions = decoded.permissions || [];
-  return Array.isArray(permissions) ? (permissions as string[]) : [permissions as string];
-};
-
-export const hasRole = (role: string): boolean => getUserRoles().includes(role);
-export const hasPermission = (permission: string): boolean =>
-  getUserPermissions().includes(permission);
-export const getUserId = (): string | null => {
-  const token = authService.getToken();
-  if (!token) return null;
-  const decoded = decodeJwt(token);
-  return decoded?.sub || null;
-};
-
-export const getTokenAccountHints = (): {
-  firstName: string;
-  lastName: string;
-  email: string;
-} | null => {
-  const token = authService.getToken();
-  if (!token) return null;
-  const d = decodeJwt(token);
-  if (!d) return null;
-  const email =
-    (d.email as string) || (d.unique_name as string) || (d.preferred_username as string) || "";
-  const firstName = (d.given_name as string) || "";
-  const lastName = (d.family_name as string) || "";
-  if (!email && !firstName && !lastName) return null;
-  return { firstName: firstName || "Account", lastName, email: email || "" };
-};
-
-export const isCompany = (): boolean => hasRole("Company");
-export const isAdmin = (): boolean => hasRole("Admin");
-export const isMember = (): boolean => hasRole("Member");
-```
-
 ## File: src/lib/queryClient.ts
-
 ```typescript
 // src/lib/queryClient.ts
 import { QueryClient } from "@tanstack/react-query";
@@ -8491,7 +15949,6 @@ export const queryClient = new QueryClient({
 ```
 
 ## File: src/lib/utils.ts
-
 ```typescript
 // src/lib/utils.ts
 import { clsx, type ClassValue } from "clsx";
@@ -8530,7 +15987,6 @@ export function formatRelativeTime(dateString: string | Date): string {
 ```
 
 ## File: src/shared/components/navigation/AppHeader.tsx
-
 ```typescript
 import PublicHeader from "@/shared/components/navigation/PublicHeader";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
@@ -8550,7 +16006,6 @@ export default AppHeader;
 ```
 
 ## File: src/shared/components/navigation/AppLayout.tsx
-
 ```typescript
 import React from "react";
 import { Outlet } from "react-router-dom";
@@ -8606,9 +16061,7 @@ export default AppLayout;
 ```
 
 ## File: src/shared/components/navigation/AppSidebar.tsx
-
 ```typescript
-// c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/shared/components/navigation/AppSidebar.tsx
 import { Link, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -8669,7 +16122,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
     <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
       {/* ── Brand Header ── */}
       <SidebarHeader className="px-4 py-4 border-b border-sidebar-border relative overflow-hidden">
-        {/* Subtle brand gradient accent (Raycast-style) */}
+        {/* Subtle brand gradient accent */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -8740,7 +16193,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Bottom: Settings + Help + Logout ── */}
+      {/* ── Bottom: Settings + Help & Support + Logout ── */}
       <SidebarFooter className="px-3 py-3 border-t border-sidebar-border">
         <SidebarMenu className="gap-0.5">
           {/* Settings */}
@@ -8773,7 +16226,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              tooltip="Help"
+              tooltip="Help & Support"
               onClick={handleLinkClick}
               className={cn(
                 "h-10 px-3 rounded-md transition-colors duration-[var(--duration-normal)] font-medium text-sm relative",
@@ -8790,7 +16243,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
                   )}
                   aria-hidden="true"
                 />
-                <span>Help</span>
+                <span>Help & Support</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -8816,7 +16269,6 @@ export default AppSidebar;
 ```
 
 ## File: src/shared/components/navigation/Footer.tsx
-
 ```typescript
 const Footer = () => {
   return null;
@@ -8826,7 +16278,6 @@ export default Footer;
 ```
 
 ## File: src/shared/components/navigation/MinimalFooter.tsx
-
 ```typescript
 const MinimalFooter = () => {
   return null;
@@ -8836,7 +16287,6 @@ export default MinimalFooter;
 ```
 
 ## File: src/shared/components/navigation/PublicHeader.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/shared/components/navigation/PublicHeader.tsx
 import type { ReactNode } from "react";
@@ -8999,7 +16449,6 @@ export default PublicHeader;
 ```
 
 ## File: src/shared/components/navigation/PublicLayout.tsx
-
 ```typescript
 import PublicHeader from "./PublicHeader";
 import Footer from "./Footer";
@@ -9027,7 +16476,6 @@ export default PublicLayout;
 ```
 
 ## File: src/shared/components/navigation/ScrollToTop.tsx
-
 ```typescript
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -9050,7 +16498,6 @@ export default ScrollToTop;
 ```
 
 ## File: src/shared/components/NotFoundPage.tsx
-
 ```typescript
 import { Link } from "react-router-dom";
 
@@ -9084,7 +16531,6 @@ export default function NotFound() {
 ```
 
 ## File: src/shared/components/theme/ThemeProvider.tsx
-
 ```typescript
 // c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/shared/components/theme/ThemeProvider.tsx
 import { ThemeProvider as NextThemesProvider } from "next-themes";
@@ -9117,7 +16563,6 @@ export function ThemeProvider({
 ```
 
 ## File: src/shared/components/theme/ThemeToggle.tsx
-
 ```typescript
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -9182,7 +16627,6 @@ export function ThemeToggle({ variant = "ghost", size = "icon", className }: The
 ```
 
 ## File: src/shared/components/ThemedToaster.tsx
-
 ```typescript
 import { Toaster } from "sonner";
 import { useTheme } from "next-themes";
@@ -9214,7 +16658,6 @@ export const ThemedToaster = () => {
 ```
 
 ## File: src/shared/components/ui/badge.tsx
-
 ```typescript
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
@@ -9258,7 +16701,6 @@ export { Badge, badgeVariants };
 ```
 
 ## File: src/shared/components/ui/button.tsx
-
 ```typescript
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -9327,7 +16769,6 @@ export { Button, buttonVariants };
 ```
 
 ## File: src/shared/components/ui/card.tsx
-
 ```typescript
 import * as React from "react";
 
@@ -9407,7 +16848,6 @@ export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, C
 ```
 
 ## File: src/shared/components/ui/checkbox.tsx
-
 ```typescript
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
@@ -9439,7 +16879,6 @@ export { Checkbox };
 ```
 
 ## File: src/shared/components/ui/dialog.tsx
-
 ```typescript
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -9540,7 +16979,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/dropdown-menu.tsx
-
 ```typescript
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
@@ -9771,7 +17209,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/form.tsx
-
 ```typescript
 "use client";
 
@@ -9928,7 +17365,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/input.tsx
-
 ```typescript
 import * as React from "react";
 
@@ -9954,7 +17390,6 @@ export { Input };
 ```
 
 ## File: src/shared/components/ui/label.tsx
-
 ```typescript
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
@@ -9978,7 +17413,6 @@ export { Label };
 ```
 
 ## File: src/shared/components/ui/select.tsx
-
 ```typescript
 import * as React from "react";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
@@ -10156,7 +17590,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/separator.tsx
-
 ```typescript
 import * as React from "react";
 import { Separator as SeparatorPrimitive } from "radix-ui";
@@ -10187,7 +17620,6 @@ export { Separator };
 ```
 
 ## File: src/shared/components/ui/sheet.tsx
-
 ```typescript
 "use client";
 
@@ -10326,7 +17758,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/sidebar.tsx
-
 ```typescript
 "use client";
 
@@ -11030,7 +18461,6 @@ export {
 ```
 
 ## File: src/shared/components/ui/skeleton.tsx
-
 ```typescript
 import { cn } from "@/lib/utils";
 
@@ -11048,7 +18478,6 @@ export { Skeleton };
 ```
 
 ## File: src/shared/components/ui/sonner.tsx
-
 ```typescript
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
@@ -11076,7 +18505,6 @@ export { Toaster };
 ```
 
 ## File: src/shared/components/ui/textarea.tsx
-
 ```typescript
 import * as React from "react";
 
@@ -11099,7 +18527,6 @@ export { Textarea };
 ```
 
 ## File: src/shared/components/ui/tooltip.tsx
-
 ```typescript
 import * as React from "react";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
@@ -11154,8 +18581,39 @@ function TooltipContent({
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
 ```
 
-## File: src/shared/hooks/useDebounce.ts
+## File: src/shared/components/UnauthorizedPage.tsx
+```typescript
+import { Button } from "@/shared/components/ui/button";
+import { ShieldAlert } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
+export default function UnauthorizedPage() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">
+      <div className="mb-6 rounded-full bg-destructive/10 p-4">
+        <ShieldAlert className="h-12 w-12 text-destructive" />
+      </div>
+      <h1 className="mb-4 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+        Access Denied
+      </h1>
+      <p className="mb-8 max-w-md text-lg text-muted-foreground">
+        You do not have permission to view this page. Please contact the administrator if you
+        believe this is a mistake.
+      </p>
+      <div className="flex gap-4">
+        <Button onClick={() => navigate(-1)} variant="outline">
+          Go Back
+        </Button>
+        <Button onClick={() => navigate("/")}>Return Home</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+## File: src/shared/hooks/useDebounce.ts
 ```typescript
 import { useState, useEffect } from "react";
 
@@ -11182,7 +18640,6 @@ export function useDebounce<T>(value: T, delay: number): T {
 ```
 
 ## File: src/shared/hooks/useMobile.ts
-
 ```typescript
 import * as React from "react";
 
@@ -11205,33 +18662,7 @@ export function useIsMobile() {
 }
 ```
 
-## File: src/shared/hooks/useSidebarConfig.ts
-
-```typescript
-import type { SidebarConfig } from "@/shared/components/navigation/AppSidebar";
-import { User, FileText } from "lucide-react";
-import { authService } from "@/features/auth/services/authService";
-
-export const useSidebarConfig = (): SidebarConfig | null => {
-  const hasSession = authService.isAuthenticated();
-  if (!hasSession) {
-    return null;
-  }
-
-  const navigationLinks = [
-    { label: "Profile", path: "/profile", icon: User },
-    { label: "Posts", path: "/posts", icon: FileText },
-  ];
-
-  return {
-    navigationLinks,
-    navigationLabel: "Navigation",
-  };
-};
-```
-
 ## File: src/shared/types/api.ts
-
 ```typescript
 // src/shared/types/api.ts
 
@@ -11380,20 +18811,19 @@ export const QUERY_KEYS = {
 ```
 
 ## File: tree.txt
-
 ```
 Folder PATH listing
 Volume serial number is 28EE-D16A
 C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª   index.css
-ª
+ª   
 +---app
 ª   ª   App.tsx
 ª   ª   main.tsx
-ª   ª
+ª   ª   
 ª   +---routes
 ª           index.tsx
-ª
+ª           
 +---assets
 ª   +---imgs
 ª       +---auth
@@ -11402,15 +18832,15 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª       ª       laptop-register.jpg
 ª       ª       team-business-people-stacking-hands.jpg
 ª       ª       vertical-for-vrfiy.webp
-ª       ª
+ª       ª       
 ª       +---home
 ª               hero-new.png
 ª               hero.jpg
-ª
+ª               
 +---features
 ª   +---auth
 ª   ª   ª   index.ts
-ª   ª   ª
+ª   ª   ª   
 ª   ª   +---components
 ª   ª   ª       AuthCard.tsx
 ª   ª   ª       AuthLayout.tsx
@@ -11419,16 +18849,16 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª   ª   ª       LoginForm.tsx
 ª   ª   ª       RegisterForm.tsx
 ª   ª   ª       ResetPasswordForm.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---context
 ª   ª   ª       AuthContext.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---hooks
 ª   ª   ª       useAuth.ts
 ª   ª   ª       useAuthMutations.ts
 ª   ª   ª       useAuthRedirect.ts
 ª   ª   ª       usePermissions.ts
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---pages
 ª   ª   ª       ConfirmEmailPage.tsx
 ª   ª   ª       ForgotPasswordPage.tsx
@@ -11437,17 +18867,17 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª   ª   ª       RegisterPage.tsx
 ª   ª   ª       ResetPasswordPage.tsx
 ª   ª   ª       VerifyEmailPage.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---schemas
 ª   ª   ª       authSchemas.ts
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---services
 ª   ª   ª       authApi.ts
 ª   ª   ª       authService.ts
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---types
 ª   ª           auth.ts
-ª   ª
+ª   ª           
 ª   +---home
 ª   ª   +---components
 ª   ª   ª       AudienceSection.tsx
@@ -11462,13 +18892,13 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª   ª   ª       StatCard.tsx
 ª   ª   ª       StatsSection.tsx
 ª   ª   ª       StepCard.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---pages
 ª   ª           HomePage.tsx
-ª   ª
+ª   ª           
 ª   +---posts
 ª   ª   ª   index.ts
-ª   ª   ª
+ª   ª   ª   
 ª   ª   +---components
 ª   ª   ª       CommentsSection.tsx
 ª   ª   ª       CreatePostBar.tsx
@@ -11476,59 +18906,59 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ª   ª   ª       EditPostModal.tsx
 ª   ª   ª       LikesListModal.tsx
 ª   ª   ª       PostCard.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---hooks
 ª   ª   ª       usePosts.ts
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---pages
 ª   ª   ª       MyPostsPage.tsx
 ª   ª   ª       PostsPage.tsx
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---services
 ª   ª   ª       commentService.ts
 ª   ª   ª       postService.ts
-ª   ª   ª
+ª   ª   ª       
 ª   ª   +---types
 ª   ª           comment.ts
 ª   ª           post.ts
-ª   ª
+ª   ª           
 ª   +---profile
 ª       ª   index.ts
-ª       ª
+ª       ª   
 ª       +---components
 ª       ª       FollowButton.tsx
 ª       ª       ProfileStats.tsx
-ª       ª
+ª       ª       
 ª       +---hooks
 ª       ª       useProfile.ts
-ª       ª
+ª       ª       
 ª       +---pages
 ª       ª       EditProfilePage.tsx
 ª       ª       FollowersPage.tsx
 ª       ª       FollowingPage.tsx
 ª       ª       ProfilePage.tsx
-ª       ª
+ª       ª       
 ª       +---schemas
 ª       ª       profileSchemas.ts
-ª       ª
+ª       ª       
 ª       +---services
 ª       ª       profileService.ts
-ª       ª
+ª       ª       
 ª       +---types
 ª               profile.ts
-ª
+ª               
 +---lib
 ª   ª   env.ts
 ª   ª   jwt.ts
 ª   ª   queryClient.ts
 ª   ª   styleConstants.ts
 ª   ª   utils.ts
-ª   ª
+ª   ª   
 ª   +---api
 ª           client.ts
 ª           errors.ts
 ª           index.ts
-ª
+ª           
 +---shared
     +---components
     ª   ª   BaseLoader.tsx
@@ -11539,7 +18969,7 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
     ª   ª   ThemedToaster.tsx
     ª   ª   UnderConstruction.tsx
     ª   ª   UserCard.tsx
-    ª   ª
+    ª   ª   
     ª   +---navigation
     ª   ª       AppHeader.tsx
     ª   ª       AppLayout.tsx
@@ -11549,11 +18979,11 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
     ª   ª       PublicHeader.tsx
     ª   ª       PublicLayout.tsx
     ª   ª       ScrollToTop.tsx
-    ª   ª
+    ª   ª       
     ª   +---theme
     ª   ª       ThemeProvider.tsx
     ª   ª       ThemeToggle.tsx
-    ª   ª
+    ª   ª       
     ª   +---ui
     ª           alert.tsx
     ª           badge.tsx
@@ -11577,19 +19007,18 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
     ª           tabs.tsx
     ª           textarea.tsx
     ª           tooltip.tsx
-    ª
+    ª           
     +---hooks
     ª       index.ts
     ª       useDebounce.ts
     ª       useMobile.ts
     ª       useSidebarConfig.ts
-    ª
+    ª       
     +---types
             api.ts
 ```
 
 ## File: tsconfig.app.json
-
 ```json
 {
   "compilerOptions": {
@@ -11624,7 +19053,6 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ```
 
 ## File: tsconfig.json
-
 ```json
 {
   "files": [],
@@ -11639,7 +19067,6 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ```
 
 ## File: tsconfig.node.json
-
 ```json
 {
   "compilerOptions": {
@@ -11670,7 +19097,6 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ```
 
 ## File: vercel.json
-
 ```json
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }]
@@ -11678,7 +19104,6 @@ C:\USERS\AIO\DOWNLOADS\FRONTENDPROJECT-MAIN\FRONTENDPROJECT-MAIN\SRC
 ```
 
 ## File: verify-rebuild.sh
-
 ```bash
 #!/bin/bash
 # verify-rebuild.sh - Quick verification script for Sportiva
@@ -11719,7 +19144,6 @@ echo "Passed: $PASSED | Failed: $FAILED"
 ```
 
 ## File: vite.config.ts
-
 ```typescript
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
@@ -11756,4 +19180,471 @@ export default defineConfig({
     },
   },
 });
+```
+
+## File: src/app/routes/index.tsx
+```typescript
+// src/app/routes/index.tsx
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import PublicLayout from "@/shared/components/navigation/PublicLayout";
+import AppLayout from "@/shared/components/navigation/AppLayout";
+import ScrollToTop from "@/shared/components/navigation/ScrollToTop";
+import { AuthLayout } from "@/features/auth/components/AuthLayout";
+import NotFoundPage from "@/shared/components/NotFoundPage";
+import UnauthorizedPage from "@/shared/components/UnauthorizedPage";
+import { RoleProtectedRoute } from "@/features/auth/components/RoleProtectedRoute";
+import { UserRole } from "@/features/auth/types/auth";
+
+// Clubs
+import ClubsPage from "@/features/clubs/pages/ClubsPage";
+import ClubDetailsPage from "@/features/clubs/pages/ClubDetailsPage";
+import OwnerClubDashboardPage from "@/features/clubs/pages/OwnerClubDashboardPage";
+import CourtsPage from "@/features/clubs/pages/CourtsPage";
+import CourtDetailsPage from "@/features/clubs/pages/CourtDetailsPage";
+
+// Subscriptions
+import PlansPage from "@/features/subscriptions/pages/PlansPage";
+import AdminPlansPage from "@/features/subscriptions/pages/AdminPlansPage";
+
+// Bookings
+import BookingsPage from "@/features/bookings/pages/BookingsPage";
+
+// Memberships
+import AdminUpgradeRequestsPage from "@/features/memberships/pages/AdminUpgradeRequestsPage";
+
+// Friendly Matches
+import MatchesPage from "@/features/matches/pages/MatchesPage";
+import MatchDetailsPage from "@/features/matches/pages/MatchDetailsPage";
+
+// Home
+import HomePage from "@/features/home/pages/HomePage";
+
+// Auth
+import LoginPage from "@/features/auth/pages/LoginPage";
+import RegisterPage from "@/features/auth/pages/RegisterPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
+import VerifyEmailPage from "@/features/auth/pages/VerifyEmailPage";
+import ConfirmEmailPage from "@/features/auth/pages/ConfirmEmailPage";
+import OAuthCallbackPage from "@/features/auth/pages/OAuthCallbackPage";
+
+// Profile
+import ProfilePage from "@/features/profile/pages/ProfilePage";
+import EditProfilePage from "@/features/profile/pages/EditProfilePage";
+import FollowersPage from "@/features/profile/pages/FollowersPage";
+import FollowingPage from "@/features/profile/pages/FollowingPage";
+
+// Posts
+import PostsPage from "@/features/posts/pages/PostsPage";
+import MyPostsPage from "@/features/posts/pages/MyPostsPage";
+
+const MainRouter = () => {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <>
+      <ScrollToTop />
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route
+            index
+            element={isAuthenticated ? <Navigate to="/profile" replace /> : <HomePage />}
+          />
+        </Route>
+
+        {/* Protected */}
+        <Route element={<AppLayout />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/my/followers" element={<FollowersPage />} />
+          <Route path="/profile/my/following" element={<FollowingPage />} />
+          <Route path="/profile/:userId/followers" element={<FollowersPage />} />
+          <Route path="/profile/:userId/following" element={<FollowingPage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/edit-profile" element={<EditProfilePage />} />
+          <Route path="/posts" element={<PostsPage />} />
+          <Route path="/posts/my" element={<MyPostsPage />} />
+
+          {/* Public Clubs Routes (inside AppLayout to show navbar) */}
+          <Route path="/clubs" element={<ClubsPage />} />
+          <Route path="/clubs/:clubId" element={<ClubDetailsPage />} />
+          <Route path="/clubs/:clubId/courts/:courtId" element={<CourtDetailsPage />} />
+          <Route path="/courts" element={<CourtsPage />} />
+          <Route path="/plans" element={<PlansPage />} />
+          <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/matches" element={<MatchesPage />} />
+          <Route path="/matches/:matchId" element={<MatchDetailsPage />} />
+
+          {/* Owner Protected Routes */}
+          <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Owner]} />}>
+            <Route path="/owner/clubs/:clubId/dashboard" element={<OwnerClubDashboardPage />} />
+          </Route>
+
+          {/* Admin Protected Routes */}
+          <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Admin]} />}>
+            <Route path="/admin/plans" element={<AdminPlansPage />} />
+            <Route path="/admin/membership-requests" element={<AdminUpgradeRequestsPage />} />
+          </Route>
+        </Route>
+
+        {/* Auth */}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/profile" replace />
+            ) : (
+              <AuthLayout variant="login">
+                <LoginPage />
+              </AuthLayout>
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/profile" replace />
+            ) : (
+              <AuthLayout variant="register">
+                <RegisterPage />
+              </AuthLayout>
+            )
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <AuthLayout variant="forgot">
+              <ForgotPasswordPage />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/auth/forgetPassword"
+          element={
+            <AuthLayout variant="reset">
+              <ResetPasswordPage />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/resetPassword"
+          element={
+            <AuthLayout variant="reset">
+              <ResetPasswordPage />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/emailConfirmation"
+          element={
+            <AuthLayout variant="verify">
+              <VerifyEmailPage />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/auth/emailConfirmation"
+          element={
+            <AuthLayout variant="verify">
+              <ConfirmEmailPage />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/confirm-email"
+          element={
+            <AuthLayout variant="verify">
+              <ConfirmEmailPage />
+            </AuthLayout>
+          }
+        />
+        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+
+        {/* 404 & Unauthorized */}
+        <Route path="*" element={<PublicLayout />}>
+          <Route index element={<NotFoundPage />} />
+        </Route>
+        <Route path="/unauthorized" element={<PublicLayout />}>
+          <Route index element={<UnauthorizedPage />} />
+        </Route>
+      </Routes>
+    </>
+  );
+};
+
+export default MainRouter;
+```
+
+## File: src/features/auth/types/auth.ts
+```typescript
+// src/features/auth/types/auth.ts
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface ForgetPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
+export interface ResendConfirmationEmailRequest {
+  email: string;
+}
+
+export interface ConfirmationEmailRequest {
+  userId: string;
+  code: string;
+}
+
+export interface RefreshTokenRequest {
+  token: string;
+  refreshToken: string;
+}
+
+export interface RevokeRefreshTokenRequest {
+  token: string;
+  refreshToken: string;
+}
+
+export interface LoginResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  token: string;
+  refreshToken: string;
+  expiresIn: number;
+  refreshTokenExpiration: string;
+}
+
+export interface RefreshTokenResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  token: string;
+  refreshToken: string;
+  expiresIn: number;
+  refreshTokenExpiration: string;
+}
+
+export const UserRole = {
+  Admin: "Admin",
+  Owner: "Owner",
+  Member: "Member",
+} as const;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
+
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  userName?: string;
+  isEmailConfirmed?: boolean;
+  role?: UserRole | UserRole[]; // Accept single role or array of roles depending on the backend
+}
+
+export interface ApiError {
+  message: string;
+  errors?: Record<string, string[]>;
+  statusCode: number;
+  type?: string;
+  title?: string;
+  traceId?: string;
+}
+
+export interface ApiResponse<T = unknown> {
+  data?: T;
+  message?: string;
+  success: boolean;
+}
+
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+export const QUERY_KEYS = {
+  auth: {
+    user: ["auth", "user"] as const,
+    profile: ["auth", "profile"] as const,
+  },
+} as const;
+```
+
+## File: src/lib/jwt.ts
+```typescript
+// src/lib/jwt.ts
+import { authService } from "@/features/auth/services/authService";
+
+export interface JwtPayload {
+  sub: string;
+  email: string;
+  given_name: string;
+  family_name: string;
+  jti: string;
+  roles: string[];
+  permissions: string[];
+  exp: number;
+  iss: string;
+  aud: string;
+  [key: string]: unknown; // Allow additional properties
+}
+
+export const decodeJwt = (token: string): JwtPayload | null => {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+    const payload = parts[1];
+    const paddedPayload = payload + "=".repeat((4 - (payload.length % 4)) % 4);
+    const decodedPayload = atob(paddedPayload.replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(decodedPayload) as JwtPayload;
+  } catch (error) {
+    console.error("Failed to decode JWT:", error);
+    return null;
+  }
+};
+
+export const getUserRoles = (): string[] => {
+  const token = authService.getToken();
+  if (!token) return [];
+  const decoded = decodeJwt(token);
+  if (!decoded) return [];
+  let roles =
+    decoded.roles ||
+    decoded.role ||
+    decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
+    decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/role"] ||
+    [];
+
+  if (typeof roles === "string" && roles.startsWith("[")) {
+    try {
+      roles = JSON.parse(roles);
+    } catch {
+      // Ignore
+    }
+  }
+
+  return Array.isArray(roles) ? (roles as string[]) : [roles as string];
+};
+
+export const getUserPermissions = (): string[] => {
+  const token = authService.getToken();
+  if (!token) return [];
+  const decoded = decodeJwt(token);
+  if (!decoded) return [];
+  let permissions = decoded.permissions || [];
+
+  if (typeof permissions === "string" && permissions.startsWith("[")) {
+    try {
+      permissions = JSON.parse(permissions);
+    } catch {
+      // Ignore
+    }
+  }
+
+  return Array.isArray(permissions) ? (permissions as string[]) : [permissions as string];
+};
+
+export const hasRole = (role: string): boolean => getUserRoles().includes(role);
+export const hasPermission = (permission: string): boolean =>
+  getUserPermissions().includes(permission);
+export const getUserId = (): string | null => {
+  const token = authService.getToken();
+  if (!token) return null;
+  const decoded = decodeJwt(token);
+  return decoded?.sub || null;
+};
+
+export const getTokenAccountHints = (): {
+  firstName: string;
+  lastName: string;
+  email: string;
+} | null => {
+  const token = authService.getToken();
+  if (!token) return null;
+  const d = decodeJwt(token);
+  if (!d) return null;
+  const email =
+    (d.email as string) || (d.unique_name as string) || (d.preferred_username as string) || "";
+  const firstName = (d.given_name as string) || "";
+  const lastName = (d.family_name as string) || "";
+  if (!email && !firstName && !lastName) return null;
+  return { firstName: firstName || "Account", lastName, email: email || "" };
+};
+
+export const isOwner = (): boolean => hasRole("Owner");
+export const isAdmin = (): boolean => hasRole("Admin");
+export const isMember = (): boolean => hasRole("Member");
+```
+
+## File: src/shared/hooks/useSidebarConfig.ts
+```typescript
+import type { SidebarConfig } from "@/shared/components/navigation/AppSidebar";
+import { User, FileText, Shield, Building, Tent, CreditCard, Calendar, UserCheck, Trophy } from "lucide-react";
+import { authService } from "@/features/auth/services/authService";
+import { isAdmin, isOwner, isMember, getUserRoles } from "@/lib/jwt";
+
+export const useSidebarConfig = (): SidebarConfig | null => {
+  const hasSession = authService.isAuthenticated();
+  if (!hasSession) {
+    return null;
+  }
+
+  const navigationLinks = [
+    { label: "Profile", path: "/profile", icon: User },
+    { label: "Posts", path: "/posts", icon: FileText },
+    { label: "Pricing Plans", path: "/plans", icon: CreditCard },
+  ];
+
+  console.log("DEBUG: Roles in Sidebar Config =>", {
+    roles: getUserRoles(),
+    isAdmin: isAdmin(),
+    isOwner: isOwner(),
+    isMember: isMember(),
+  });
+
+  if (isAdmin()) {
+    navigationLinks.push({ label: "Manage Clubs", path: "/clubs", icon: Shield });
+    navigationLinks.push({ label: "Manage Courts", path: "/courts", icon: Tent });
+    navigationLinks.push({ label: "Manage Plans", path: "/admin/plans", icon: CreditCard });
+    navigationLinks.push({ label: "Upgrade Requests", path: "/admin/membership-requests", icon: UserCheck });
+  } else if (isOwner()) {
+    navigationLinks.push({ label: "My Clubs", path: "/clubs", icon: Building });
+    navigationLinks.push({ label: "My Courts", path: "/courts", icon: Tent });
+    navigationLinks.push({ label: "Club Bookings", path: "/bookings", icon: Calendar });
+    navigationLinks.push({ label: "Friendly Matches", path: "/matches", icon: Trophy });
+  } else if (isMember()) {
+    navigationLinks.push({ label: "Browse Clubs", path: "/clubs", icon: Building });
+    navigationLinks.push({ label: "Browse Courts", path: "/courts", icon: Tent });
+    navigationLinks.push({ label: "My Bookings", path: "/bookings", icon: Calendar });
+    navigationLinks.push({ label: "Friendly Matches", path: "/matches", icon: Trophy });
+  }
+
+  return {
+    navigationLinks,
+    navigationLabel: `Navigation (Roles: ${JSON.stringify(getUserRoles())})`,
+  };
+};
 ```

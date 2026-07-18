@@ -31,12 +31,7 @@ export const useLogin = () => {
       try {
         const fullUser = await apiClient.getMe();
         authService.updateUser(fullUser);
-        queryClient.setQueryData(QUERY_KEYS.auth.user, {
-          id: fullUser.id,
-          firstName: fullUser.firstName,
-          lastName: fullUser.lastName,
-          email: fullUser.email,
-        });
+        queryClient.setQueryData(QUERY_KEYS.auth.user, fullUser);
         queryClient.setQueryData([QUERY_KEYS.auth.user, "me"], fullUser);
         toast.success("Login successful!");
         navigate("/profile");

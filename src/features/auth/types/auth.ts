@@ -78,6 +78,9 @@ export interface User {
   userName?: string;
   isEmailConfirmed?: boolean;
   role?: UserRole | UserRole[]; // Accept single role or array of roles depending on the backend
+  profilePhotoUrl?: string | null;
+  coverPhotoUrl?: string | null;
+  phoneNumber?: string | null;
 }
 
 export interface ApiError {

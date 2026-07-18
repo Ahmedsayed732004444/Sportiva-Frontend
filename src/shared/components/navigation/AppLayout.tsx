@@ -29,7 +29,7 @@ const AppLayout = () => {
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "13rem",
+          "--sidebar-width": "12rem",
           "--sidebar-width-icon": "3rem",
         } as React.CSSProperties
       }
