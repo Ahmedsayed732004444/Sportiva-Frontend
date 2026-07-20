@@ -124,8 +124,22 @@ const getStatusMeta = (status: MatchStatusDto | number | string) => {
   };
 };
 
-const getRequestMeta = (status: JoinRequestStatusDto | number | string) => {
-  const s = typeof status === "number" ? status : Number(status);
+const parseJoinRequestStatus = (status: unknown): JoinRequestStatusDto => {
+  if (typeof status === "number") return status as JoinRequestStatusDto;
+  if (typeof status === "string") {
+    const trimmed = status.trim().toLowerCase();
+    if (trimmed === "pending" || trimmed === "0") return JoinRequestStatusDto.Pending;
+    if (trimmed === "accepted" || trimmed === "1") return JoinRequestStatusDto.Accepted;
+    if (trimmed === "rejected" || trimmed === "2") return JoinRequestStatusDto.Rejected;
+    if (trimmed === "withdrawn" || trimmed === "3") return JoinRequestStatusDto.Withdrawn;
+    const num = Number(status);
+    if (!isNaN(num)) return num as JoinRequestStatusDto;
+  }
+  return JoinRequestStatusDto.Pending;
+};
+
+const getRequestMeta = (status: unknown) => {
+  const s = parseJoinRequestStatus(status);
   if (s === JoinRequestStatusDto.Pending)
     return { label: "Pending", cls: "bg-warning/10 text-warning border-warning/20" };
   if (s === JoinRequestStatusDto.Accepted)
@@ -134,7 +148,7 @@ const getRequestMeta = (status: JoinRequestStatusDto | number | string) => {
     return { label: "Rejected", cls: "bg-destructive/10 text-destructive border-destructive/20" };
   if (s === JoinRequestStatusDto.Withdrawn)
     return { label: "Withdrawn", cls: "bg-muted text-muted-foreground border-border" };
-  return { label: "Unknown", cls: "bg-muted text-muted-foreground border-border" };
+  return { label: "Pending", cls: "bg-warning/10 text-warning border-warning/20" };
 };
 
 /* ─────────────────────── skeleton ─────────────────────── */
@@ -183,10 +197,9 @@ export default function MatchDetailsPage() {
     isFetchingNextPage: isFetchingNextRequests,
   } = useInfiniteMatchJoinRequests(matchId as string, {}, { enabled: !!matchId && isOrganizer });
   const requests = requestsData?.pages.flatMap((page) => page.items) || [];
-  const pendingCount = requests.filter((r) => {
-    const s = typeof r.status === "number" ? r.status : Number(r.status);
-    return s === 0;
-  }).length;
+  const pendingCount = requests.filter(
+    (r) => parseJoinRequestStatus(r.status) === JoinRequestStatusDto.Pending
+  ).length;
 
   const { data: myRequestsData } = useQuery({
     queryKey: ["join-requests", "my-pending"],
@@ -624,9 +637,7 @@ export default function MatchDetailsPage() {
                         {requests.map((req) => {
                           const rm = getRequestMeta(req.status);
                           const isPending =
-                            typeof req.status === "number"
-                              ? req.status === 0
-                              : Number(req.status) === 0;
+                            parseJoinRequestStatus(req.status) === JoinRequestStatusDto.Pending;
 
                           const rawReq = req as unknown as MatchJoinRequestLike;
                           const p =
