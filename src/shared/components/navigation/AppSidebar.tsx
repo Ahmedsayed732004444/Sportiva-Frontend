@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { type LucideIcon, Settings, LogOut, HelpCircle } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
+import { SportivaLogo } from "@/shared/components/common/SportivaLogo";
+
 export interface SidebarLink {
   label: string;
   path: string;
@@ -66,39 +68,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
           onClick={handleLinkClick}
           className="flex items-center gap-3 group-data-[state=collapsed]:justify-center relative"
         >
-          {/* Stylized sports green S logo */}
-          <div className="h-10 w-10 shrink-0 bg-[#20A854]/10 border border-[#20A854]/25 rounded-xl flex items-center justify-center transition-all group-hover:scale-105">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5.5 w-5.5 text-[#20A854]"
-            >
-              {/* S shape represented dynamically */}
-              <path
-                d="M12 2a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10a10 10 0 0 0 10-10"
-                className="opacity-10"
-              />
-              <path d="M8 17c1.5-1.5 4.5-1.5 6 0" />
-              <path d="M10 7C11.5 8.5 14.5 8.5 16 7" />
-              <path d="M7 12h10" />
-              <path d="M12 7v10" />
-            </svg>
-          </div>
-          <div className="flex flex-col group-data-[state=collapsed]:hidden text-left">
-            <span
-              className="text-lg font-black text-white tracking-tight leading-none"
-              style={{ fontFamily: "'Cabinet Grotesk', 'Inter', system-ui, sans-serif" }}
-            >
-              Sportiva
-            </span>
-            <span className="text-[10px] text-[#20A854] font-bold uppercase tracking-widest mt-1">
-              Play. Connect. Win.
-            </span>
-          </div>
+          <SportivaLogo showText={true} size="md" />
         </Link>
       </SidebarHeader>
 

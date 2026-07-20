@@ -18,6 +18,8 @@ import {
 } from "@/shared/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+import { SportivaLogo } from "@/shared/components/common/SportivaLogo";
+
 interface PublicHeaderProps {
   leading?: ReactNode;
   hideLogo?: boolean;
@@ -53,7 +55,7 @@ const PublicHeader = ({ leading, hideLogo }: PublicHeaderProps) => {
             {/* Logo */}
             {!hideLogo && (
               <Link to="/" className="flex items-center gap-2 shrink-0 group">
-                <span className="text-xl font-bold tracking-tight text-primary">Sportiva</span>
+                <SportivaLogo showText={true} size="md" />
               </Link>
             )}
 
