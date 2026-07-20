@@ -57,6 +57,8 @@ import MyPostsPage from "@/features/posts/pages/MyPostsPage";
 // Chat
 import ChatPage from "@/features/chat/pages/ChatPage";
 
+import HelpPage from "@/features/help/pages/HelpPage";
+
 const MainRouter = () => {
   const { isAuthenticated } = useAuth();
 
@@ -70,6 +72,7 @@ const MainRouter = () => {
             index
             element={isAuthenticated ? <Navigate to="/profile" replace /> : <HomePage />}
           />
+          <Route path="/help" element={<HelpPage />} />
         </Route>
 
         {/* Protected */}
@@ -94,6 +97,7 @@ const MainRouter = () => {
           <Route path="/bookings" element={<BookingsPage />} />
           <Route path="/matches" element={<MatchesPage />} />
           <Route path="/matches/:matchId" element={<MatchDetailsPage />} />
+          <Route path="/help" element={<HelpPage />} />
 
           {/* Owner Protected Routes */}
           <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Owner]} />}>

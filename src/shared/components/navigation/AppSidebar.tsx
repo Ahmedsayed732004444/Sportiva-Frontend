@@ -12,7 +12,7 @@ import {
   useSidebar,
 } from "@/shared/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-import { type LucideIcon, Settings, LogOut, HelpCircle } from "lucide-react";
+import { type LucideIcon, LogOut, HelpCircle } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 import { SportivaLogo } from "@/shared/components/common/SportivaLogo";
@@ -113,37 +113,9 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Bottom: Settings + Help & Support + Logout ── */}
+      {/* ── Bottom: Help & Support + Logout ── */}
       <SidebarFooter className="px-3 py-4 border-t border-gray-700/30 bg-[#161F30] shrink-0">
         <SidebarMenu className="gap-1">
-          {/* Settings */}
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              tooltip="Settings"
-              onClick={handleLinkClick}
-              className={cn(
-                "h-11 px-3 rounded-xl transition-all font-semibold text-sm relative border border-transparent",
-                isActive("/settings")
-                  ? "bg-[#1F3438] text-[#20A854] border-[#20A854]/20 shadow-sm"
-                  : "text-gray-400 hover:bg-[#1E2A40] hover:text-white"
-              )}
-            >
-              <Link to="/settings" className="flex items-center gap-3">
-                <Settings
-                  className={cn(
-                    "h-5 w-5 shrink-0 transition-colors",
-                    isActive("/settings")
-                      ? "text-[#20A854]"
-                      : "text-gray-400 group-hover:text-white"
-                  )}
-                  aria-hidden="true"
-                />
-                <span>Settings</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
           {/* Help */}
           <SidebarMenuItem>
             <SidebarMenuButton

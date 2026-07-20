@@ -203,12 +203,8 @@ const ConfirmEmailPage: React.FC = () => {
                   </div>
                 </form>
               )}
-              <Button
-                variant="outline"
-                onClick={() => navigate("/profile/settings")}
-                className="w-full"
-              >
-                Back to Settings
+              <Button variant="outline" onClick={() => navigate("/profile")} className="w-full">
+                Back to Profile
               </Button>
             </CardContent>
           </Card>
