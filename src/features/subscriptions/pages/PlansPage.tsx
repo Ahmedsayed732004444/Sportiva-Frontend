@@ -10,9 +10,10 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/common/EmptyState";
+import { ConfirmDialog } from "@/shared/components/common/ConfirmDialog";
+import { MembershipUpgradeModal } from "@/features/memberships/components/MembershipUpgradeModal";
 import { AlertCircle, Check, CreditCard, Rocket } from "lucide-react";
 import { isOwner } from "@/lib/jwt";
-import { toast } from "sonner";
 import { SelectClubModal } from "../components/SelectClubModal";
 import type { SubscriptionPlanResponse } from "../types/plans";
 
@@ -42,12 +43,14 @@ function PlansGridSkeleton() {
 export default function PlansPage() {
   const { data: plans, isLoading, isError, refetch, isFetching } = useGetPlans();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlanResponse | null>(null);
+  const [isUpgradePromptOpen, setIsUpgradePromptOpen] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const activePlans = plans?.filter((plan) => plan.isActive) || [];
 
   const handleSubscribeClick = (plan: SubscriptionPlanResponse) => {
     if (!isOwner()) {
-      toast.error("Only Club Owners can subscribe to pricing plans.");
+      setIsUpgradePromptOpen(true);
       return;
     }
     setSelectedPlan(plan);
@@ -190,6 +193,21 @@ export default function PlansPage() {
           planName={selectedPlan.name}
         />
       )}
+
+      <ConfirmDialog
+        open={isUpgradePromptOpen}
+        onOpenChange={setIsUpgradePromptOpen}
+        title="Upgrade to Club Owner Required"
+        description="You need a Club Owner account to subscribe to pricing plans. Do you want to upgrade your account to Club Owner now?"
+        confirmLabel="Upgrade Now"
+        cancelLabel="Cancel"
+        onConfirm={() => setIsUpgradeModalOpen(true)}
+      />
+
+      <MembershipUpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      />
     </div>
   );
 }

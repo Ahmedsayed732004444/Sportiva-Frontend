@@ -47,7 +47,13 @@ const PublicHeader = ({ leading, hideLogo }: PublicHeaderProps) => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[100] border-b border-border bg-background/95 backdrop-blur-md transition-[left] duration-200 ease-linear md:group-data-[state=expanded]/sidebar-wrapper:left-(--sidebar-width) md:group-data-[state=collapsed]/sidebar-wrapper:left-(--sidebar-width-icon)">
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-[100] border-b border-border bg-background/95 backdrop-blur-md transition-[left] duration-200 ease-linear",
+        hideLogo &&
+          "md:group-data-[state=expanded]/sidebar-wrapper:left-[var(--sidebar-width,14rem)] md:group-data-[state=collapsed]/sidebar-wrapper:left-[var(--sidebar-width-icon,4rem)]"
+      )}
+    >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between gap-2">
           <div className="flex min-w-0 flex-1 items-center gap-2 md:gap-6">

@@ -85,7 +85,7 @@ export default function BookingsPage() {
   const [selectedClubId, setSelectedClubId] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [timeframeFilter, setTimeframeFilter] = useState<string>("upcoming");
+  const [timeframeFilter, setTimeframeFilter] = useState<string>("all");
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [receiptBookingId, setReceiptBookingId] = useState<string | null>(null);
   const [reviewBookingId, setReviewBookingId] = useState<string | null>(null);
@@ -405,7 +405,7 @@ export default function BookingsPage() {
                     id="timeframe-filter"
                     className="h-11 rounded-lg text-xs font-semibold text-primary"
                   >
-                    <SelectValue placeholder="Upcoming bookings" />
+                    <SelectValue placeholder="All bookings" />
                   </SelectTrigger>
                   <SelectContent className="rounded-lg">
                     <SelectItem value="all">All bookings</SelectItem>
