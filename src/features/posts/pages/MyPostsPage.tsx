@@ -8,6 +8,7 @@ import { CreatePostModal } from "@/features/posts/components/CreatePostModal";
 import { usePaginatedUserPosts } from "@/features/posts/hooks/usePaginatedUserPosts";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
 
 const PostSkeleton = () => (
   <div className="space-y-3 rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -61,18 +62,11 @@ const MyPostsPage = () => {
             ))}
           </div>
 
-          {hasMore && (
-            <div className="mt-6 flex justify-center">
-              <Button
-                variant="outline"
-                onClick={loadMore}
-                disabled={isFetching}
-                className="rounded-full px-6"
-              >
-                {isFetching ? "Loading..." : "Load More"}
-              </Button>
-            </div>
-          )}
+          <InfiniteScrollSentinel
+            hasNextPage={hasMore}
+            isFetchingNextPage={isFetching}
+            onLoadMore={loadMore}
+          />
         </>
       )}
     </div>

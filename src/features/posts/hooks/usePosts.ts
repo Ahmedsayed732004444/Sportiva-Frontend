@@ -1,5 +1,5 @@
 // src/features/posts/hooks/usePosts.ts
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { postService } from "@/features/posts/services/postService";
@@ -99,6 +99,31 @@ export const useUserPosts = (userId: string, params?: PostsQueryParams) => {
   return useQuery({
     queryKey: ["user-posts", userId, params],
     queryFn: () => postService.getUserPostsById(userId, params),
+    enabled: !!userId,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useInfinitePosts = (params?: PostsQueryParams) => {
+  return useInfiniteQuery({
+    queryKey: ["infinite-posts", params],
+    queryFn: ({ pageParam = 1 }) =>
+      postService.getPosts({ ...params, pageNumber: pageParam, pageSize: 6 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useInfiniteUserPosts = (userId: string, params?: PostsQueryParams) => {
+  return useInfiniteQuery({
+    queryKey: ["infinite-user-posts", userId, params],
+    queryFn: ({ pageParam = 1 }) =>
+      postService.getUserPostsById(userId, { ...params, pageNumber: pageParam, pageSize: 6 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
     enabled: !!userId,
     staleTime: 2 * 60 * 1000,
   });

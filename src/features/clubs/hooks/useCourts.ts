@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { courtsApi } from "../api/courtsApi";
 import type { CreateCourtRequest, UpdateCourtRequest, RequestFilters } from "../types/clubs";
 import { toast } from "sonner";
@@ -28,6 +28,24 @@ export const useSearchCourts = (
   return useQuery({
     queryKey: COURTS_QUERY_KEYS.search(filters, sport, city, date),
     queryFn: () => courtsApi.searchCourts(filters, sport, city, date),
+    ...options,
+  });
+};
+
+export const useInfiniteSearchCourts = (
+  filters: RequestFilters = {},
+  sport?: number,
+  city?: string,
+  date?: string,
+  options?: { enabled?: boolean; lat?: number; lng?: number }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...COURTS_QUERY_KEYS.search(filters, sport, city, date), "infinite", options?.lat, options?.lng],
+    queryFn: ({ pageParam = 1 }) =>
+      courtsApi.searchCourts({ ...filters, pageNumber: pageParam, pageSize: 6 }, sport, city, date, options?.lat, options?.lng),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
     ...options,
   });
 };

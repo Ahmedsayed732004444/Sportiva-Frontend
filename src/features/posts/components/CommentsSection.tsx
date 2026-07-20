@@ -1,5 +1,6 @@
 // src/features/posts/components/CommentsSection.tsx
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Heart, MessageCircle, MoreHorizontal, Pencil, Send, Trash2 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
@@ -26,18 +27,13 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import { UserAvatar } from "@/shared/components/common/UserAvatar";
 
 interface CommentsSectionProps {
   postId: string;
 }
 
-const getInitials = (name: string) =>
-  name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+
 
 const CommentSkeleton = () => (
   <div className="flex gap-3 py-3">
@@ -76,6 +72,31 @@ const CommentItem = ({
 
   const isOwner = comment.isOwner || user?.id === comment.author.userId;
   const commentId = "replyId" in comment ? comment.replyId : comment.commentId;
+
+  const [searchParams] = useSearchParams();
+  const highlightedCommentId = searchParams.get("comment");
+  const highlightedReplyId = searchParams.get("reply");
+
+  const isHighlighted = isReply
+    ? highlightedReplyId === commentId
+    : highlightedCommentId === commentId && !highlightedReplyId;
+
+  const commentRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (isHighlighted) {
+      setTimeout(() => {
+        commentRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 500);
+    }
+  }, [isHighlighted]);
+
+  // If a reply to this comment is highlighted, open the replies drawer automatically
+  useEffect(() => {
+    if (!isReply && highlightedCommentId === comment.commentId && highlightedReplyId) {
+      setReplyOpen(true);
+    }
+  }, [highlightedCommentId, highlightedReplyId, isReply, comment.commentId]);
 
   const handleLike = () => {
     const wasLiked = liked;
@@ -139,25 +160,29 @@ const CommentItem = ({
   const isPendingUpdate = isReply ? updateReply.isPending : updateComment.isPending;
   const isPendingDelete = isReply ? deleteReply.isPending : deleteComment.isPending;
 
+  const authorId = comment.author.userId || (comment.author as any).userProfileId;
+  const authorProfileLink = authorId ? `/profile/${authorId}` : "#";
+
   return (
-    <div className={cn("flex gap-3 py-3", isReply && "ml-12 border-l-2 border-border pl-3")}>
-      {comment.author.profilePictureUrl ? (
-        <img
-          src={comment.author.profilePictureUrl}
-          alt={comment.author.fullName}
-          className="h-8 w-8 shrink-0 rounded-full object-cover"
-        />
-      ) : (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold text-muted-foreground">
-          {getInitials(comment.author.fullName)}
-        </div>
+    <div
+      ref={commentRef}
+      id={isReply ? `reply-${commentId}` : `comment-${commentId}`}
+      className={cn(
+        "flex gap-3 py-3 transition-all duration-500 rounded-lg px-2",
+        isHighlighted && "bg-primary/10 border-l-4 border-primary",
+        isReply && "ml-12 border-l-2 border-border pl-3"
       )}
+    >
+      <UserAvatar user={comment.author} size="sm" linkable />
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-sm font-semibold text-foreground truncate">
+          <Link
+            to={authorProfileLink}
+            className="text-sm font-semibold text-foreground truncate hover:underline hover:text-primary"
+          >
             {comment.author.fullName}
-          </span>
+          </Link>
           <span className="text-xs text-muted-foreground">
             {formatRelativeTime(comment.createdAt)}
           </span>

@@ -44,7 +44,7 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const form = useForm<CourtFormValues>({
-    resolver: zodResolver(courtSchema),
+    resolver: zodResolver(courtSchema) as any,
     defaultValues: {
       name: "",
       description: "",

@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { clubsApi } from "../api/clubsApi";
 import type { CreateClubRequest, UpdateClubRequest, RequestFilters } from "../types/clubs";
 import { toast } from "sonner";
@@ -13,10 +13,28 @@ export const CLUBS_QUERY_KEYS = {
   myClubsList: (filters: RequestFilters) => [...CLUBS_QUERY_KEYS.myClubs(), { filters }] as const,
 };
 
-export const useGetClubs = (filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+export const useGetClubs = (
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean; lat?: number; lng?: number }
+) => {
   return useQuery({
-    queryKey: CLUBS_QUERY_KEYS.list(filters),
-    queryFn: () => clubsApi.getClubs(filters),
+    queryKey: [...CLUBS_QUERY_KEYS.list(filters), options?.lat, options?.lng],
+    queryFn: () => clubsApi.getClubs(filters, options?.lat, options?.lng),
+    ...options,
+  });
+};
+
+export const useInfiniteClubs = (
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean; lat?: number; lng?: number }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...CLUBS_QUERY_KEYS.list(filters), "infinite", options?.lat, options?.lng],
+    queryFn: ({ pageParam = 1 }) =>
+      clubsApi.getClubs({ ...filters, pageNumber: pageParam, pageSize: 6 }, options?.lat, options?.lng),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
     ...options,
   });
 };
@@ -29,11 +47,12 @@ export const useGetClub = (clubId: string) => {
   });
 };
 
-export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}) => {
+export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: [...CLUBS_QUERY_KEYS.detail(clubId), "courts", filters],
     queryFn: () => clubsApi.getClubCourts(clubId, filters),
-    enabled: !!clubId,
+    enabled: !!clubId && (options?.enabled ?? true),
+    ...options,
   });
 };
 
@@ -41,6 +60,21 @@ export const useGetMyClubs = (filters: RequestFilters = {}, options?: { enabled?
   return useQuery({
     queryKey: CLUBS_QUERY_KEYS.myClubsList(filters),
     queryFn: () => clubsApi.getMyClubs(filters),
+    ...options,
+  });
+};
+
+export const useInfiniteMyClubs = (
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...CLUBS_QUERY_KEYS.myClubs(), "infinite", filters],
+    queryFn: ({ pageParam = 1 }) =>
+      clubsApi.getMyClubs({ ...filters, pageNumber: pageParam, pageSize: 6 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
     ...options,
   });
 };

@@ -67,6 +67,11 @@ export interface FriendlyMatchResponse {
   iApplied: boolean;
   canJoin: boolean;
   participantsPreview: ParticipantSummary[];
+  bookingId?: string | null;
+  bookingStatus?: string | null;
+  isPendingApproval?: boolean;
+  externalClubName?: string | null;
+  externalLocation?: string | null;
 }
 
 export interface ParticipantSummary {
@@ -77,13 +82,15 @@ export interface ParticipantSummary {
 }
 
 export interface CreateFriendlyMatchRequest {
-  courtId: string;
+  courtId: string | null;
   date: string; // DateOnly format
   startTime: string; // TimeOnly format
   endTime: string; // TimeOnly format
   sportType: number; // SportTypeDto
   requiredPlayers: number;
   note?: string;
+  externalClubName?: string;
+  externalLocation?: string;
 }
 
 export interface MatchJoinRequestResponse {

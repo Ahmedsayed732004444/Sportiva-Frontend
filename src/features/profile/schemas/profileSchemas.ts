@@ -13,8 +13,8 @@ export const updateProfileSchema = z.object({
   city: z.string().optional(),
   country: z.string().optional(),
   preferredCity: z.string().optional(),
-  preferredSport: z
-    .enum(["Football", "Basketball", "Tennis", "Padel", "Volleyball", "Other"])
+  preferredSports: z
+    .array(z.enum(["Football", "Basketball", "Tennis", "Padel", "Volleyball", "Other"]))
     .optional(),
   profilePicture: imageFileSchema.optional(),
   coverImage: imageFileSchema.optional(),

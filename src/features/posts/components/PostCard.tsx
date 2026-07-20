@@ -1,6 +1,5 @@
-// src/features/posts/components/PostCard.tsx
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Heart, Loader2, MessageCircle, MoreHorizontal, Share2 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useToggleLike, useDeletePost } from "@/features/posts/hooks/usePosts";
@@ -18,18 +17,13 @@ import {
 import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
 import type { PostResponse } from "@/features/posts/types/post";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import { UserAvatar } from "@/shared/components/common/UserAvatar";
 
 interface PostCardProps {
   post: PostResponse;
 }
 
-const getInitials = (name: string) =>
-  name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+
 
 export const PostCard = ({ post }: PostCardProps) => {
   const { user } = useAuth();
@@ -43,9 +37,24 @@ export const PostCard = ({ post }: PostCardProps) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false); // ✅ Added comments open state
 
+  const [searchParams] = useSearchParams();
+  const highlightedPostId = searchParams.get("post");
+  const isHighlighted = highlightedPostId === post.postId;
+
   const isOwner = post.isOwner ?? user?.id === post.author.userId;
   const commentsCount = post.commentsCount ?? 0;
   const location = post.author.city;
+
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (isHighlighted) {
+      setCommentsOpen(true);
+      setTimeout(() => {
+        cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 500);
+    }
+  }, [isHighlighted]);
 
   const handleLike = () => {
     const wasLiked = liked;
@@ -88,30 +97,24 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   const metaParts = [location, formatRelativeTime(post.createdAt)].filter(Boolean);
 
+  const authorId = post.author.userId || post.author.userProfileId || (post.author as any).id;
+  const authorProfileLink = authorId ? `/profile/${authorId}` : "#";
+
   return (
-    <article className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <div
+      ref={cardRef}
+      id={`post-${post.postId}`}
+      className={cn(
+        "overflow-hidden rounded-xl border bg-card shadow-sm transition-all duration-500",
+        isHighlighted ? "border-primary ring-2 ring-primary/20 bg-primary/5" : "border-border"
+      )}
+    >
       <header className="flex items-start gap-3 p-4">
-        <Link
-          to={`/profile/${post.author.userId}`}
-          className="shrink-0"
-          aria-label={`View ${post.author.fullName}'s profile`}
-        >
-          {post.author.profilePictureUrl ? (
-            <img
-              src={post.author.profilePictureUrl}
-              alt={post.author.fullName}
-              className="h-10 w-10 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
-              {getInitials(post.author.fullName)}
-            </div>
-          )}
-        </Link>
+        <UserAvatar user={post.author} size="md" linkable />
 
         <div className="min-w-0 flex-1">
           <Link
-            to={`/profile/${post.author.userId}`}
+            to={authorProfileLink}
             className="block truncate text-sm font-bold text-foreground hover:text-primary sm:text-base"
           >
             {post.author.fullName}
@@ -255,6 +258,6 @@ export const PostCard = ({ post }: PostCardProps) => {
           </div>
         </DialogContent>
       </Dialog>
-    </article>
+    </div>
   );
 };

@@ -14,7 +14,7 @@ export interface UserCardSummary {
   profilePictureUrl: string | null;
   bio: string | null;
   city: string | null;
-  preferredSport: SportTypeDto | null;
+  preferredSport?: SportTypeDto | null;
   isFollowing: boolean;
   isMe: boolean;
   followedAt: string | null;
@@ -29,13 +29,15 @@ export interface UserProfileResponse {
   bio: string | null;
   city: string | null;
   country: string | null;
-  preferredSport: SportTypeDto | null;
+  preferredSports: SportTypeDto[];
   preferredCity: string | null;
   profilePictureUrl: string | null;
   coverImageUrl: string | null;
   followersCount: number;
   followingCount: number;
   postsCount: number;
+  playerRatingAverage: number | null;
+  playerReviewsCount: number;
   isMe: boolean;
   isFollowing: boolean;
   canSendMessage: boolean;
@@ -54,7 +56,7 @@ export interface UpdateProfileInfoRequest {
   bio?: string;
   city?: string;
   country?: string;
-  preferredSport?: SportTypeDto;
+  preferredSports?: SportTypeDto[];
   preferredCity?: string;
 }
 

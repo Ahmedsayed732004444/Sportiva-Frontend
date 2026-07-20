@@ -1,5 +1,5 @@
 import type { SidebarConfig } from "@/shared/components/navigation/AppSidebar";
-import { User, FileText, Shield, Building, Tent, CreditCard, Calendar, UserCheck, Trophy } from "lucide-react";
+import { User, FileText, Shield, Building, Tent, CreditCard, Calendar, UserCheck, Trophy, MessageSquare, Users, ShieldCheck } from "lucide-react";
 import { authService } from "@/features/auth/services/authService";
 import { isAdmin, isOwner, isMember, getUserRoles } from "@/lib/jwt";
 
@@ -13,6 +13,7 @@ export const useSidebarConfig = (): SidebarConfig | null => {
     { label: "Profile", path: "/profile", icon: User },
     { label: "Posts", path: "/posts", icon: FileText },
     { label: "Pricing Plans", path: "/plans", icon: CreditCard },
+    { label: "Messages", path: "/chat", icon: MessageSquare },
   ];
 
   console.log("DEBUG: Roles in Sidebar Config =>", {
@@ -23,6 +24,8 @@ export const useSidebarConfig = (): SidebarConfig | null => {
   });
 
   if (isAdmin()) {
+    navigationLinks.push({ label: "Manage Users", path: "/admin/users", icon: Users });
+    navigationLinks.push({ label: "Manage Roles", path: "/admin/roles", icon: ShieldCheck });
     navigationLinks.push({ label: "Manage Clubs", path: "/clubs", icon: Shield });
     navigationLinks.push({ label: "Manage Courts", path: "/courts", icon: Tent });
     navigationLinks.push({ label: "Manage Plans", path: "/admin/plans", icon: CreditCard });

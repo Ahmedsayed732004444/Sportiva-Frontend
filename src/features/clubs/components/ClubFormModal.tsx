@@ -17,6 +17,7 @@ import type { ClubResponse } from "../types/clubs";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 
 const clubSchema = z.object({
+  ownerEmail: z.string().email("Invalid owner email address").optional().or(z.literal("")),
   name: z.string().min(1, "Name is required"),
   governorate: z.string().optional(),
   city: z.string().optional(),
@@ -44,6 +45,7 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
   const form = useForm<ClubFormValues>({
     resolver: zodResolver(clubSchema),
     defaultValues: {
+      ownerEmail: "",
       name: "",
       governorate: "",
       city: "",
@@ -94,6 +96,7 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
       } else {
         await createClub.mutateAsync({
           ...values,
+          ownerEmail: values.ownerEmail || "",
           logo: logoFile || undefined,
           cover: coverFile || undefined,
         });
@@ -129,6 +132,24 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 py-4">
+          {!isEditing && (
+            <div className="space-y-2">
+              <Label htmlFor="ownerEmail">Owner Email *</Label>
+              <Input
+                id="ownerEmail"
+                type="email"
+                {...register("ownerEmail")}
+                placeholder="owner@example.com"
+              />
+              <p className="text-[11px] text-muted-foreground">
+                Email of the player who will own and manage this club. They will be granted Owner role automatically.
+              </p>
+              {errors.ownerEmail && (
+                <span className="text-xs text-destructive">{errors.ownerEmail.message as string}</span>
+              )}
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="name">Name *</Label>
             <Input id="name" {...register("name")} placeholder="Club Name" />

@@ -10,6 +10,7 @@ import { PreferredSportsWidget } from "@/features/profile/components/PreferredSp
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Card } from "@/shared/components/ui/card";
+import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
 
 const PostSkeleton = () => (
   <div className="space-y-3 rounded-3xl border border-gray-100 dark:border-muted/30 bg-card p-6 shadow-sm">
@@ -63,18 +64,11 @@ const PostsPage = () => {
                 ))}
               </div>
 
-              {hasMore && (
-                <div className="mt-6 flex justify-center">
-                  <Button
-                    variant="outline"
-                    onClick={loadMore}
-                    disabled={isFetching}
-                    className="rounded-xl px-6 border-muted-foreground/35"
-                  >
-                    {isFetching ? "Loading..." : "Load More"}
-                  </Button>
-                </div>
-              )}
+              <InfiniteScrollSentinel
+                hasNextPage={hasMore}
+                isFetchingNextPage={isFetching}
+                onLoadMore={loadMore}
+              />
             </>
           )}
         </div>
@@ -84,7 +78,7 @@ const PostsPage = () => {
           {profile && (
             <>
               <AboutMeWidget bio={profile.bio} createdAt={profile.createdAt} />
-              <PreferredSportsWidget preferredSport={profile.preferredSport} />
+              <PreferredSportsWidget preferredSports={profile.preferredSports} />
             </>
           )}
         </div>

@@ -37,10 +37,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = authService.subscribe(() => {
       forceUpdate();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.auth.user, "me"] });
     });
     return () => unsubscribe();
-  }, [queryClient, forceUpdate]);
+  }, [forceUpdate]);
 
   const logout = useCallback(() => {
     authService.clearAuthData();

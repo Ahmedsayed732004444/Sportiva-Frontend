@@ -9,8 +9,10 @@ import type {
 } from "../types/clubs";
 
 export const clubsApi = {
-  getClubs: (filters?: RequestFilters) => {
-    return apiClient.get<PaginatedList<ClubResponse>>("/clubs", { params: filters });
+  getClubs: (filters?: RequestFilters, lat?: number, lng?: number) => {
+    return apiClient.get<PaginatedList<ClubResponse>>("/clubs", {
+      params: { ...filters, lat, lng },
+    });
   },
 
   getClub: (clubId: string) => {
@@ -29,6 +31,7 @@ export const clubsApi = {
 
   createClub: (data: CreateClubRequest) => {
     const formData = new FormData();
+    formData.append("OwnerEmail", data.ownerEmail);
     formData.append("Name", data.name);
     if (data.logo) formData.append("Logo", data.logo);
     if (data.cover) formData.append("Cover", data.cover);

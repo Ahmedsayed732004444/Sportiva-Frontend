@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useSearchCourts } from "../hooks/useCourts";
+import { useInfiniteSearchCourts } from "../hooks/useCourts";
+import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
+import { useLocationPermission } from "@/shared/hooks/useLocationPermission";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
@@ -136,7 +138,15 @@ const CourtCard = ({ court, onNavigate }: CourtCardProps) => {
                 <span className="text-[11px] font-bold text-gray-800 dark:text-gray-200 block truncate leading-tight">
                   {court.club.name}
                 </span>
-                <span className="text-[9px] text-gray-400 block truncate mt-0.5">Cairo, Egypt</span>
+                <span className="text-[9px] text-gray-400 block truncate mt-0.5">
+                  {court.distanceText ? (
+                    <span className="text-[#20A854] font-bold">📍 {court.distanceText}</span>
+                  ) : court.club.city || court.club.governorate ? (
+                    `${court.club.city || ""}${court.club.city && court.club.governorate ? ", " : ""}${court.club.governorate || ""}`
+                  ) : (
+                    "Egypt"
+                  )}
+                </span>
               </div>
             </div>
           ) : (
@@ -168,15 +178,30 @@ export default function CourtsPage() {
   const [sportFilter, setSportFilter] = useState<number | undefined>();
   const [cityFilter, setCityFilter] = useState("");
 
-  // Query
-  const { data: courtsData, isLoading, isError, error } = useSearchCourts(
+  const { coords, isInitialCheckComplete } = useLocationPermission();
+
+  // Query (Infinite Scroll Dynamic Pagination)
+  const {
+    data: courtsData,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteSearchCourts(
     { searchValue },
     sportFilter,
     cityFilter || undefined,
-    undefined
+    undefined,
+    {
+      enabled: isInitialCheckComplete,
+      lat: coords?.lat,
+      lng: coords?.lng,
+    }
   );
 
-  const courts = courtsData?.items || [];
+  const courts = courtsData?.pages.flatMap((page) => page.items) || [];
 
   return (
     <div className="container mx-auto py-6 px-2 sm:py-8 sm:px-4 max-w-7xl space-y-6">

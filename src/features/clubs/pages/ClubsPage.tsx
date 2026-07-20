@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useGetClubs, useGetMyClubs, useDeleteClub, useToggleClubStatus } from "../hooks/useClubs";
+import { useInfiniteClubs, useInfiniteMyClubs, useDeleteClub, useToggleClubStatus } from "../hooks/useClubs";
+import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -21,7 +22,9 @@ import {
   Search,
   CheckCircle2,
   ChevronDown,
+  Navigation,
 } from "lucide-react";
+import { useLocationPermission } from "@/shared/hooks/useLocationPermission";
 import { Input } from "@/shared/components/ui/input";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { isAdmin, isOwner } from "@/lib/jwt";
@@ -58,10 +61,17 @@ export default function ClubsPage() {
   const [selectedClub, setSelectedClub] = useState<ClubResponse | null>(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  // Queries
-  const publicQuery = useGetClubs({ searchValue, sortColumn, sortDirection }, { enabled: !owner });
-  const myQuery = useGetMyClubs({ searchValue, sortColumn, sortDirection }, { enabled: owner });
-  const { data, isLoading, isError, error } = owner ? myQuery : publicQuery;
+  // Location permission
+  const { coords, status: locationStatus, requestLocation, isInitialCheckComplete } = useLocationPermission();
+
+  // Queries (Infinite Scroll Dynamic Pagination)
+  const publicQuery = useInfiniteClubs(
+    { searchValue, sortColumn, sortDirection },
+    { enabled: !owner && isInitialCheckComplete, lat: coords?.lat, lng: coords?.lng }
+  );
+  const myQuery = useInfiniteMyClubs({ searchValue, sortColumn, sortDirection }, { enabled: owner });
+  const activeQuery = owner ? myQuery : publicQuery;
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage } = activeQuery;
 
   // Mutations (Admin only)
   const deleteClub = useDeleteClub();
@@ -110,12 +120,13 @@ export default function ClubsPage() {
     }
   };
 
-  // Filter matching governorate & city on client side if needed, or query parameter bindings
-  const filteredClubs = data?.items.filter((club) => {
+  // Filter matching governorate & city on client side if needed
+  const clubs = data?.pages.flatMap((page) => page.items) || [];
+  const filteredClubs = clubs.filter((club) => {
     if (selectedGovernorate !== "All" && club.governorate !== selectedGovernorate) return false;
     if (selectedCity !== "All" && club.city !== selectedCity) return false;
     return true;
-  }) || [];
+  });
 
   const title = admin ? "Manage Clubs" : owner ? "My Clubs" : "Browse Clubs";
   const subtitle = admin
@@ -212,6 +223,19 @@ export default function ClubsPage() {
 
             {/* Filter / Add Action Buttons */}
             <div className="flex gap-2 shrink-0 w-full lg:w-auto">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={requestLocation}
+                className={`h-11 rounded-xl gap-1.5 font-semibold text-xs border ${
+                  coords
+                    ? "border-[#20A854] bg-[#20A854]/10 text-[#20A854]"
+                    : "border-border text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Navigation className={`h-4 w-4 ${coords ? "animate-pulse text-[#20A854]" : ""}`} />
+                {coords ? "Nearest First 📍" : "Near Me"}
+              </Button>
               <Button className="h-11 px-5 rounded-xl bg-[#20A854] hover:bg-[#20A854]/90 text-white font-semibold gap-2 shadow flex-1 lg:flex-initial">
                 <Filter className="h-4.5 w-4.5" />
                 Filter
@@ -382,6 +406,13 @@ export default function ClubsPage() {
                       <span className="text-gray-400 font-normal">({club.reviewsCount ?? 0})</span>
                     </span>
                   </div>
+                  {club.distanceText && (
+                    <div className="pt-0.5">
+                      <span className="inline-flex items-center gap-1 text-[11px] font-extrabold text-[#20A854] bg-[#20A854]/10 border border-[#20A854]/25 px-2 py-0.5 rounded-full shadow-xs">
+                        📍 {club.distanceText}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -396,7 +427,11 @@ export default function ClubsPage() {
                         <span className="font-bold text-gray-800 dark:text-gray-200 block">
                           {club.city && club.governorate ? `${club.city}, ${club.governorate}` : club.city || club.governorate || "Egypt"}
                         </span>
-                        <span className="text-gray-400 block mt-0.5 truncate">{club.address || "Location Map Address"}</span>
+                        <span className="text-gray-400 block mt-0.5 truncate">
+                          {club.address && (club.address.startsWith("http://") || club.address.startsWith("https://"))
+                            ? "Google Maps Link 📍"
+                            : club.address || "Location Map Address"}
+                        </span>
                       </div>
                     </div>
                     {club.address && (

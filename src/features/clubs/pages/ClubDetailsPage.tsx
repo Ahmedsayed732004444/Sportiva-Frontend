@@ -143,12 +143,27 @@ export default function ClubDetailsPage() {
               <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
                 {club.name}
               </h1>
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-muted-foreground">
-                <MapPin className="h-3.5 w-3.5 text-[#20A854]" />
-                <span>
-                  {club.address ? `${club.address}, ` : ""}
-                  {club.city ? `${club.city}, ` : ""}
-                  {club.governorate || "Location not specified"}
+              <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-muted-foreground flex-wrap">
+                <MapPin className="h-3.5 w-3.5 text-[#20A854] shrink-0" />
+                <span className="flex items-center flex-wrap gap-1">
+                  {club.address && (club.address.startsWith("http://") || club.address.startsWith("https://")) ? (
+                    <a
+                      href={club.address}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#20A854] hover:underline font-bold inline-flex items-center gap-1"
+                    >
+                      Google Maps Location 📍
+                    </a>
+                  ) : club.address ? (
+                    <span>{club.address}</span>
+                  ) : null}
+                  {(club.city || club.governorate) && <span className="text-gray-300 mx-1">|</span>}
+                  <span>
+                    {club.city ? `${club.city}` : ""}
+                    {club.city && club.governorate ? ", " : ""}
+                    {club.governorate || ""}
+                  </span>
                 </span>
               </div>
             </div>
@@ -338,7 +353,7 @@ export default function ClubDetailsPage() {
       <ClubFormModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        initialData={club}
+        club={club}
       />
     </div>
   );

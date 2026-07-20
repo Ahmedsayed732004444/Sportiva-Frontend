@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { useGetMyClubs } from "@/features/clubs/hooks/useClubs";
 import {
   useGetMyBookings,
@@ -33,6 +34,8 @@ import {
   Filter,
   Check,
   Building2,
+  ExternalLink,
+  Mail,
 } from "lucide-react";
 import { isOwner, isMember, isAdmin } from "@/lib/jwt";
 import { BookingStatusDto } from "../types/bookings";
@@ -45,6 +48,10 @@ import bookingsBanner from "@/assets/imgs/bookings_banner.jpg";
 export default function BookingsPage() {
   const owner = isOwner();
   const member = isMember() || isAdmin();
+
+  // Notification deep-link support
+  const [searchParams] = useSearchParams();
+  const highlightedBookingId = searchParams.get("booking");
 
   // State
   const [selectedClubId, setSelectedClubId] = useState("");
@@ -363,12 +370,68 @@ export default function BookingsPage() {
         </div>
       ) : (
         <div className="space-y-5">
-          {filteredBookings.map((booking) => (
-            <Card key={booking.bookingId} className={cn(
+          {filteredBookings.map((booking) => {
+            const isHighlighted = highlightedBookingId === booking.bookingId;
+            return (
+              <div
+                key={booking.bookingId}
+                id={`booking-${booking.bookingId}`}
+                ref={isHighlighted ? (el) => {
+                  if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth", block: "center" }), 500);
+                } : undefined}
+                className={cn(
+                  "transition-all duration-500",
+                  isHighlighted && "ring-2 ring-primary/50 rounded-3xl"
+                )}
+              >
+            <Card className={cn(
               "bg-white dark:bg-card hover:border-gray-200/80 transition-all border border-gray-100 dark:border-muted/30 overflow-hidden shadow-sm rounded-3xl border-l-[6px]",
-              getStatusBorderColor(booking.status)
+              getStatusBorderColor(booking.status),
+              isHighlighted && "border-primary"
             )}>
               <CardContent className="p-4 sm:p-5 flex flex-col gap-4">
+                {/* Player row — visible to owner only */}
+                {owner && booking.bookedBy && (
+                  <div className="flex items-center gap-3 pb-3 border-b border-gray-100/70 dark:border-muted/20">
+                    <Link
+                      to={`/profile/${booking.bookedBy.userId}`}
+                      className="relative shrink-0 group"
+                      title={`View ${booking.bookedBy.fullName}'s profile`}
+                    >
+                      {booking.bookedBy.profilePhotoUrl ? (
+                        <img
+                          src={booking.bookedBy.profilePhotoUrl}
+                          alt={booking.bookedBy.fullName}
+                          className="h-11 w-11 rounded-full object-cover border-2 border-white dark:border-card shadow-sm group-hover:ring-2 group-hover:ring-[#20A854]/40 transition-all"
+                        />
+                      ) : (
+                        <div className="h-11 w-11 rounded-full bg-[#20A854]/10 text-[#20A854] font-extrabold text-sm flex items-center justify-center border-2 border-white dark:border-card shadow-sm group-hover:ring-2 group-hover:ring-[#20A854]/40 transition-all">
+                          {booking.bookedBy.fullName?.charAt(0)?.toUpperCase()}
+                        </div>
+                      )}
+                    </Link>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <Link
+                          to={`/profile/${booking.bookedBy.userId}`}
+                          className="text-sm font-extrabold text-[#20A854] hover:underline truncate flex items-center gap-1"
+                        >
+                          {booking.bookedBy.fullName}
+                          <ExternalLink className="h-3 w-3 shrink-0 opacity-60" />
+                        </Link>
+                      </div>
+                      {booking.bookedBy.email && (
+                        <p className="text-[11px] text-gray-400 dark:text-muted-foreground flex items-center gap-1 mt-0.5 truncate">
+                          <Mail className="h-3 w-3 shrink-0" />
+                          {booking.bookedBy.email}
+                        </p>
+                      )}
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-400 bg-gray-50 dark:bg-muted/20 border border-gray-100 dark:border-muted/30 px-2 py-0.5 rounded-lg shrink-0">
+                      Player
+                    </span>
+                  </div>
+                )}
                 {/* Mobile Header Row */}
                 <div className="flex items-center justify-between flex-wrap gap-2 pb-3 border-b border-gray-100/60 dark:border-muted/10 sm:hidden">
                   <div className="flex items-center gap-2">
@@ -605,7 +668,9 @@ export default function BookingsPage() {
                 )}
               </CardContent>
             </Card>
-          ))}
+              </div>
+            );
+          })}
         </div>
       )}
 

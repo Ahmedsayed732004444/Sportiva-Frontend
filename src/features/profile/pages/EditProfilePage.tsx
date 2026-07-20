@@ -72,7 +72,7 @@ const EditProfilePage = () => {
       city: "",
       country: "",
       preferredCity: "",
-      preferredSport: undefined,
+      preferredSports: [],
     },
   });
 
@@ -85,7 +85,7 @@ const EditProfilePage = () => {
       city: profile.city ?? "",
       country: profile.country ?? "",
       preferredCity: profile.preferredCity ?? "",
-      preferredSport: profile.preferredSport ?? undefined,
+      preferredSports: profile.preferredSports ?? [],
     });
     setAvatarPreview(getImageUrl(profile.profilePictureUrl));
     setCoverPreview(getImageUrl(profile.coverImageUrl));
@@ -154,7 +154,7 @@ const EditProfilePage = () => {
 
   if (!profile) return null;
 
-  const selectedSport = form.watch("preferredSport");
+  const selectedSports = form.watch("preferredSports") || [];
 
   return (
     <div className="flex justify-center p-4 pb-8 sm:p-6">
@@ -253,12 +253,19 @@ const EditProfilePage = () => {
               <Label>Favorite Sports</Label>
               <div className="flex flex-wrap gap-2">
                 {SPORTS.map(({ value, emoji }) => {
-                  const isSelected = selectedSport === value;
+                  const isSelected = selectedSports.includes(value);
+                  const toggleSport = () => {
+                    const current = form.getValues("preferredSports") || [];
+                    const updated = current.includes(value)
+                      ? current.filter((s) => s !== value)
+                      : [...current, value];
+                    form.setValue("preferredSports", updated, { shouldDirty: true });
+                  };
                   return (
                     <button
                       key={value}
                       type="button"
-                      onClick={() => form.setValue("preferredSport", value, { shouldDirty: true })}
+                      onClick={toggleSport}
                       className={cn(
                         "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                         isSelected

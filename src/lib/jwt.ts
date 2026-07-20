@@ -34,7 +34,7 @@ export const getUserRoles = (): string[] => {
   if (!token) return [];
   const decoded = decodeJwt(token);
   if (!decoded) return [];
-  let roles =
+  let roles: any =
     decoded.roles ||
     decoded.role ||
     decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
@@ -57,7 +57,7 @@ export const getUserPermissions = (): string[] => {
   if (!token) return [];
   const decoded = decodeJwt(token);
   if (!decoded) return [];
-  let permissions = decoded.permissions || [];
+  let permissions: any = decoded.permissions || [];
 
   if (typeof permissions === "string" && permissions.startsWith("[")) {
     try {

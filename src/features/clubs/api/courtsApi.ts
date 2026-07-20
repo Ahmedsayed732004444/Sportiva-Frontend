@@ -9,13 +9,15 @@ import type {
 } from "../types/clubs";
 
 export const courtsApi = {
-  searchCourts: (filters: RequestFilters, sport?: number, city?: string, date?: string) => {
+  searchCourts: (filters: RequestFilters, sport?: number, city?: string, date?: string, lat?: number, lng?: number) => {
     return apiClient.get<PaginatedList<CourtResponse>>("/courts", {
       params: {
         ...filters,
         sport,
         city,
         date,
+        lat,
+        lng,
       },
     });
   },

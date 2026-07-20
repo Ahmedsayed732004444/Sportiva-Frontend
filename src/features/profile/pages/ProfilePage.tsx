@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, Navigate } from "react-router-dom";
 import {
   FileText,
   MapPin,
@@ -7,13 +7,14 @@ import {
   XCircle,
   Globe,
   CheckCircle2,
-  Calendar,
   Trophy,
   Activity,
   Award,
   Users,
   UserPlus,
   Pencil,
+  Star,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useMyProfile, useProfile } from "@/features/profile/hooks/useProfile";
@@ -30,8 +31,9 @@ import { useGetMyUpgradeRequest } from "@/features/memberships/hooks/useMembersh
 import { RequestStatusDto } from "@/features/memberships/types/memberships";
 import { MembershipUpgradeModal } from "@/features/memberships/components/MembershipUpgradeModal";
 import { AboutMeWidget } from "../components/AboutMeWidget";
-import { PreferredSportsWidget } from "../components/PreferredSportsWidget";
-import { SPORT_LABELS, SPORT_EMOJIS } from "@/features/matches/types/matches";
+import { PreferredSportsWidget } from "@/features/profile/components/PreferredSportsWidget";
+import { PlayerBadgesWidget } from "@/features/profile/components/PlayerBadgesWidget";
+
 
 const getInitials = (name: string) =>
   name
@@ -67,6 +69,11 @@ export default function ProfilePage() {
   const { userId: routeUserId } = useParams<{ userId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  if (routeUserId === "undefined") {
+    return <Navigate to="/profile" replace />;
+  }
+
   const isOwnRoute = !routeUserId;
 
   const myProfileQuery = useMyProfile();
@@ -167,8 +174,16 @@ export default function ProfilePage() {
                     <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-white truncate">
                       {profile.fullName}
                     </h2>
-                    <CheckCircle2 className="h-5 w-5 fill-[#20A854] text-white shrink-0" title="Verified Player" />
+                    <CheckCircle2 className="h-5 w-5 fill-[#20A854] text-white shrink-0" />
                   </div>
+
+                  {profile.playerRatingAverage !== null && profile.playerRatingAverage !== undefined && (
+                    <div className="flex items-center gap-1 text-amber-500 font-semibold text-xs sm:text-sm">
+                      <Star className="h-4 w-4 fill-amber-500 text-amber-500 shrink-0" />
+                      <span>{profile.playerRatingAverage.toFixed(1)}</span>
+                      <span className="text-gray-400 dark:text-muted-foreground font-normal">({profile.playerReviewsCount} player reviews)</span>
+                    </div>
+                  )}
                   
                   {profile.bio && (
                     <p className="text-xs sm:text-sm text-gray-600 dark:text-muted-foreground max-w-md leading-relaxed whitespace-pre-line">
@@ -209,12 +224,12 @@ export default function ProfilePage() {
 
                   {/* Sports Badge Pills (Hidden on mobile) */}
                   <div className="hidden md:flex flex-wrap items-center justify-start gap-2 pt-1">
-                    {profile.preferredSport !== null && (
-                      <Badge variant="default" className="bg-[#20A854] hover:bg-[#20A854]/90 text-white gap-1.5 rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-semibold">
-                        {SPORT_NAME_EMOJIS[profile.preferredSport] || "⚽"}{" "}
-                        {profile.preferredSport}
+                    {profile.preferredSports && profile.preferredSports.map((sport) => (
+                      <Badge key={sport} variant="default" className="bg-[#20A854] hover:bg-[#20A854]/90 text-white gap-1.5 rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-semibold">
+                        {SPORT_NAME_EMOJIS[sport] || "⚽"}{" "}
+                        {sport}
                       </Badge>
-                    )}
+                    ))}
                     {profile.preferredCity && (
                       <Badge variant="outline" className="border-[#20A854]/30 text-[#20A854] bg-[#20A854]/5 gap-1.5 rounded-full px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-semibold">
                         <MapPin className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0" /> {profile.preferredCity}
@@ -241,12 +256,12 @@ export default function ProfilePage() {
                 </div>
                 {/* Badges pills */}
                 <div className="flex flex-wrap items-center justify-start gap-2 pt-0.5">
-                  {profile.preferredSport !== null && (
-                    <Badge variant="default" className="bg-[#20A854] hover:bg-[#20A854]/90 text-white gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
-                      {SPORT_NAME_EMOJIS[profile.preferredSport] || "⚽"}{" "}
-                      {profile.preferredSport}
+                  {profile.preferredSports && profile.preferredSports.map((sport) => (
+                    <Badge key={sport} variant="default" className="bg-[#20A854] hover:bg-[#20A854]/90 text-white gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
+                      {SPORT_NAME_EMOJIS[sport] || "⚽"}{" "}
+                      {sport}
                     </Badge>
-                  )}
+                  ))}
                   {profile.preferredCity && (
                     <Badge variant="outline" className="border-[#20A854]/30 text-[#20A854] bg-[#20A854]/5 gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold">
                       <MapPin className="h-3 w-3 shrink-0" /> {profile.preferredCity}
@@ -257,15 +272,15 @@ export default function ProfilePage() {
             </div>
 
             {/* Right Column: Stats & Edit Profile Button */}
-            <div className="w-full md:w-auto flex flex-col items-center md:items-end justify-between self-stretch pt-2 sm:pt-4">
-              {/* Counter Row (Hidden on mobile) */}
-              <div className="hidden md:flex items-center gap-6 sm:gap-8 justify-center md:justify-end w-full">
+            <div className="w-full md:w-auto flex flex-col items-center md:items-end justify-between self-stretch pt-2 sm:pt-4 gap-4">
+              {/* Counter Row (Visible on both mobile & desktop!) */}
+              <div className="flex items-center gap-6 sm:gap-8 justify-center md:justify-end w-full border-t border-b md:border-none py-3 md:py-0 border-border/40">
                 {/* Posts */}
                 <div className="text-center min-w-[60px] sm:min-w-[70px]">
                   <div className="text-[#20A854] mb-1 flex justify-center">
                     <FileText className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                   </div>
-                  <div className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white">{profile.postsCount}</div>
+                  <div className="font-bold text-base sm:text-xl text-gray-900 dark:text-white">{profile.postsCount}</div>
                   <div className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Posts</div>
                 </div>
                 {/* Followers */}
@@ -273,7 +288,7 @@ export default function ProfilePage() {
                   <div className="text-[#20A854] mb-1 flex justify-center">
                     <Users className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                   </div>
-                  <div className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white">
+                  <div className="font-bold text-base sm:text-xl text-gray-900 dark:text-white">
                     {profile.followersCount >= 1000 ? `${(profile.followersCount / 1000).toFixed(1)}K` : profile.followersCount}
                   </div>
                   <div className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Followers</div>
@@ -283,13 +298,13 @@ export default function ProfilePage() {
                   <div className="text-[#20A854] mb-1 flex justify-center">
                     <UserPlus className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                   </div>
-                  <div className="font-bold text-lg sm:text-xl text-gray-900 dark:text-white">{profile.followingCount}</div>
+                  <div className="font-bold text-base sm:text-xl text-gray-900 dark:text-white">{profile.followingCount}</div>
                   <div className="text-[9px] sm:text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Following</div>
                 </Link>
               </div>
 
               {/* Action Buttons */}
-              <div className="w-full sm:w-auto flex items-center justify-center mt-4 md:mt-0">
+              <div className="w-full md:w-auto flex items-center justify-center">
                 {isOwnProfile ? (
                   <Button asChild variant="outline" className="w-full md:w-auto px-6 py-2 sm:px-8 sm:py-2.5 border-2 border-[#20A854] text-[#20A854] hover:bg-[#20A854] hover:text-white transition-all font-semibold text-xs sm:text-sm rounded-xl gap-2 shadow-sm bg-transparent">
                     <Link to="/edit-profile">
@@ -298,15 +313,21 @@ export default function ProfilePage() {
                     </Link>
                   </Button>
                 ) : (
-                  <div className="flex gap-2 w-full sm:w-auto">
+                  <div className="flex items-center gap-2 w-full md:w-auto">
                     <FollowButton
                       userId={profile.userId}
                       isFollowing={profile.isFollowing}
                       isMe={profile.isMe}
-                      className="w-full sm:w-40 rounded-xl"
+                      className="flex-1 md:w-40 rounded-xl"
                     />
                     {profile.canSendMessage && (
-                      <Button variant="outline" size="sm" className="rounded-xl shadow-sm border-2 border-[#20A854] text-[#20A854] hover:bg-[#20A854] hover:text-white transition-all bg-transparent font-semibold">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/chat?user=${profile.userId}`)}
+                        className="flex-1 md:flex-initial rounded-xl shadow-sm border-2 border-[#20A854] text-[#20A854] hover:bg-[#20A854] hover:text-white transition-all bg-transparent font-semibold cursor-pointer gap-1.5"
+                      >
+                        <MessageSquare className="h-4 w-4 shrink-0" />
                         Chat
                       </Button>
                     )}
@@ -462,7 +483,7 @@ export default function ProfilePage() {
 
           <div className={cn("space-y-6 lg:hidden", activeTab !== "about" && "hidden")}>
             <AboutMeWidget bio={profile.bio} createdAt={profile.createdAt} />
-            <PreferredSportsWidget preferredSport={profile.preferredSport} />
+            <PreferredSportsWidget preferredSports={profile.preferredSports} />
           </div>
 
           <div className={cn(activeTab === "about" && "hidden lg:block text-center py-12 text-sm text-muted-foreground border border-dashed rounded-3xl")}>
@@ -488,8 +509,9 @@ export default function ProfilePage() {
 
         {/* Right Column: Widgets Column (narrower) */}
         <div className="hidden lg:flex flex-col gap-6 lg:col-span-1">
+          <PlayerBadgesWidget postsCount={profile.postsCount} followersCount={profile.followersCount} />
           <AboutMeWidget bio={profile.bio} createdAt={profile.createdAt} />
-          <PreferredSportsWidget preferredSport={profile.preferredSport} />
+          <PreferredSportsWidget preferredSports={profile.preferredSports} />
         </div>
       </div>
 

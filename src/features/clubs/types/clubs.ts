@@ -21,6 +21,10 @@ export interface ClubResponse {
   canManageCourts?: boolean;
   activeSubscription?: unknown;
   createdAt?: string;
+  latitude?: number;
+  longitude?: number;
+  distanceKm?: number;
+  distanceText?: string;
 }
 
 export interface CourtResponse {
@@ -36,15 +40,20 @@ export interface CourtResponse {
     clubId: string;
     name: string;
     logoUrl?: string;
+    city?: string;
+    governorate?: string;
   };
   canBook: boolean;
   canManage: boolean;
   reviewsCount: number;
   averageRating: number;
   createdAt: string;
+  distanceKm?: number;
+  distanceText?: string;
 }
 
 export interface CreateClubRequest {
+  ownerEmail: string;
   name: string;
   logo?: File;
   cover?: File;

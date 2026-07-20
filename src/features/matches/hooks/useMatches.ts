@@ -7,6 +7,7 @@ import type {
   JoinRequestStatusDto,
 } from "../types/matches";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/lib/api/errors";
 
 export const MATCHES_QUERY_KEYS = {
   all: ["matches"] as const,
@@ -52,8 +53,7 @@ export const useCreateMatch = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Failed to create match: ${msg}`);
     },
   });
@@ -71,8 +71,7 @@ export const useUpdateMatch = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Failed to update match: ${msg}`);
     },
   });
@@ -88,8 +87,7 @@ export const useCancelMatch = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Failed to cancel match: ${msg}`);
     },
   });
@@ -115,8 +113,7 @@ export const useLeaveMatch = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.participants(matchId) });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Failed to leave match: ${msg}`);
     },
   });
@@ -135,8 +132,7 @@ export const useRequestToJoin = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Request to join failed: ${msg}`);
     },
   });
@@ -171,8 +167,7 @@ export const useReviewJoinRequest = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Review failed: ${msg}`);
     },
   });
@@ -191,8 +186,7 @@ export const useWithdrawJoinRequest = () => {
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
     },
     onError: (error: unknown) => {
-      const apiError = error as { response?: { data?: { message?: string } } };
-      const msg = apiError.response?.data?.message || "An error occurred";
+      const msg = extractErrorMessage(error);
       toast.error(`Failed to withdraw request: ${msg}`);
     },
   });

@@ -4,10 +4,10 @@ import type { SportTypeDto } from "../types/profile";
 import { cn } from "@/lib/utils";
 
 interface PreferredSportsWidgetProps {
-  preferredSport: SportTypeDto | null;
+  preferredSports: SportTypeDto[] | null | undefined;
 }
 
-export function PreferredSportsWidget({ preferredSport }: PreferredSportsWidgetProps) {
+export function PreferredSportsWidget({ preferredSports }: PreferredSportsWidgetProps) {
   const sports = [
     { type: "Football" as SportTypeDto, emoji: "⚽", label: "Football" },
     { type: "Basketball" as SportTypeDto, emoji: "🏀", label: "Basketball" },
@@ -26,7 +26,7 @@ export function PreferredSportsWidget({ preferredSport }: PreferredSportsWidgetP
       <CardContent className="p-0">
         <div className="flex items-center gap-4">
           {sports.map((sport) => {
-            const isPreferred = preferredSport === sport.type;
+            const isPreferred = preferredSports?.includes(sport.type);
             return (
               <div
                 key={sport.label}

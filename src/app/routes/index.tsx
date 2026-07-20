@@ -24,8 +24,10 @@ import AdminPlansPage from "@/features/subscriptions/pages/AdminPlansPage";
 // Bookings
 import BookingsPage from "@/features/bookings/pages/BookingsPage";
 
-// Memberships
+// Memberships & Admin
 import AdminUpgradeRequestsPage from "@/features/memberships/pages/AdminUpgradeRequestsPage";
+import AdminUsersPage from "@/features/admin/pages/AdminUsersPage";
+import AdminRolesPage from "@/features/admin/pages/AdminRolesPage";
 
 // Friendly Matches
 import MatchesPage from "@/features/matches/pages/MatchesPage";
@@ -53,6 +55,9 @@ import FollowingPage from "@/features/profile/pages/FollowingPage";
 import PostsPage from "@/features/posts/pages/PostsPage";
 import MyPostsPage from "@/features/posts/pages/MyPostsPage";
 
+// Chat
+import ChatPage from "@/features/chat/pages/ChatPage";
+
 const MainRouter = () => {
   const { isAuthenticated } = useAuth();
 
@@ -79,6 +84,7 @@ const MainRouter = () => {
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/posts" element={<PostsPage />} />
           <Route path="/posts/my" element={<MyPostsPage />} />
+          <Route path="/chat" element={<ChatPage />} />
 
           {/* Public Clubs Routes (inside AppLayout to show navbar) */}
           <Route path="/clubs" element={<ClubsPage />} />
@@ -99,6 +105,8 @@ const MainRouter = () => {
           <Route element={<RoleProtectedRoute allowedRoles={[UserRole.Admin]} />}>
             <Route path="/admin/plans" element={<AdminPlansPage />} />
             <Route path="/admin/membership-requests" element={<AdminUpgradeRequestsPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/roles" element={<AdminRolesPage />} />
           </Route>
         </Route>
 

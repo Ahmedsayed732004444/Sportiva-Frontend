@@ -7,6 +7,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 
 import { useMyProfile } from "@/features/profile/hooks/useProfile";
 import { ThemeToggle } from "@/shared/components/theme/ThemeToggle";
+import NotificationDropdown from "@/shared/components/navigation/NotificationDropdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,7 +64,7 @@ const PublicHeader = ({ leading, hideLogo }: PublicHeaderProps) => {
                   key={link.path}
                   to={link.path}
                   className={cn(
-                    "relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-accent/50 whitespace-nowrap",
+                     "relative px-3 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-accent/50 whitespace-nowrap",
                     isActive(link.path)
                       ? "text-primary"
                       : "text-muted-foreground hover:text-foreground"
@@ -81,6 +82,7 @@ const PublicHeader = ({ leading, hideLogo }: PublicHeaderProps) => {
           {/* Auth Buttons */}
           <div className="flex shrink-0 items-center gap-3">
             <ThemeToggle />
+            {isAuthenticated && user && <NotificationDropdown />}
             {isAuthenticated && user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

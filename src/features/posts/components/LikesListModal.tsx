@@ -1,10 +1,12 @@
 // src/features/posts/components/LikesListModal.tsx
+import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { usePostLikers } from "@/features/posts/hooks/usePosts";
 import { formatRelativeTime, cn } from "@/lib/utils";
+import { UserAvatar } from "@/shared/components/common/UserAvatar";
 
 interface LikesListModalProps {
   postId: string;
@@ -12,13 +14,7 @@ interface LikesListModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const getInitials = (name: string) =>
-  name
-    .split(" ")
-    .map((part) => part[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
+
 
 export const LikesListModal = ({ postId, open, onOpenChange }: LikesListModalProps) => {
   const { data: likers, isLoading } = usePostLikers(postId, open);
@@ -78,25 +74,21 @@ export const LikesListModal = ({ postId, open, onOpenChange }: LikesListModalPro
                       index < likers.items.length - 1 && "border-b border-border-subtle" // ✅ Fixed: changed to likers.items.length
                     )}
                   >
-                    {liker.profilePictureUrl ? (
-                      <img
-                        src={liker.profilePictureUrl}
-                        alt={liker.fullName}
-                        className="h-10 w-10 shrink-0 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-muted-foreground">
-                        {getInitials(liker.fullName)}
+                    <Link
+                      to={(liker.userProfileId || (liker as any).userId) ? `/profile/${liker.userProfileId || (liker as any).userId}` : "#"}
+                      onClick={() => onOpenChange(false)}
+                      className="flex items-center gap-3 w-full hover:opacity-85 transition-opacity"
+                    >
+                      <UserAvatar user={liker} size="md" linkable={false} />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-foreground hover:underline">
+                          {liker.fullName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatRelativeTime(liker.likedAt)}
+                        </p>
                       </div>
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-semibold text-foreground">
-                        {liker.fullName}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {formatRelativeTime(liker.likedAt)}
-                      </p>
-                    </div>
+                    </Link>
                   </li>
                 )
               )}

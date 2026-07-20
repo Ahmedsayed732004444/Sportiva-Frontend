@@ -184,6 +184,12 @@ class AuthService {
     const refreshToken = this.getRefreshToken();
     const expiresIn = this.getExpiresIn();
     const refreshTokenExpiration = this.getRefreshTokenExpiryDate();
+    const currentUser = this.getUser();
+
+    if (currentUser && JSON.stringify(currentUser) === JSON.stringify(user)) {
+      return;
+    }
+
     if (token && refreshToken) {
       this.setAuthData(user, token, refreshToken, expiresIn, refreshTokenExpiration || undefined);
     }

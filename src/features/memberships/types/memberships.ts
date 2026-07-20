@@ -6,6 +6,8 @@ export enum RequestStatusDto {
 
 export interface MembershipUpgradeResponse {
   requestId: string;
+  userId?: string;
+  email?: string;
   status: RequestStatusDto;
   fullName: string;
   phone: string;

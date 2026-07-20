@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 
-/**
- * useDebounce Hook
- * Delays updating a value until a certain amount of time has passed.
- * Useful for search inputs to prevent excessive API calls.
- */
-export function useDebounce<T>(value: T, delay: number): T {
+export function useDebounce<T>(value: T, delay: number = 300): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
+    const timer = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
 
     return () => {
-      clearTimeout(handler);
+      clearTimeout(timer);
     };
   }, [value, delay]);
 

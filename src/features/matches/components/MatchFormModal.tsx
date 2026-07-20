@@ -13,9 +13,12 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { useCreateMatch, useUpdateMatch } from "../hooks/useMatches";
 import { useGetClubs, useGetClubCourts } from "@/features/clubs/hooks/useClubs";
-import { Trophy, Calendar, Clock, Users, Building, Target, FileText } from "lucide-react";
+import { useGetTimeSlots } from "@/features/clubs/hooks/useTimeSlots";
+import { Trophy, Calendar, Clock, Users, Building, Target, FileText, MapPin } from "lucide-react";
 import { SportType } from "@/features/clubs/types/clubs";
 import type { FriendlyMatchResponse } from "../types/matches";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 
 interface MatchFormModalProps {
   isOpen: boolean;
@@ -38,32 +41,52 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
   const courts = courtsData?.items || [];
 
   // Form States
+  const [isExternal, setIsExternal] = useState(false);
+  const [externalClubName, setExternalClubName] = useState("");
+  const [externalLocation, setExternalLocation] = useState("");
+
   const [courtId, setCourtId] = useState("");
   const [date, setDate] = useState("");
+  const [selectedSlotId, setSelectedSlotId] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [sportType, setSportType] = useState<string>("0");
   const [requiredPlayers, setRequiredPlayers] = useState<number>(10);
   const [note, setNote] = useState("");
 
+  // Fetch available slots for selected court & date
+  const { data: slots, isLoading: isSlotsLoading } = useGetTimeSlots(
+    courtId,
+    date,
+    true, // availableOnly
+    { enabled: isOpen && !isEditing && !isExternal && !!courtId && !!date }
+  );
+
   // Prefill in edit mode
   useEffect(() => {
     if (isOpen) {
       if (match) {
-        setCourtId(match.court.courtId);
+        const isExt = match.court.courtId === "external";
+        setIsExternal(isExt);
+        setExternalClubName(match.externalClubName || "");
+        setExternalLocation(match.externalLocation || "");
+        setCourtId(isExt ? "" : match.court.courtId);
         setDate(match.date);
-        // Take first 5 chars for HH:MM format from TimeOnly HH:MM:SS
         setStartTime(match.startTime.substring(0, 5));
         setEndTime(match.endTime.substring(0, 5));
         setSportType(match.sportType.toString());
         setRequiredPlayers(match.requiredPlayers);
         setNote(match.note || "");
+        setSelectedSlotId(""); // not needed in edit mode as we show manual inputs
       } else {
+        setIsExternal(false);
+        setExternalClubName("");
+        setExternalLocation("");
         setSelectedClubId("");
         setCourtId("");
-        setDate(new Date().toISOString().split("T")[0]);
-        setStartTime("18:00");
-        setEndTime("19:00");
+        setDate(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0]);
+        setStartTime("");
+        setEndTime("");
         setSportType("0");
         setRequiredPlayers(10);
         setNote("");
@@ -71,9 +94,33 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
     }
   }, [isOpen, match]);
 
+  // Clear slot selection when court, date, or mode changes
+  useEffect(() => {
+    if (!isEditing) {
+      setSelectedSlotId("");
+      setStartTime("");
+      setEndTime("");
+    }
+  }, [courtId, date, isExternal, isEditing]);
+
+  const handleSlotSelect = (slotId: string, start: string, end: string) => {
+    setSelectedSlotId(slotId);
+    setStartTime(start.substring(0, 5));
+    setEndTime(end.substring(0, 5));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!courtId || !date || !startTime || !endTime) {
+    if (!isExternal && !courtId) {
+      return;
+    }
+    if (!isExternal && !isEditing && !selectedSlotId) {
+      return;
+    }
+    if (isExternal && (!externalClubName.trim() || !externalLocation.trim())) {
+      return;
+    }
+    if (!date || !startTime || !endTime) {
       return;
     }
 
@@ -82,13 +129,15 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
     const formattedEndTime = endTime.length === 5 ? `${endTime}:00` : endTime;
 
     const data = {
-      courtId,
+      courtId: isExternal ? "external" : courtId,
       date,
       startTime: formattedStartTime,
       endTime: formattedEndTime,
       sportType: Number(sportType),
       requiredPlayers,
       note: note.trim() || undefined,
+      externalClubName: isExternal ? externalClubName.trim() : undefined,
+      externalLocation: isExternal ? externalLocation.trim() : undefined,
     };
 
     try {
@@ -119,8 +168,30 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          {/* Club & Court Selection (Only visible when creating) */}
+          {/* Internal vs External Toggle */}
           {!isEditing && (
+            <div className="flex bg-muted p-1 rounded-xl gap-1">
+              <Button
+                type="button"
+                variant={isExternal ? "ghost" : "secondary"}
+                className={cn("flex-1 text-xs font-bold rounded-lg h-9 shadow-sm", !isExternal && "bg-background text-primary")}
+                onClick={() => setIsExternal(false)}
+              >
+                🏫 System Court
+              </Button>
+              <Button
+                type="button"
+                variant={isExternal ? "secondary" : "ghost"}
+                className={cn("flex-1 text-xs font-bold rounded-lg h-9 shadow-sm", isExternal && "bg-background text-primary")}
+                onClick={() => setIsExternal(true)}
+              >
+                📍 External Court
+              </Button>
+            </div>
+          )}
+
+          {/* Club & Court Selection (System Court) */}
+          {!isEditing && !isExternal && (
             <>
               <div className="space-y-2">
                 <Label htmlFor="match-club-select" className="flex items-center gap-1">
@@ -169,6 +240,62 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
                   </SelectContent>
                 </Select>
               </div>
+              
+              <div className="bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-600 dark:text-amber-400 p-3 rounded-xl flex items-start gap-2 leading-relaxed">
+                <Clock className="h-4 w-4 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold">Reservation Request:</span> Creating a match on a system court will submit a booking request. The match will open to players once the owner approves the booking.
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* External Club/Court Inputs */}
+          {!isEditing && isExternal && (
+            <>
+              <div className="space-y-2">
+                <Label htmlFor="external-club" className="flex items-center gap-1">
+                  <Building className="h-4 w-4 text-primary shrink-0" /> Club/Facility Name
+                </Label>
+                <Input
+                  id="external-club"
+                  placeholder="e.g. Zamalek Sporting Club"
+                  value={externalClubName}
+                  onChange={(e) => setExternalClubName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="external-loc" className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4 text-primary shrink-0" /> Location / Address
+                </Label>
+                <Input
+                  id="external-loc"
+                  placeholder="e.g. Zamalek, Cairo"
+                  value={externalLocation}
+                  onChange={(e) => setExternalLocation(e.target.value)}
+                  required
+                />
+              </div>
+            </>
+          )}
+
+          {/* Edit Mode Read-Only fields */}
+          {isEditing && isExternal && (
+            <>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-1 text-muted-foreground">
+                  <Building className="h-4 w-4 shrink-0" /> Club/Facility Name (External)
+                </Label>
+                <Input value={externalClubName} disabled />
+              </div>
+              <div className="space-y-2">
+                <Label className="flex items-center gap-1 text-muted-foreground">
+                  <MapPin className="h-4 w-4 shrink-0" /> Location (External)
+                </Label>
+                <Input value={externalLocation} disabled />
+              </div>
             </>
           )}
 
@@ -182,38 +309,89 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              min={new Date().toISOString().split("T")[0]}
+              min={new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0]}
               required
             />
           </div>
 
-          {/* Time range */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="match-start-time" className="flex items-center gap-1">
-                <Clock className="h-4 w-4 text-primary shrink-0" /> Start Time
-              </Label>
-              <Input
-                id="match-start-time"
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                required
-              />
+          {/* Time Selection */}
+          {isExternal || isEditing ? (
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="match-start-time" className="flex items-center gap-1">
+                  <Clock className="h-4 w-4 text-primary shrink-0" /> Start Time
+                </Label>
+                <Input
+                  id="match-start-time"
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="match-end-time" className="flex items-center gap-1">
+                  <Clock className="h-4 w-4 text-primary shrink-0" /> End Time
+                </Label>
+                <Input
+                  id="match-end-time"
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  required
+                />
+              </div>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="match-end-time" className="flex items-center gap-1">
-                <Clock className="h-4 w-4 text-primary shrink-0" /> End Time
+          ) : (
+            <div className="space-y-2.5">
+              <Label className="flex items-center gap-1 font-semibold text-xs text-foreground">
+                <Clock className="h-4 w-4 text-primary shrink-0" /> Select Available Time
               </Label>
-              <Input
-                id="match-end-time"
-                type="time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                required
-              />
+              {!courtId || !date ? (
+                <p className="text-[11px] text-muted-foreground italic bg-secondary/15 p-3 rounded-xl border border-dashed border-border/80 text-center">
+                  Select a court and date first to view available times.
+                </p>
+              ) : isSlotsLoading ? (
+                <div className="grid grid-cols-3 gap-2">
+                  {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} className="h-9 w-full rounded-xl" />
+                  ))}
+                </div>
+              ) : !slots || slots.length === 0 ? (
+                <p className="text-[11px] text-destructive italic bg-destructive/5 p-3 rounded-xl border border-destructive/15 text-center leading-relaxed">
+                  ⚠️ No available slots found on this date. Please choose another date.
+                </p>
+              ) : (
+                <div className="grid grid-cols-3 gap-2 max-h-36 overflow-y-auto pr-1">
+                  {slots.map((s) => {
+                    const displayStart = s.startTime.substring(0, 5);
+                    const format12Hour = (time24: string) => {
+                      const [hours, minutes] = time24.split(":");
+                      const hrs = parseInt(hours);
+                      const ampm = hrs >= 12 ? "PM" : "AM";
+                      const displayHrs = hrs % 12 || 12;
+                      return `${displayHrs}:${minutes} ${ampm}`;
+                    };
+                    const isSelected = selectedSlotId === s.timeSlotId;
+                    return (
+                      <Button
+                        key={s.timeSlotId}
+                        type="button"
+                        variant={isSelected ? "default" : "outline"}
+                        className={cn(
+                          "h-9.5 text-[11px] font-bold rounded-xl transition-all hover:scale-[1.02] shadow-sm select-none",
+                          isSelected ? "bg-primary text-primary-foreground border-primary" : "hover:border-primary/50 text-foreground"
+                        )}
+                        onClick={() => handleSlotSelect(s.timeSlotId, s.startTime, s.endTime)}
+                      >
+                        {format12Hour(displayStart)}
+                      </Button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
           {/* Sport & Required Players */}
           <div className="grid grid-cols-2 gap-4">
@@ -272,7 +450,12 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
             </Button>
             <Button
               type="submit"
-              disabled={createMatch.isPending || updateMatch.isPending || (!isEditing && !courtId)}
+              disabled={
+                createMatch.isPending || 
+                updateMatch.isPending || 
+                (!isEditing && !isExternal && !selectedSlotId) || 
+                (!isEditing && isExternal && (!externalClubName.trim() || !externalLocation.trim()))
+              }
             >
               {createMatch.isPending || updateMatch.isPending ? "Saving..." : "Save Match"}
             </Button>

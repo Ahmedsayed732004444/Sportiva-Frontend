@@ -5,6 +5,7 @@ import { AuthProvider } from "@/features/auth/context/AuthContext";
 import { ThemeProvider } from "@/shared/components/theme/ThemeProvider";
 import { TooltipProvider } from "@/shared/components/ui/tooltip";
 import { ThemedToaster } from "@/shared/components/ThemedToaster";
+import { SignalRListener } from "@/shared/components/navigation/SignalRListener";
 import MainRouter from "./routes";
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
       <ThemeProvider>
         <TooltipProvider>
           <AuthProvider>
+            <SignalRListener />
             <MainRouter />
             <ThemedToaster />
           </AuthProvider>

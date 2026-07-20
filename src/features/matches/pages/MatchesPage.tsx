@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useGetMatches,
   useGetMyMatches,
@@ -9,7 +9,7 @@ import {
 } from "../hooks/useMatches";
 import { useQuery } from "@tanstack/react-query";
 import { matchesApi } from "../api/matchesApi";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Badge } from "@/shared/components/ui/badge";
@@ -22,21 +22,27 @@ import {
   Clock,
   MapPin,
   Users,
-  Trophy,
   Plus,
-  Target,
   AlertCircle,
   Gamepad,
   Search,
-  User,
   ArrowRight,
+  Lock,
+  LogOut,
+  Sparkles,
+  Filter,
+  ChevronDown
 } from "lucide-react";
+import { UserAvatar } from "@/shared/components/common/UserAvatar";
 import { MatchStatusDto, SPORT_LABELS, SPORT_EMOJIS } from "../types/matches";
 import { MatchFormModal } from "../components/MatchFormModal";
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+
+import bookingsBanner from "@/assets/imgs/bookings_banner.jpg";
 
 export default function MatchesPage() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>("browse");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
@@ -44,6 +50,7 @@ export default function MatchesPage() {
   const [sportFilter, setSportFilter] = useState<string>("all");
   const [dateFilter, setDateFilter] = useState("");
   const [cityFilter, setCityFilter] = useState("");
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // My Matches Filters
   const [myRoleFilter, setMyRoleFilter] = useState<string>("all");
@@ -103,7 +110,6 @@ export default function MatchesPage() {
   };
 
   const handleWithdraw = async (matchId: string) => {
-    // Find request ID from my pending requests
     const request = myRequestsData?.items?.find((r) => r.match.matchId === matchId);
     if (!request) {
       toast.error("Could not find active request to withdraw.");
@@ -125,17 +131,41 @@ export default function MatchesPage() {
   const getStatusBadge = (status: MatchStatusDto) => {
     switch (status) {
       case MatchStatusDto.Open:
-        return <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">Open</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-green-500/30 text-green-600 dark:text-green-400 bg-green-500/10">
+            Open
+          </span>
+        );
       case MatchStatusDto.Full:
-        return <Badge variant="default" className="bg-amber-600 hover:bg-amber-700">Full</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-amber-500/30 text-amber-600 dark:text-amber-400 bg-amber-500/10">
+            Full
+          </span>
+        );
       case MatchStatusDto.InProgress:
-        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">In Progress</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/5">
+            In Progress
+          </span>
+        );
       case MatchStatusDto.Completed:
-        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Completed</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-muted-foreground/30 text-muted-foreground bg-muted/10">
+            Completed
+          </span>
+        );
       case MatchStatusDto.Cancelled:
-        return <Badge variant="destructive">Cancelled</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-destructive/30 text-destructive bg-destructive/10">
+            Cancelled
+          </span>
+        );
       default:
-        return <Badge variant="secondary">Unknown</Badge>;
+        return (
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-muted-foreground/20 text-muted-foreground bg-muted/5">
+            Unknown
+          </span>
+        );
     }
   };
 
@@ -152,93 +182,129 @@ export default function MatchesPage() {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl space-y-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <Gamepad className="h-8 w-8 text-primary" /> Friendly Matches
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Join friendly matches, organize your own, and play sports with the community.
-          </p>
+    <div className="container mx-auto py-6 px-2 sm:py-8 sm:px-4 max-w-7xl space-y-6">
+      
+      {/* Premium Header Banner */}
+      <div 
+        className="w-full h-44 sm:h-52 rounded-3xl overflow-hidden bg-cover bg-center relative border border-gray-100 dark:border-muted/30 shadow-sm shrink-0 flex items-end p-6"
+        style={{ backgroundImage: `url(${bookingsBanner})` }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+        
+        {/* Content */}
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between w-full gap-4">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-md">
+              <Gamepad className="h-6 w-6 animate-pulse" />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-none">
+                Friendly Matches
+              </h1>
+              <p className="text-white/80 mt-2 text-xs font-semibold">
+                Join friendly matches, organize your own, and play sports with the community
+              </p>
+            </div>
+          </div>
+          
+          <Button 
+            onClick={() => setIsCreateModalOpen(true)} 
+            className="gap-1.5 shadow-lg bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-102 transition-all shrink-0 h-10 px-4 rounded-xl font-semibold border-0"
+          >
+            <Plus className="h-4.5 w-4.5" /> Organize Match
+          </Button>
         </div>
-        <Button onClick={() => setIsCreateModalOpen(true)} className="gap-1.5 self-start sm:self-auto shadow-md">
-          <Plus className="h-4.5 w-4.5" /> Organize Match
-        </Button>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-6">
-        <TabsList className="grid w-full sm:w-[300px] grid-cols-2">
-          <TabsTrigger value="browse">Browse Matches</TabsTrigger>
-          <TabsTrigger value="my">My Matches</TabsTrigger>
+        <TabsList className="grid w-full sm:w-[320px] grid-cols-2 bg-muted/50 p-1 rounded-full border border-border/40">
+          <TabsTrigger value="browse" className="rounded-full text-xs font-semibold py-1.5">Browse Matches</TabsTrigger>
+          <TabsTrigger value="my" className="rounded-full text-xs font-semibold py-1.5">My Matches</TabsTrigger>
         </TabsList>
 
-        {/* Tab 1: Browse Filters */}
+        {/* Tab 1: Browse Filters with collapsible layout (similar to ClubsPage) */}
         <TabsContent value="browse" className="space-y-6">
-          <Card className="bg-card border-muted/40 shadow-sm">
-            <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-              <div className="space-y-2">
-                <Label htmlFor="browse-sport-select">Sport Type</Label>
-                <Select value={sportFilter} onValueChange={setSportFilter}>
-                  <SelectTrigger id="browse-sport-select">
-                    <SelectValue placeholder="All Sports" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Sports</SelectItem>
-                    <SelectItem value="0">Football</SelectItem>
-                    <SelectItem value="1">Basketball</SelectItem>
-                    <SelectItem value="2">Tennis</SelectItem>
-                    <SelectItem value="3">Padel</SelectItem>
-                    <SelectItem value="4">Volleyball</SelectItem>
-                    <SelectItem value="5">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="browse-date-input">Date</Label>
-                <Input
-                  id="browse-date-input"
-                  type="date"
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="browse-city-input">City</Label>
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-card shadow-sm p-4">
+            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
+              
+              {/* Header row (Search input + mobile expand toggle button) */}
+              <div className="flex gap-2 w-full lg:contents">
+                <div className="relative flex-1">
                   <Input
-                    id="browse-city-input"
-                    placeholder="e.g. Cairo"
+                    className="w-full pr-10 pl-4 h-11 bg-gray-50/50 dark:bg-muted/30 border border-gray-200/80 dark:border-muted/40 rounded-xl"
+                    placeholder="Search by city..."
                     value={cityFilter}
                     onChange={(e) => setCityFilter(e.target.value)}
-                    className="pl-9"
+                  />
+                  <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-11 w-11 px-0 rounded-xl border border-gray-200/80 dark:border-muted/40 bg-white dark:bg-card shrink-0 flex lg:hidden items-center justify-center text-foreground hover:bg-gray-50"
+                  onClick={() => setShowMobileFilters(!showMobileFilters)}
+                >
+                  <Filter className={cn("h-5 w-5 transition-transform", showMobileFilters && "rotate-180 text-primary")} />
+                </Button>
+              </div>
+
+              {/* Collapsible Filters container */}
+              <div className={cn(
+                "flex-col lg:flex-row gap-4 items-stretch lg:items-center w-full lg:contents",
+                showMobileFilters ? "flex" : "hidden lg:contents"
+              )}>
+                
+                {/* Sport Type Dropdown */}
+                <div className="relative min-w-[200px] flex-1 lg:flex-initial">
+                  <Select value={sportFilter} onValueChange={setSportFilter}>
+                    <SelectTrigger className="w-full h-11 bg-gray-50/50 dark:bg-muted/30 border border-gray-200/80 dark:border-muted/40 rounded-xl text-sm font-medium text-foreground">
+                      <SelectValue placeholder="All Sports" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-border">
+                      <SelectItem value="all">🏆 All Sports</SelectItem>
+                      <SelectItem value="0">⚽ Football</SelectItem>
+                      <SelectItem value="1">🏀 Basketball</SelectItem>
+                      <SelectItem value="2">🎾 Tennis</SelectItem>
+                      <SelectItem value="3">🎾 Padel</SelectItem>
+                      <SelectItem value="4">🏐 Volleyball</SelectItem>
+                      <SelectItem value="5">🏅 Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Date Input */}
+                <div className="relative min-w-[200px] flex-1 lg:flex-initial">
+                  <Input
+                    type="date"
+                    value={dateFilter}
+                    onChange={(e) => setDateFilter(e.target.value)}
+                    className="w-full h-11 bg-gray-50/50 dark:bg-muted/30 border border-gray-200/80 dark:border-muted/40 rounded-xl text-sm font-medium text-foreground"
                   />
                 </div>
+
               </div>
-            </CardContent>
+            </div>
           </Card>
         </TabsContent>
 
         {/* Tab 2: My Matches Filters */}
         <TabsContent value="my" className="space-y-6">
-          <Card className="bg-card border-muted/40 shadow-sm">
-            <CardContent className="pt-6 w-full sm:w-64 space-y-2">
-              <Label htmlFor="my-role-select">My Role</Label>
-              <Select value={myRoleFilter} onValueChange={setMyRoleFilter}>
-                <SelectTrigger id="my-role-select">
-                  <SelectValue placeholder="All Matches" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Matches</SelectItem>
-                  <SelectItem value="organizer">Organized by Me</SelectItem>
-                  <SelectItem value="participant">Joined by Me</SelectItem>
-                </SelectContent>
-              </Select>
-            </CardContent>
+          <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-card shadow-sm p-4">
+            <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
+              <div className="relative min-w-[240px]">
+                <Select value={myRoleFilter} onValueChange={setMyRoleFilter}>
+                  <SelectTrigger className="w-full h-11 bg-gray-50/50 dark:bg-muted/30 border border-gray-200/80 dark:border-muted/40 rounded-xl text-sm font-medium text-foreground">
+                    <SelectValue placeholder="All Matches" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border-border">
+                    <SelectItem value="all">All Matches</SelectItem>
+                    <SelectItem value="organizer">Organized by Me</SelectItem>
+                    <SelectItem value="participant">Joined by Me</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </Card>
         </TabsContent>
 
@@ -246,30 +312,37 @@ export default function MatchesPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-44 w-full rounded-xl" />
+              <Skeleton key={i} className="h-48 w-full rounded-2xl" />
             ))}
           </div>
         ) : isError ? (
-          <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20 flex flex-col items-center justify-center gap-2">
+          <div className="py-12 text-center text-destructive bg-destructive/10 rounded-2xl border border-destructive/20 flex flex-col items-center justify-center gap-2">
             <AlertCircle className="h-8 w-8" />
             <span>Failed to load friendly matches. Please try again.</span>
           </div>
         ) : matches.length === 0 ? (
-          <div className="py-16 text-center text-muted-foreground bg-card border rounded-xl space-y-2">
-            <Gamepad className="h-10 w-10 mx-auto text-muted-foreground/40" />
-            <h3 className="text-base font-semibold">No Matches Available</h3>
+          <div className="py-16 text-center text-muted-foreground bg-card border border-border/40 rounded-2xl space-y-2 shadow-sm">
+            <Gamepad className="h-12 w-12 mx-auto text-muted-foreground/35" />
+            <h3 className="text-base font-semibold text-foreground">No Matches Available</h3>
             <p className="text-sm">We couldn't find any matches matching your criteria.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {matches.map((match) => (
-              <Card key={match.matchId} className="bg-card hover:border-muted-foreground/20 hover:shadow-md transition-all border-muted/50 overflow-hidden flex flex-col shadow-sm">
-                <CardHeader className="p-6 pb-4 flex flex-row items-start justify-between gap-4">
-                  <div className="space-y-1.5">
+              <Card 
+                key={match.matchId} 
+                className="bg-card hover:border-primary/40 hover:shadow-md transition-all border-border/60 overflow-hidden flex flex-col shadow-sm rounded-2xl relative cursor-pointer"
+                onClick={() => navigate(`/matches/${match.matchId}`)}
+              >
+                {/* Accent vertical line on the left of each card */}
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary/90" />
+
+                <CardHeader className="p-6 pb-3 flex flex-row items-start justify-between gap-4 ml-1">
+                  <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <Badge variant="secondary" className="rounded-full">
+                      <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-border bg-secondary/35 text-foreground">
                         {SPORT_EMOJIS[match.sportType]} {SPORT_LABELS[match.sportType]}
-                      </Badge>
+                      </span>
                       {getStatusBadge(match.status)}
                     </div>
                     <CardTitle className="text-lg font-bold text-foreground pt-1 truncate">
@@ -281,19 +354,22 @@ export default function MatchesPage() {
                     </p>
                   </div>
 
-                  <div className="text-right shrink-0">
-                    <span className="text-xs font-mono font-bold text-muted-foreground block">Slots Left</span>
-                    <span className="text-2xl font-black text-primary">{match.slotsRemaining}</span>
+                  {/* Slots Remaining Box */}
+                  <div className="text-center shrink-0 bg-secondary/40 border border-border/30 rounded-xl px-3 py-2 min-w-[70px]">
+                    <span className="text-[9px] font-bold text-muted-foreground block uppercase tracking-wider leading-none">Slots Left</span>
+                    <span className={`text-2xl font-black ${match.slotsRemaining > 0 ? "text-primary" : "text-destructive"}`}>
+                      {match.slotsRemaining}
+                    </span>
                   </div>
                 </CardHeader>
 
-                <CardContent className="p-6 pt-0 flex-1 flex flex-col justify-between gap-6">
-                  {/* Date/Time & Roster Preview */}
+                <CardContent className="p-6 pt-0 flex-1 flex flex-col justify-between gap-5 ml-1">
+                  {/* Date/Time Container & Roster Row */}
                   <div className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-foreground/80 bg-muted/30 px-4 py-2.5 rounded-xl border border-muted/30">
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-foreground/80 bg-secondary/20 px-4 py-2.5 rounded-xl border border-border/30">
                       <div className="flex items-center gap-1.5">
                         <Calendar className="h-4 w-4 text-primary shrink-0" />
-                        <span>{new Date(match.date).toLocaleDateString()}</span>
+                        <span>{new Date(match.date).toLocaleDateString("en-US", { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <Clock className="h-4 w-4 text-primary shrink-0" />
@@ -304,52 +380,42 @@ export default function MatchesPage() {
                     </div>
 
                     {/* Players Preview Row */}
-                    <div className="flex items-center justify-between text-xs">
+                    <div className="flex items-center justify-between text-xs pt-1">
                       <div className="flex items-center gap-2">
                         <Users className="h-4 w-4 text-primary shrink-0" />
                         <span className="font-semibold text-muted-foreground">
-                          Roster: {match.acceptedPlayersCount} / {match.requiredPlayers} players
+                          Roster: <span className="text-foreground font-bold">{match.acceptedPlayersCount}</span> / {match.requiredPlayers} players
                         </span>
                       </div>
 
-                      {/* Small avatar group preview */}
-                      <div className="flex -space-x-1.5 overflow-hidden">
-                        {match.participantsPreview?.map((p) => (
-                          <div
+                      {/* Overlapping circle avatars */}
+                      <div className="flex -space-x-2 overflow-hidden items-center">
+                        {match.participantsPreview?.slice(0, 5).map((p) => (
+                          <UserAvatar
                             key={p.playerId}
-                            className="inline-block h-6 w-6 rounded-full ring-2 ring-background bg-primary/10 border text-[9px] font-bold text-primary flex items-center justify-center truncate shrink-0"
-                            title={p.fullName}
-                          >
-                            {p.profilePictureUrl ? (
-                              <img src={p.profilePictureUrl} alt="" className="h-full w-full object-cover rounded-full" />
-                            ) : (
-                              p.fullName.charAt(0).toUpperCase()
-                            )}
-                          </div>
+                            user={p}
+                            size="xs"
+                            className="ring-2 ring-card"
+                            linkable
+                          />
                         ))}
+                        {match.participantsPreview && match.participantsPreview.length > 5 && (
+                          <div className="h-6.5 w-6.5 rounded-full ring-2 ring-card bg-secondary border border-border text-[9px] font-black text-muted-foreground flex items-center justify-center shrink-0">
+                            +{match.participantsPreview.length - 5}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Actions & Organizer Footer */}
-                  <div className="flex items-center justify-between gap-4 border-t pt-4 border-muted">
-                    <div className="flex items-center gap-2 text-xs truncate">
-                      <div className="h-7 w-7 rounded-full bg-primary/10 text-primary border flex items-center justify-center font-bold text-xs shrink-0">
-                        {match.organizer.profilePhotoUrl ? (
-                          <img src={match.organizer.profilePhotoUrl} alt="" className="h-full w-full object-cover rounded-full" />
-                        ) : (
-                          match.organizer.fullName.charAt(0).toUpperCase()
-                        )}
-                      </div>
-                      <div className="truncate">
-                        <p className="font-semibold text-foreground truncate">{match.organizer.fullName}</p>
-                        <p className="text-[10px] text-muted-foreground">Organizer</p>
-                      </div>
-                    </div>
+                  {/* Organizer info and Call to Action */}
+                  <div className="flex items-center justify-between gap-4 border-t pt-4 border-border/50">
+                    <UserAvatar user={match.organizer} size="sm" showName linkable />
 
+                    {/* Dynamic Status Buttons */}
                     <div className="flex items-center gap-2 shrink-0">
                       {match.isOwner ? (
-                        <Button asChild size="sm" variant="outline" className="gap-1 shadow-sm">
+                        <Button asChild size="sm" variant="outline" className="gap-1 shadow-sm rounded-xl h-8 text-xs font-semibold" onClick={(e) => e.stopPropagation()}>
                           <Link to={`/matches/${match.matchId}`}>
                             Manage <ArrowRight className="h-3.5 w-3.5" />
                           </Link>
@@ -357,28 +423,34 @@ export default function MatchesPage() {
                       ) : (
                         <>
                           {match.iParticipating && (
-                            <div className="flex items-center gap-2">
-                              <Badge className="bg-green-600 hover:bg-green-700">Joined</Badge>
+                            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                              <Badge className="bg-primary/20 hover:bg-primary/20 text-primary border border-primary/20 rounded-lg h-7 font-bold text-[10px]">Joined</Badge>
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="text-destructive border-destructive hover:bg-destructive/10"
-                                onClick={() => handleLeave(match.matchId)}
+                                className="text-destructive border-destructive hover:bg-destructive/10 rounded-xl h-8 text-xs font-semibold gap-1"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleLeave(match.matchId);
+                                }}
                                 disabled={leaveMatch.isPending}
                               >
-                                Leave
+                                <LogOut className="h-3.5 w-3.5" /> Leave
                               </Button>
                             </div>
                           )}
 
                           {match.iApplied && (
-                            <div className="flex items-center gap-2">
-                              <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/20">Pending</Badge>
+                            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+                              <Badge variant="secondary" className="bg-amber-500/10 text-amber-600 border-amber-500/20 rounded-lg h-7 font-bold text-[10px]">Pending</Badge>
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="text-destructive border-destructive hover:bg-destructive/10"
-                                onClick={() => handleWithdraw(match.matchId)}
+                                className="text-destructive border-destructive hover:bg-destructive/10 rounded-xl h-8 text-xs font-semibold"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleWithdraw(match.matchId);
+                                }}
                                 disabled={withdrawJoin.isPending}
                               >
                                 Cancel Request
@@ -389,19 +461,26 @@ export default function MatchesPage() {
                           {match.canJoin && (
                             <Button
                               size="sm"
-                              className="bg-primary hover:bg-primary/95 shadow-sm"
-                              onClick={() => handleJoin(match.matchId)}
+                              className="bg-primary hover:bg-primary/95 text-primary-foreground shadow-sm rounded-xl h-8 text-xs font-semibold gap-1 hover:scale-102 transition-all"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleJoin(match.matchId);
+                              }}
                               disabled={requestToJoin.isPending}
                             >
-                              Join Match
+                              <Sparkles className="h-3.5 w-3.5" /> Join Match
                             </Button>
                           )}
                           
                           {!match.iParticipating && !match.iApplied && !match.canJoin && (
-                            <Button asChild size="sm" variant="ghost">
-                              <Link to={`/matches/${match.matchId}`}>
-                                Details
-                              </Link>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="rounded-xl h-8 text-xs font-semibold gap-1 text-muted-foreground border-border/80"
+                              onClick={(e) => e.stopPropagation()}
+                              disabled
+                            >
+                              <Lock className="h-3.5 w-3.5" /> Match Full
                             </Button>
                           )}
                         </>
