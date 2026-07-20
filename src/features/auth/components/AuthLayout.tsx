@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Users, Tent, Trophy } from "lucide-react";
 import authScreenshot from "@/assets/imgs/auth/74ccbdbe-a555-4c9f-81e0-1f39547379e1.png";
 
+import { SportivaLogo } from "@/shared/components/common/SportivaLogo";
+
 interface AuthLayoutProps {
   children: React.ReactNode;
   variant?: "register" | "login" | "forgot" | "reset" | "verify";
@@ -24,12 +26,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
         to="/"
         className="flex items-center gap-2.5 z-10 w-fit group hover:opacity-90 transition-opacity"
       >
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#20A854] text-white shadow-md shadow-emerald-500/20 transition-transform group-hover:scale-105">
-          <Trophy className="h-5 w-5" />
-        </div>
-        <span className="text-xl font-black tracking-tight text-white drop-shadow-sm">
-          Sportiva
-        </span>
+        <SportivaLogo showText={true} size="lg" textClassName="text-white" />
       </Link>
 
       {/* Main Hero Typography */}

@@ -18,6 +18,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { EyeIcon, EyeOffIcon, User, Mail, Lock } from "lucide-react";
 import { setFormErrors } from "@/lib/api/errors";
 import { env } from "@/lib/env";
+import { SportivaLogo } from "@/shared/components/common/SportivaLogo";
 
 const registerSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -74,20 +75,7 @@ export const RegisterForm = () => {
           to="/"
           className="flex items-center gap-2.5 group hover:opacity-90 transition-opacity"
         >
-          {/* Green Hexagon Icon Badge */}
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-[#20A854] shadow-sm transition-transform group-hover:scale-105">
-            <svg className="h-5 w-5 fill-current text-[#20A854]" viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
-          </div>
-          <div className="text-left">
-            <h3 className="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
-              Sportiva
-            </h3>
-            <p className="text-[9px] uppercase font-semibold text-slate-500 dark:text-white/50 tracking-wider mt-0.5">
-              Sports Booking & Social Platform
-            </p>
-          </div>
+          <SportivaLogo showText={true} size="md" />
         </Link>
 
         <div className="pt-1.5 space-y-0.5">

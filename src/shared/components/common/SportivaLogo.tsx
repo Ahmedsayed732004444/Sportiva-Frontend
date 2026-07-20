@@ -1,5 +1,5 @@
 import React from "react";
-import sportivaLogoImg from "@/assets/imgs/logo.jpg";
+import sportivaLogoImg from "@/assets/imgs/logo.png";
 
 interface SportivaLogoProps {
   className?: string;
@@ -19,25 +19,25 @@ export const SportivaLogo: React.FC<SportivaLogoProps> = ({
   useImageAsset = true,
 }) => {
   const sizeMap = {
-    sm: { box: "h-7 w-7", icon: "h-4 w-4", text: "text-base" },
-    md: { box: "h-9 w-9", icon: "h-5 w-5", text: "text-xl" },
-    lg: { box: "h-11 w-11", icon: "h-6 w-6", text: "text-2xl" },
-    xl: { box: "h-14 w-14", icon: "h-8 w-8", text: "text-3xl" },
+    sm: { box: "h-9 w-9", icon: "h-5 w-5", text: "text-lg" },
+    md: { box: "h-11 w-11", icon: "h-7 w-7", text: "text-xl" },
+    lg: { box: "h-14 w-14", icon: "h-9 w-9", text: "text-2xl" },
+    xl: { box: "h-18 w-18", icon: "h-12 w-12", text: "text-3xl" },
   };
 
   const { box, icon, text } = sizeMap[size];
 
   return (
     <div className={`flex items-center gap-2.5 group ${className}`}>
-      {/* Pure Logo Mark Icon (No Text) */}
+      {/* Pure Standalone Logo Icon without background frame box */}
       <div
-        className={`relative flex ${box} items-center justify-center overflow-hidden rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-[#20A854] shadow-md shadow-emerald-500/10 transition-transform group-hover:scale-105 ${iconClassName}`}
+        className={`relative flex ${box} items-center justify-center shrink-0 transition-transform group-hover:scale-105 ${iconClassName}`}
       >
         {useImageAsset ? (
           <img
             src={sportivaLogoImg}
             alt="Sportiva Logo Mark"
-            className="w-full h-full object-cover filter brightness-105 contrast-105"
+            className="w-full h-full object-contain filter brightness-105 contrast-105"
           />
         ) : (
           <svg
