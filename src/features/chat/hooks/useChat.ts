@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel,
+  HttpTransportType,
+  HubConnectionState,
+} from "@microsoft/signalr";
 import { chatApi, type MessageResponse } from "../api/chatApi";
 import type { PaginatedList } from "@/features/clubs/types/clubs";
 import { authService } from "@/features/auth/services/authService";
@@ -55,6 +61,8 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
 
   const activeReceiverIdRef = useRef(activeReceiverId);
   const activeMatchIdRef = useRef(activeMatchId);
+  const refetchConversationsRef = useRef(refetchConversations);
+  const markAsReadRef = useRef(markAsReadMutation.mutate);
 
   useEffect(() => {
     activeReceiverIdRef.current = activeReceiverId;
@@ -64,6 +72,14 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
     activeMatchIdRef.current = activeMatchId;
   }, [activeMatchId]);
 
+  useEffect(() => {
+    refetchConversationsRef.current = refetchConversations;
+  }, [refetchConversations]);
+
+  useEffect(() => {
+    markAsReadRef.current = markAsReadMutation.mutate;
+  }, [markAsReadMutation.mutate]);
+
   // 5. Connect to SignalR ChatHub
   useEffect(() => {
     if (!authService.isAuthenticated()) return;
@@ -71,12 +87,16 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
     const token = authService.getToken();
     if (!token) return;
 
+    let isMounted = true;
     const hubUrl = `${env.AUTH_BASE_URL}/hubs/chat`;
+
     const connection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
-        accessTokenFactory: () => token,
+        accessTokenFactory: () => authService.getToken() || "",
+        skipNegotiation: false,
+        transport: HttpTransportType.WebSockets | HttpTransportType.LongPolling,
       })
-      .withAutomaticReconnect()
+      .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
       .configureLogging(LogLevel.Warning)
       .build();
 
@@ -84,16 +104,25 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
 
     const startConnection = async () => {
       try {
-        await connection.start();
-        setIsConnected(true);
-        console.log("Connected to ChatHub SignalR!");
+        if (connection.state === HubConnectionState.Disconnected) {
+          await connection.start();
+          if (isMounted) {
+            setIsConnected(true);
+            console.log("Connected to ChatHub SignalR!");
 
-        // If a match is active at startup, join its group
-        if (activeMatchIdRef.current) {
-          await connection.invoke("JoinMatchGroup", activeMatchIdRef.current);
+            // If a match is active at startup, join its group
+            if (
+              activeMatchIdRef.current &&
+              (connection.state as HubConnectionState) === HubConnectionState.Connected
+            ) {
+              await connection.invoke("JoinMatchGroup", activeMatchIdRef.current);
+            }
+          }
         }
       } catch (err) {
-        console.error("SignalR Connection Error: ", err);
+        if (isMounted) {
+          console.error("SignalR Connection Error: ", err);
+        }
       }
     };
 
@@ -101,7 +130,6 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
 
     // Register live event listeners
     connection.on("ReceiveMessage", (message: MessageResponse) => {
-      // Ensure otherUser.id is mapped from otherUser.userId if userId is sent instead
       if (message.sender && (message.sender as { userId?: string }).userId) {
         message.sender.id = (message.sender as { userId?: string }).userId!;
       }
@@ -115,7 +143,6 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         (oldData: PaginatedList<MessageResponse> | undefined) => {
           if (!oldData) return oldData;
 
-          // If it is my message, find the sending/sent/delivered optimistic version and replace it
           if (isMine) {
             const hasPending = oldData.items.some(
               (item: MessageResponse & { status?: string }) =>
@@ -135,7 +162,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
                   item.content === message.content
                 ) {
                   replaced = true;
-                  return message; // Replace with server authenticated version
+                  return message;
                 }
                 return item;
               });
@@ -143,7 +170,6 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
             }
           }
 
-          // Otherwise, append it if it doesn't already exist
           const exists = oldData.items.some(
             (item: MessageResponse) => item.messageId === message.messageId
           );
@@ -156,12 +182,12 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         }
       );
 
-      // 2. Refresh active conversations list
-      refetchConversations();
+      // Refresh active conversations list using ref
+      refetchConversationsRef.current();
 
-      // 3. Mark as read if user is currently viewing this conversation
+      // Mark as read if user is currently viewing this conversation
       if (currentActiveId === otherUser.id && !isMine) {
-        markAsReadMutation.mutate(otherUser.id);
+        markAsReadRef.current(otherUser.id);
       }
     });
 
@@ -184,12 +210,18 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
     });
 
     return () => {
+      isMounted = false;
       if (connection) {
-        connection.stop();
         setIsConnected(false);
+        if (
+          connection.state === HubConnectionState.Connected ||
+          connection.state === HubConnectionState.Connecting
+        ) {
+          connection.stop().catch(() => {});
+        }
       }
     };
-  }, [queryClient, refetchConversations, markAsReadMutation]);
+  }, [queryClient]);
 
   // Separate effect to handle joining/leaving friendly match SignalR group when activeMatchId changes
   useEffect(() => {

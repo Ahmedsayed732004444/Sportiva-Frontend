@@ -10,7 +10,7 @@ function normalizeApiBaseUrl(raw: string | undefined): string {
 export const env = {
   API_BASE_URL: normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL),
   get AUTH_BASE_URL() {
-    return this.API_BASE_URL.replace(/\/api$/, "");
+    return this.API_BASE_URL.replace(/\/api(\/v\d+)?$/i, "");
   },
   APP_NAME: import.meta.env.VITE_APP_NAME || "Sportiva",
   APP_VERSION: import.meta.env.VITE_APP_VERSION || "1.0.0",

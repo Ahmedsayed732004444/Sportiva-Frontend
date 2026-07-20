@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel,
+  HttpTransportType,
+  HubConnectionState,
+} from "@microsoft/signalr";
 import { notificationsApi, type NotificationResponse } from "../api/notificationsApi";
 import { authService } from "@/features/auth/services/authService";
 import { env } from "@/lib/env";
@@ -73,12 +79,16 @@ export const useNotifications = (unreadOnly?: boolean) => {
     const token = authService.getToken();
     if (!token) return;
 
+    let isMounted = true;
     const hubUrl = `${env.AUTH_BASE_URL}/hubs/notifications`;
+
     const connection = new HubConnectionBuilder()
       .withUrl(hubUrl, {
-        accessTokenFactory: () => token,
+        accessTokenFactory: () => authService.getToken() || "",
+        skipNegotiation: false,
+        transport: HttpTransportType.WebSockets | HttpTransportType.LongPolling,
       })
-      .withAutomaticReconnect()
+      .withAutomaticReconnect([0, 2000, 5000, 10000, 30000])
       .configureLogging(LogLevel.Warning)
       .build();
 
@@ -86,11 +96,17 @@ export const useNotifications = (unreadOnly?: boolean) => {
 
     const startConnection = async () => {
       try {
-        await connection.start();
-        setIsConnected(true);
-        console.log("Connected to NotificationHub SignalR!");
+        if (connection.state === HubConnectionState.Disconnected) {
+          await connection.start();
+          if (isMounted) {
+            setIsConnected(true);
+            console.log("Connected to NotificationHub SignalR!");
+          }
+        }
       } catch (err) {
-        console.error("SignalR Notification Connection Error: ", err);
+        if (isMounted) {
+          console.error("SignalR Notification Connection Error: ", err);
+        }
       }
     };
 
@@ -119,9 +135,15 @@ export const useNotifications = (unreadOnly?: boolean) => {
     });
 
     return () => {
+      isMounted = false;
       if (connection) {
-        connection.stop();
         setIsConnected(false);
+        if (
+          connection.state === HubConnectionState.Connected ||
+          connection.state === HubConnectionState.Connecting
+        ) {
+          connection.stop().catch(() => {});
+        }
       }
     };
   }, [queryClient]);
