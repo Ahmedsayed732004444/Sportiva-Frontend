@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { SidebarProvider, SidebarInset } from "@/shared/components/ui/sidebar";
+import { SidebarProvider } from "@/shared/components/ui/sidebar";
 import AppHeader from "@/shared/components/navigation/AppHeader";
 import AppSidebar from "@/shared/components/navigation/AppSidebar";
 import PublicHeader from "@/shared/components/navigation/PublicHeader";
@@ -31,13 +31,13 @@ const AppLayout = () => {
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "14rem",
-          "--sidebar-width-icon": "4rem",
+          "--sidebar-width": "12rem",
+          "--sidebar-width-icon": "3rem",
         } as React.CSSProperties
       }
     >
       <AppSidebar config={config} />
-      <SidebarInset className="flex-1 min-w-0 flex flex-col min-h-svh bg-background">
+      <div className="flex-1 min-w-0 flex flex-col min-h-svh">
         <AppHeader />
         <div className="flex flex-1 flex-col pt-16 min-h-[calc(100vh-64px)]">
           <div className="flex-1">
@@ -45,7 +45,7 @@ const AppLayout = () => {
           </div>
           <MinimalFooter />
         </div>
-      </SidebarInset>
+      </div>
       <LocationReminderBanner />
     </SidebarProvider>
   );

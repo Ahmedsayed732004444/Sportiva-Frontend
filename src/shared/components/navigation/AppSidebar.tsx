@@ -59,7 +59,7 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
   return (
     <Sidebar
       collapsible="icon"
-      className="!top-0 !h-screen border-r border-gray-700/30 bg-[#161F30] text-white z-[1001]"
+      className="border-r border-gray-700/30 bg-[#161F30] text-white z-40"
     >
       {/* ── Brand Header ── */}
       <SidebarHeader className="px-4 py-5 border-b border-gray-700/30 bg-[#161F30] relative overflow-hidden shrink-0">
