@@ -44,6 +44,32 @@ import { ConfirmDialog } from "@/shared/components/common/ConfirmDialog";
 import { EmptyState } from "@/shared/components/common/EmptyState";
 import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
 
+interface PlayerLike {
+  fullName?: string;
+  name?: string;
+  firstName?: string;
+  lastName?: string;
+  profilePhotoUrl?: string;
+  profilePictureUrl?: string;
+  photoUrl?: string;
+  avatarUrl?: string;
+  email?: string;
+  userId?: string;
+  id?: string;
+}
+
+interface MatchJoinRequestLike extends PlayerLike {
+  requestId: string;
+  status: number | string;
+  createdAt: string;
+  player?: PlayerLike;
+  user?: PlayerLike;
+  applicant?: PlayerLike;
+  requestedBy?: PlayerLike;
+  requester?: PlayerLike;
+  playerFullName?: string;
+}
+
 /* ─────────────────────── helpers ─────────────────────── */
 const formatTime = (t: string) => {
   try {
@@ -601,30 +627,58 @@ export default function MatchDetailsPage() {
                             typeof req.status === "number"
                               ? req.status === 0
                               : Number(req.status) === 0;
+
+                          const rawReq = req as unknown as MatchJoinRequestLike;
+                          const p =
+                            rawReq.player ||
+                            rawReq.user ||
+                            rawReq.applicant ||
+                            rawReq.requestedBy ||
+                            rawReq.requester ||
+                            rawReq;
+                          const playerName =
+                            p.fullName ||
+                            p.name ||
+                            (p.firstName || p.lastName
+                              ? `${p.firstName || ""} ${p.lastName || ""}`.trim()
+                              : "") ||
+                            rawReq.fullName ||
+                            rawReq.playerFullName ||
+                            "Player";
+                          const playerPhoto =
+                            p.profilePhotoUrl ||
+                            p.profilePictureUrl ||
+                            p.photoUrl ||
+                            p.avatarUrl ||
+                            rawReq.profilePhotoUrl ||
+                            rawReq.profilePictureUrl ||
+                            null;
+                          const playerEmail = p.email || rawReq.email || "";
+
                           return (
                             <div
                               key={req.requestId}
                               className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl border border-border bg-muted/50"
                             >
                               <div className="flex items-center gap-3 min-w-0">
-                                {req.player.profilePhotoUrl ? (
+                                {playerPhoto ? (
                                   <img
-                                    src={req.player.profilePhotoUrl}
-                                    alt={req.player.fullName}
+                                    src={playerPhoto}
+                                    alt={playerName}
                                     className="h-10 w-10 rounded-full object-cover border-2 border-white dark:border-card shadow-sm shrink-0"
                                   />
                                 ) : (
                                   <div className="h-10 w-10 rounded-full bg-primary/10 text-primary font-extrabold text-sm flex items-center justify-center border-2 border-white dark:border-card shrink-0">
-                                    {req.player.fullName?.charAt(0)?.toUpperCase()}
+                                    {playerName.charAt(0).toUpperCase()}
                                   </div>
                                 )}
                                 <div className="min-w-0">
                                   <p className="text-sm font-bold text-foreground truncate">
-                                    {req.player.fullName}
+                                    {playerName}
                                   </p>
-                                  {req.player.email && (
+                                  {playerEmail && (
                                     <p className="text-[10px] text-muted-foreground truncate">
-                                      {req.player.email}
+                                      {playerEmail}
                                     </p>
                                   )}
                                   <p className="text-[10px] text-muted-foreground">

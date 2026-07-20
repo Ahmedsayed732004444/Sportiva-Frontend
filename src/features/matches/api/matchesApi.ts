@@ -69,8 +69,17 @@ export const matchesApi = {
     });
   },
 
-  requestToJoin: (matchId: string, data: { FriendlyMatchId: string }) => {
-    return apiClient.post<MatchJoinRequestResponse>(`/matches/${matchId}/join-requests`, data);
+  requestToJoin: (
+    matchId: string,
+    data?: { FriendlyMatchId?: string; friendlyMatchId?: string; matchId?: string }
+  ) => {
+    const payload = {
+      friendlyMatchId: matchId,
+      FriendlyMatchId: matchId,
+      matchId: matchId,
+      ...data,
+    };
+    return apiClient.post<MatchJoinRequestResponse>(`/matches/${matchId}/join-requests`, payload);
   },
 
   getMatchJoinRequests: (matchId: string, filters: RequestFilters) => {
