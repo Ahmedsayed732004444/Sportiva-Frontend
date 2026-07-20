@@ -1,8 +1,7 @@
-// c:/Users/AIO/Downloads/FrontEndProject-main/FrontEndProject-main/src/features/auth/components/AuthLayout.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { Users, Quote } from "lucide-react";
-import authScreenshot from "@/assets/imgs/auth/team-business-people-stacking-hands.jpg";
+import { Users, Tent, Trophy } from "lucide-react";
+import authScreenshot from "@/assets/imgs/auth/74ccbdbe-a555-4c9f-81e0-1f39547379e1.png";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -15,137 +14,89 @@ interface AuthLayoutProps {
  */
 export const AuthLayout: React.FC<AuthLayoutProps> = ({
   children,
-  variant = "register",
+  variant: _variant = "register",
   leftContent,
 }) => {
   const defaultLeftContent = (
-    <div className="relative h-full flex flex-col justify-between p-8 lg:p-12">
-      {/* Logo */}
-      <Link to="/" className="flex items-center gap-2 z-10">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-foreground/20 backdrop-blur-sm">
-          <Users className="h-6 w-6 text-primary-foreground" />
+    <div className="relative h-full flex flex-col justify-between p-6 lg:p-8 xl:p-10 z-10">
+      {/* Top spacing / Brand logo header */}
+      <Link
+        to="/"
+        className="flex items-center gap-2.5 z-10 w-fit group hover:opacity-90 transition-opacity"
+      >
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#20A854] text-white shadow-md shadow-emerald-500/20 transition-transform group-hover:scale-105">
+          <Trophy className="h-5 w-5" />
         </div>
-        <span className="text-2xl font-bold text-primary-foreground">Sportiva</span>
+        <span className="text-xl font-black tracking-tight text-white drop-shadow-sm">
+          Sportiva
+        </span>
       </Link>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col justify-center items-center text-center space-y-6 z-10">
-        {variant === "register" && (
-          <>
-            <h2 className="text-4xl font-bold text-primary-foreground">
-              Book your first court today
-            </h2>
-            <p className="text-lg text-primary-foreground/80 max-w-md">
-              Join thousands of players booking sports venues instantly. Start your journey with
-              Sportiva now and streamline your matches.
-            </p>
+      {/* Main Hero Typography */}
+      <div className="space-y-3 max-w-lg z-10 my-auto py-2">
+        <h1 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-none text-white">
+          Play Together. <br />
+          <span className="text-[#20A854]">Win Together.</span>
+        </h1>
+        <p className="text-sm lg:text-base text-white/80 font-normal max-w-md leading-relaxed">
+          Join the community, book your pitch, and enjoy the beautiful game.
+        </p>
+      </div>
 
-            {/* Social Proof */}
-            <div className="flex items-center gap-3 mt-8">
-              <div className="flex -space-x-2">
-                {[1, 2, 3].map((i) => (
-                  <div
-                    key={i}
-                    className="h-10 w-10 border-2 border-primary-foreground bg-primary text-primary-foreground text-xs flex items-center justify-center rounded-full"
-                  >
-                    {/* ✅ theme: border-white→border-primary-foreground, bg-[var(--purple)]→bg-primary, text-white→text-primary-foreground */}
-                    {String.fromCharCode(64 + i)}
-                  </div>
-                ))}
-              </div>
-              <div className="text-left">
-                <p className="text-primary-foreground font-semibold">+50K</p>
-                <p className="text-primary-foreground/70 text-sm">Active players on Sportiva</p>
-              </div>
-            </div>
-          </>
-        )}
+      {/* 3 Features at bottom left */}
+      <div className="grid grid-cols-3 gap-3 pt-4 z-10 border-t border-white/10">
+        <div className="space-y-1">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-[#20A854]">
+            <Tent className="h-4 w-4" />
+          </div>
+          <h4 className="text-xs font-bold text-white leading-tight">Book Courts</h4>
+          <p className="text-[11px] text-white/70 leading-snug">
+            Find & book top sports facilities.
+          </p>
+        </div>
 
-        {variant === "login" && (
-          <>
-            <h2 className="text-4xl font-bold text-primary-foreground">Welcome back</h2>
-            <p className="text-lg text-primary-foreground/80 max-w-md">
-              Enter your details to access your bookings and manage your upcoming games.
-            </p>
+        <div className="space-y-1">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-[#20A854]">
+            <Users className="h-4 w-4" />
+          </div>
+          <h4 className="text-xs font-bold text-white leading-tight">Find Players</h4>
+          <p className="text-[11px] text-white/70 leading-snug">
+            Connect with players & build team.
+          </p>
+        </div>
 
-            {/* Testimonial */}
-            <div className="mt-8 bg-card/60 backdrop-blur-sm rounded-lg p-6 max-w-md border border-border/30">
-              {/* ✅ theme: bg-black/40→bg-card/60, border-white/10→border-border/30 */}
-              <div className="flex gap-1 mb-3">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <span key={i} className="text-chart-4 text-sm">
-                    {/* ✅ theme: text-yellow-400 → text-chart-4 */}★
-                  </span>
-                ))}
-              </div>
-              <Quote className="h-6 w-6 text-primary-foreground/60 mb-2" />
-              {/* ✅ theme: text-white/60 → text-primary-foreground/60 */}
-              <p className="text-primary-foreground text-sm italic mb-4">
-                "Sportiva completely changed how our team books pitches. We never show up to find
-                the court taken anymore."
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 bg-primary text-primary-foreground flex items-center justify-center rounded-full">
-                  KA
-                </div>
-                <div>
-                  <p className="text-primary-foreground font-semibold text-sm">Karim Adel</p>
-                  <p className="text-primary-foreground/70 text-xs">Football Team Captain</p>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {(variant === "forgot" || variant === "reset" || variant === "verify") && (
-          <>
-            <h2 className="text-4xl font-bold text-primary-foreground">
-              {/* ✅ theme: text-white → text-primary-foreground */}
-              {variant === "forgot"
-                ? "Reset your password"
-                : variant === "reset"
-                  ? "Create new password"
-                  : "Verify your email"}
-            </h2>
-            <p className="text-lg text-primary-foreground/80 max-w-md">
-              {/* ✅ theme: text-white/80 → text-primary-foreground/80 */}
-              {variant === "forgot"
-                ? "Enter your email address and we'll send you a link to reset your password."
-                : variant === "reset"
-                  ? "Enter your new password below to secure your account."
-                  : "We've sent a verification code to your email. Please enter it below."}
-            </p>
-          </>
-        )}
+        <div className="space-y-1">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-[#20A854]">
+            <Trophy className="h-4 w-4" />
+          </div>
+          <h4 className="text-xs font-bold text-white leading-tight">Join Matches</h4>
+          <p className="text-[11px] text-white/70 leading-snug">Join or organize friendly games.</p>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Promotional */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-foreground">
-        {/* ✅ theme: bg-black → bg-foreground */}
-        {/* Background Image */}
+    <div className="h-screen max-h-screen w-full flex bg-[#0B0F17] overflow-hidden">
+      {/* Left Side - High Clarity Hero Image */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-slate-950">
         <img
           src={authScreenshot}
-          alt="Sportiva Auth"
-          className="absolute inset-0 w-full h-full object-cover"
+          alt="Sportiva Auth Background"
+          className="absolute inset-0 w-full h-full object-cover object-left-top filter contrast-[1.05] brightness-95"
         />
 
-        {/* Subtle Overlays for Readability */}
-        <div className="absolute inset-0 bg-foreground/10 z-0" />
-        {/* ✅ theme: bg-black/10 → bg-foreground/10 */}
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-foreground/30 z-0" />
-        {/* ✅ theme: from-black/60→from-foreground/60, to-black/30→to-foreground/30 */}
+        {/* Crisp Gradient Overlay for Text Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-slate-950/20 z-0" />
+        <div className="absolute inset-0 bg-emerald-950/20 mix-blend-overlay z-0" />
 
-        {/* Content on top of image */}
+        {/* Content */}
         <div className="relative z-10 w-full h-full">{leftContent || defaultLeftContent}</div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex flex-1 items-center justify-center bg-muted/20 px-4 py-10">
-        <div className="w-full max-w-md">{children}</div>
+      {/* Right Side - Form Container */}
+      <div className="flex flex-1 items-center justify-center bg-[#070A10] px-4 py-4 sm:px-6 lg:px-8 overflow-y-auto max-h-screen">
+        <div className="w-full max-w-[420px] my-auto">{children}</div>
       </div>
     </div>
   );
