@@ -20,7 +20,7 @@ const NotificationDropdown: React.FC = () => {
     isRead: boolean,
     entityType?: string | null,
     entityId?: string | null,
-    actor?: unknown | null
+    actor?: { id?: string; userId?: string } | null
   ) => {
     if (!isRead) {
       markAsRead(id);

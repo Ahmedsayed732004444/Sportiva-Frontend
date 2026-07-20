@@ -40,7 +40,8 @@ export function PlanFormModal({ isOpen, onClose, plan }: PlanFormModalProps) {
   const updatePlan = useUpdatePlan();
 
   const form = useForm<PlanFormValues>({
-    resolver: zodResolver(planSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(planSchema) as any,
     defaultValues: {
       name: "",
       description: "",

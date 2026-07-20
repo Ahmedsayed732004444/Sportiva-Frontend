@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/context/AuthContext";
 import { useChat } from "../hooks/useChat";
+import type { MessageResponse } from "../api/chatApi";
 import { Send, MessageSquare, Search, ArrowLeft, Smile, CheckCheck, Check } from "lucide-react";
 import { formatTime } from "@/lib/utils";
 

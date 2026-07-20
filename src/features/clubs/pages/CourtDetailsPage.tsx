@@ -33,6 +33,7 @@ import {
   Check,
   MapPin,
 } from "lucide-react";
+import type { TimeSlotResponse } from "../types/clubs";
 import { getSportName } from "@/shared/constants/sports";
 import { CourtFormModal } from "../components/CourtFormModal";
 import { toast } from "sonner";
@@ -43,14 +44,11 @@ export default function CourtDetailsPage() {
   const { clubId, courtId } = useParams<{ clubId: string; courtId: string }>();
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState(() => {
-    return new Date().toISOString().split("T")[0];
-  });
-
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedSlotIds, setSelectedSlotIds] = useState<string[]>([]);
-  const [selectedSlot, setSelectedSlot] = useState<Record<string, unknown> | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<TimeSlotResponse | null>(null);
 
   // Queries
   const {

@@ -19,6 +19,7 @@ import { EmptyState } from "@/shared/components/common/EmptyState";
 import { Users, MapPin, Clock, Search, Filter, Star, Navigation, Tent } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SPORTS_LIST, getSportName } from "@/shared/constants/sports";
+import type { CourtResponse } from "../types/clubs";
 
 const CourtCard = ({ court, onNavigate }: { court: CourtResponse; onNavigate: () => void }) => (
   <Card

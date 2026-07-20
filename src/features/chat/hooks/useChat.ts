@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { chatApi, type MessageResponse } from "../api/chatApi";
+import type { PaginatedList } from "@/features/clubs/types/clubs";
 import { authService } from "@/features/auth/services/authService";
 import { useAuthContext } from "@/features/auth/context/AuthContext";
 import { env } from "@/lib/env";
@@ -111,13 +112,13 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
 
       queryClient.setQueryData<PaginatedList<MessageResponse>>(
         CHAT_QUERY_KEYS.history(targetUserId),
-        (oldData) => {
+        (oldData: PaginatedList<MessageResponse> | undefined) => {
           if (!oldData) return oldData;
 
           // If it is my message, find the sending/sent/delivered optimistic version and replace it
           if (isMine) {
             const hasPending = oldData.items.some(
-              (item) =>
+              (item: MessageResponse & { status?: string }) =>
                 (item.status === "sending" ||
                   item.status === "sent" ||
                   item.status === "delivered") &&
@@ -125,7 +126,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
             );
             if (hasPending) {
               let replaced = false;
-              const newItems = oldData.items.map((item) => {
+              const newItems = oldData.items.map((item: MessageResponse & { status?: string }) => {
                 if (
                   !replaced &&
                   (item.status === "sending" ||
@@ -143,7 +144,9 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
           }
 
           // Otherwise, append it if it doesn't already exist
-          const exists = oldData.items.some((item) => item.messageId === message.messageId);
+          const exists = oldData.items.some(
+            (item: MessageResponse) => item.messageId === message.messageId
+          );
           if (exists) return oldData;
 
           return {
@@ -169,7 +172,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
       if (message.friendlyMatchId) {
         queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.matchHistory(message.friendlyMatchId),
-          (oldData) => {
+          (oldData: PaginatedList<MessageResponse> | undefined) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
@@ -225,7 +228,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
       // Optimistic update
       queryClient.setQueryData<PaginatedList<MessageResponse>>(
         CHAT_QUERY_KEYS.history(activeReceiverId),
-        (oldData) => {
+        (oldData: PaginatedList<MessageResponse> | undefined) => {
           if (!oldData)
             return {
               items: [tempMsg],
@@ -249,11 +252,11 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         // Mark as sent on success
         queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.history(activeReceiverId),
-          (oldData) => {
+          (oldData: PaginatedList<MessageResponse> | undefined) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
-              items: oldData.items.map((item) =>
+              items: oldData.items.map((item: MessageResponse & { status?: string }) =>
                 item.messageId === tempId ? { ...item, status: "sent" } : item
               ),
             };
@@ -264,11 +267,11 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         setTimeout(() => {
           queryClient.setQueryData<PaginatedList<MessageResponse>>(
             CHAT_QUERY_KEYS.history(activeReceiverId),
-            (oldData) => {
+            (oldData: PaginatedList<MessageResponse> | undefined) => {
               if (!oldData) return oldData;
               return {
                 ...oldData,
-                items: oldData.items.map((item) =>
+                items: oldData.items.map((item: MessageResponse & { status?: string }) =>
                   item.messageId === tempId ? { ...item, status: "delivered" } : item
                 ),
               };
@@ -280,11 +283,11 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         // Mark as failed in local UI
         queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.history(activeReceiverId),
-          (oldData) => {
+          (oldData: PaginatedList<MessageResponse> | undefined) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
-              items: oldData.items.map((item) =>
+              items: oldData.items.map((item: MessageResponse & { status?: string }) =>
                 item.messageId === tempId ? { ...item, status: "failed" } : item
               ),
             };

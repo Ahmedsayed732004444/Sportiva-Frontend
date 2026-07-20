@@ -30,7 +30,7 @@ import { EmptyState } from "@/shared/components/common/EmptyState";
 import { ConfirmDialog } from "@/shared/components/common/ConfirmDialog";
 import { UserAvatar } from "@/shared/components/common/UserAvatar";
 import { cn, formatRelativeTime } from "@/lib/utils";
-import { getSportName } from "./CourtsPage";
+import { getSportName } from "@/shared/constants/sports";
 import type { CourtResponse } from "../types/clubs";
 
 const isMapsUrl = (value: string) => value.startsWith("http://") || value.startsWith("https://");

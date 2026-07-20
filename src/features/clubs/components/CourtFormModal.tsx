@@ -50,7 +50,8 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const form = useForm<CourtFormValues>({
-    resolver: zodResolver(courtSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(courtSchema) as any,
     defaultValues: {
       name: "",
       description: "",
