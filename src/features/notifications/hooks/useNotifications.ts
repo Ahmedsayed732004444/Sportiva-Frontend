@@ -8,7 +8,8 @@ import { toast } from "sonner";
 
 export const NOTIFICATIONS_QUERY_KEYS = {
   all: ["notifications"] as const,
-  list: (unreadOnly?: boolean) => [...NOTIFICATIONS_QUERY_KEYS.all, "list", { unreadOnly }] as const,
+  list: (unreadOnly?: boolean) =>
+    [...NOTIFICATIONS_QUERY_KEYS.all, "list", { unreadOnly }] as const,
   unreadCount: () => [...NOTIFICATIONS_QUERY_KEYS.all, "unreadCount"] as const,
   preferences: () => [...NOTIFICATIONS_QUERY_KEYS.all, "preferences"] as const,
 };
@@ -98,8 +99,8 @@ export const useNotifications = (unreadOnly?: boolean) => {
     // Register live notification events
     connection.on("ReceiveNotification", (notification: NotificationResponse) => {
       console.log("Live notification received:", notification);
-      if (notification.actor && (notification.actor as any).userId) {
-        notification.actor.id = (notification.actor as any).userId;
+      if (notification.actor && (notification.actor as { userId?: string }).userId) {
+        notification.actor.id = (notification.actor as { userId?: string }).userId!;
       }
 
       // 1. Show dynamic toast alert using sonner

@@ -140,9 +140,9 @@ const EditProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center p-4 sm:p-6" aria-busy="true">
-        <div className="w-full max-w-2xl space-y-4 rounded-xl border border-border bg-card p-6 shadow-lg">
-          <Skeleton className="h-8 w-40" />
+      <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6" aria-busy="true">
+        <Skeleton className="h-8 w-48" />
+        <div className="mx-auto w-full max-w-2xl space-y-4 rounded-xl border border-border bg-card p-6 shadow-sm">
           <Skeleton className="h-40 w-full rounded-xl" />
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-10 w-full" />
@@ -157,22 +157,27 @@ const EditProfilePage = () => {
   const selectedSports = form.watch("preferredSports") || [];
 
   return (
-    <div className="flex justify-center p-4 pb-8 sm:p-6">
-      <div className="w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card shadow-lg">
-        <div className="flex items-center justify-between border-b border-border px-4 py-4 sm:px-6">
-          <h1 className="text-lg font-bold text-foreground sm:text-xl">Edit Profile</h1>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/profile")}
-            className="rounded-full"
-            aria-label="Close edit profile"
-          >
-            <X className="h-5 w-5" />
-          </Button>
+    <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Edit Profile</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Update your photo, bio, and preferences.
+          </p>
         </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate("/profile")}
+          className="min-h-11 min-w-11 rounded-full"
+          aria-label="Close edit profile"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
 
+      <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card shadow-sm">
         <form onSubmit={form.handleSubmit(handleSave)}>
           <div className="relative">
             <button
@@ -287,12 +292,16 @@ const EditProfilePage = () => {
               type="button"
               variant="outline"
               onClick={() => navigate("/profile")}
-              className="rounded-full"
+              className="min-h-11 rounded-full"
               disabled={isSaving}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSaving || !hasChanges} className="rounded-full">
+            <Button
+              type="submit"
+              disabled={isSaving || !hasChanges}
+              className="min-h-11 rounded-full"
+            >
               {isSaving ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />

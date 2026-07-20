@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
@@ -47,9 +53,7 @@ export function UserFormModal({ isOpen, onClose, user }: UserFormModalProps) {
 
   const handleRoleToggle = (roleName: string) => {
     setSelectedRoles((prev) =>
-      prev.includes(roleName)
-        ? prev.filter((r) => r !== roleName)
-        : [...prev, roleName]
+      prev.includes(roleName) ? prev.filter((r) => r !== roleName) : [...prev, roleName]
     );
   };
 
@@ -109,7 +113,9 @@ export function UserFormModal({ isOpen, onClose, user }: UserFormModalProps) {
           {/* First Name & Last Name */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">First Name</Label>
+              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                First Name
+              </Label>
               <Input
                 required
                 value={firstName}
@@ -119,7 +125,9 @@ export function UserFormModal({ isOpen, onClose, user }: UserFormModalProps) {
               />
             </div>
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Last Name</Label>
+              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Last Name
+              </Label>
               <Input
                 required
                 value={lastName}

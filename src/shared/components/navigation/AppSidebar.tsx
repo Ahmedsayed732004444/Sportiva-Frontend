@@ -78,7 +78,10 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
               className="h-5.5 w-5.5 text-[#20A854]"
             >
               {/* S shape represented dynamically */}
-              <path d="M12 2a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10a10 10 0 0 0 10-10" className="opacity-10" />
+              <path
+                d="M12 2a10 10 0 0 0-10 10c0 5.5 4.5 10 10 10a10 10 0 0 0 10-10"
+                className="opacity-10"
+              />
               <path d="M8 17c1.5-1.5 4.5-1.5 6 0" />
               <path d="M10 7C11.5 8.5 14.5 8.5 16 7" />
               <path d="M7 12h10" />
@@ -160,7 +163,9 @@ const AppSidebar = ({ config }: AppSidebarProps) => {
                 <Settings
                   className={cn(
                     "h-5 w-5 shrink-0 transition-colors",
-                    isActive("/settings") ? "text-[#20A854]" : "text-gray-400 group-hover:text-white"
+                    isActive("/settings")
+                      ? "text-[#20A854]"
+                      : "text-gray-400 group-hover:text-white"
                   )}
                   aria-hidden="true"
                 />

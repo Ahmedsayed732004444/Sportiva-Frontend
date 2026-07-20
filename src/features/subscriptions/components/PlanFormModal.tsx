@@ -40,7 +40,7 @@ export function PlanFormModal({ isOpen, onClose, plan }: PlanFormModalProps) {
   const updatePlan = useUpdatePlan();
 
   const form = useForm<PlanFormValues>({
-    resolver: zodResolver(planSchema) as any,
+    resolver: zodResolver(planSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -107,7 +107,9 @@ export function PlanFormModal({ isOpen, onClose, plan }: PlanFormModalProps) {
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Edit Subscription Plan" : "Create New Subscription Plan"}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Edit Subscription Plan" : "Create New Subscription Plan"}
+          </DialogTitle>
           <DialogDescription>
             {isEditing
               ? "Update the plan's details below."
@@ -145,7 +147,9 @@ export function PlanFormModal({ isOpen, onClose, plan }: PlanFormModalProps) {
               <Label htmlFor="durationInDays">Duration (Days) *</Label>
               <Input id="durationInDays" type="number" {...register("durationInDays")} />
               {errors.durationInDays && (
-                <span className="text-xs text-destructive">{errors.durationInDays.message as string}</span>
+                <span className="text-xs text-destructive">
+                  {errors.durationInDays.message as string}
+                </span>
               )}
             </div>
           </div>

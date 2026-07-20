@@ -36,19 +36,25 @@ export interface BulkUpdatePreferencesRequest {
 }
 
 export const notificationsApi = {
-  getNotifications: async (page = 1, pageSize = 20, unreadOnly?: boolean): Promise<PaginatedNotifications> => {
+  getNotifications: async (
+    page = 1,
+    pageSize = 20,
+    unreadOnly?: boolean
+  ): Promise<PaginatedNotifications> => {
     const res = await apiClient.get<PaginatedNotifications>("/notifications", {
       params: { page, pageSize, unreadOnly },
     });
     return {
       ...res,
-      items: res.items.map(n => ({
+      items: res.items.map((n) => ({
         ...n,
-        actor: n.actor ? {
-          ...n.actor,
-          id: (n.actor as any).userId || n.actor.id
-        } : null
-      }))
+        actor: n.actor
+          ? {
+              ...n.actor,
+              id: (n.actor as { userId?: string }).userId || n.actor.id,
+            }
+          : null,
+      })),
     };
   },
 

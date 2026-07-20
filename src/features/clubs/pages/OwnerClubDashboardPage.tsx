@@ -7,41 +7,52 @@ import {
   useRenewSubscription,
 } from "@/features/subscriptions/hooks/useClubSubscriptions";
 import { SubscribeModal } from "@/features/subscriptions/components/SubscribeModal";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Badge } from "@/shared/components/ui/badge";
-import {
-  ArrowLeft,
-  Building,
-  CreditCard,
-  Calendar,
-  Award,
-  RefreshCw,
-  Plus,
-} from "lucide-react";
+import { ConfirmDialog } from "@/shared/components/common/ConfirmDialog";
+import { EmptyState } from "@/shared/components/common/EmptyState";
+import { ArrowLeft, Building, CreditCard, Calendar, Award, RefreshCw, Plus } from "lucide-react";
 
 export default function OwnerClubDashboardPage() {
   const { clubId } = useParams<{ clubId: string }>();
   const [activeTab, setActiveTab] = useState<"overview" | "subscription">("overview");
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);
+  const [showRenewConfirm, setShowRenewConfirm] = useState(false);
 
   // Queries
-  const { data: club, isLoading: isClubLoading, isError: isClubError } = useGetClub(clubId as string);
+  const {
+    data: club,
+    isLoading: isClubLoading,
+    isError: isClubError,
+    refetch: refetchClub,
+    isFetching: isClubFetching,
+  } = useGetClub(clubId as string);
   const {
     data: activeSub,
     isLoading: isActiveSubLoading,
     isError: isActiveSubError,
     error: activeSubError,
+    refetch: refetchActiveSub,
+    isFetching: isActiveSubFetching,
   } = useGetActiveSubscription(clubId as string);
-  const { data: subHistory, isLoading: isHistoryLoading } = useGetSubscriptionHistory(clubId as string);
+  const { data: subHistory, isLoading: isHistoryLoading } = useGetSubscriptionHistory(
+    clubId as string
+  );
 
   // Mutations
   const renewSub = useRenewSubscription();
 
   if (isClubLoading) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-7xl space-y-6">
+      <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-32 w-full" />
       </div>
@@ -50,32 +61,42 @@ export default function OwnerClubDashboardPage() {
 
   if (isClubError || !club) {
     return (
-      <div className="container mx-auto py-8 px-4 text-center max-w-md">
-        <h2 className="text-2xl font-bold text-destructive mb-2">Club Not Found</h2>
-        <p className="text-muted-foreground mb-4">Could not retrieve the details for this club.</p>
-        <Button asChild variant="outline">
-          <Link to="/owner/clubs">Back to My Clubs</Link>
-        </Button>
+      <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
+        <EmptyState
+          icon={Building}
+          title="Club not found"
+          description="Could not retrieve the details for this club."
+          action={
+            <div className="flex flex-wrap justify-center gap-2">
+              <Button
+                variant="outline"
+                onClick={() => refetchClub()}
+                disabled={isClubFetching}
+                className="min-h-11"
+              >
+                {isClubFetching ? "Retrying…" : "Try again"}
+              </Button>
+              <Button asChild className="min-h-11">
+                <Link to="/clubs">Back to My Clubs</Link>
+              </Button>
+            </div>
+          }
+        />
       </div>
     );
   }
 
   const handleRenew = async () => {
-    if (confirm("Are you sure you want to renew your active subscription?")) {
-      try {
-        await renewSub.mutateAsync(clubId as string);
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    await renewSub.mutateAsync(clubId as string);
   };
 
   // Check if error status is 404
   const isNoSubscription =
-    isActiveSubError && (activeSubError as any)?.response?.status === 404;
+    isActiveSubError &&
+    (activeSubError as unknown as { response?: { status?: number } })?.response?.status === 404;
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl space-y-8">
+    <div className="container mx-auto max-w-6xl space-y-8 px-4 py-6">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b pb-6">
         <div className="flex items-center gap-4">
@@ -91,7 +112,9 @@ export default function OwnerClubDashboardPage() {
                 {club.isActive ? "Active" : "Inactive"}
               </Badge>
             </h1>
-            <p className="text-muted-foreground mt-1 text-sm">Owner Club Dashboard &bull; Manage your club's subscription.</p>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Owner Club Dashboard &bull; Manage your club's subscription.
+            </p>
           </div>
         </div>
       </div>
@@ -136,7 +159,9 @@ export default function OwnerClubDashboardPage() {
                 </div>
               ) : isNoSubscription ? (
                 <div className="text-center py-8 space-y-4">
-                  <p className="text-muted-foreground">Your club does not have an active subscription.</p>
+                  <p className="text-muted-foreground">
+                    Your club does not have an active subscription.
+                  </p>
                   <Button onClick={() => setIsSubModalOpen(true)}>
                     <Plus className="mr-2 h-4 w-4" /> Subscribe Now
                   </Button>
@@ -145,13 +170,21 @@ export default function OwnerClubDashboardPage() {
                 <div className="space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-primary/5 p-6 rounded-xl border border-primary/20">
                     <div className="space-y-1">
-                      <p className="text-xs text-primary font-bold uppercase tracking-wider">Current Plan</p>
-                      <h3 className="text-2xl font-extrabold text-foreground">{activeSub.plan.name}</h3>
-                      <p className="text-sm text-muted-foreground">Allowed Courts: <strong>{activeSub.plan.maxCourts}</strong></p>
+                      <p className="text-xs text-primary font-bold uppercase tracking-wider">
+                        Current Plan
+                      </p>
+                      <h3 className="text-2xl font-extrabold text-foreground">
+                        {activeSub.plan.name}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Allowed Courts: <strong>{activeSub.plan.maxCourts}</strong>
+                      </p>
                     </div>
                     <div className="text-left sm:text-right">
                       <p className="text-2xl font-black text-foreground">${activeSub.plan.price}</p>
-                      <p className="text-xs text-muted-foreground">Paid on {new Date(activeSub.startDate).toLocaleDateString()}</p>
+                      <p className="text-xs text-muted-foreground">
+                        Paid on {new Date(activeSub.startDate).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
 
@@ -160,14 +193,18 @@ export default function OwnerClubDashboardPage() {
                       <Calendar className="h-4 w-4 text-primary" />
                       <div>
                         <p className="text-xs text-muted-foreground">Start Date</p>
-                        <p className="font-semibold">{new Date(activeSub.startDate).toLocaleDateString()}</p>
+                        <p className="font-semibold">
+                          {new Date(activeSub.startDate).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
                       <Calendar className="h-4 w-4 text-primary" />
                       <div>
                         <p className="text-xs text-muted-foreground">End Date</p>
-                        <p className="font-semibold">{new Date(activeSub.endDate).toLocaleDateString()}</p>
+                        <p className="font-semibold">
+                          {new Date(activeSub.endDate).toLocaleDateString()}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -176,15 +213,27 @@ export default function OwnerClubDashboardPage() {
                     <Button variant="outline" onClick={() => setIsSubModalOpen(true)}>
                       Change Plan
                     </Button>
-                    <Button onClick={handleRenew} disabled={renewSub.isPending}>
+                    <Button onClick={() => setShowRenewConfirm(true)} disabled={renewSub.isPending}>
                       <RefreshCw className="mr-2 h-4 w-4" /> Renew Subscription
                     </Button>
                   </div>
                 </div>
               ) : (
-                <div className="text-center py-8 text-destructive">
-                  Error loading subscription details.
-                </div>
+                <EmptyState
+                  icon={CreditCard}
+                  title="Couldn't load subscription"
+                  description="Something went wrong while fetching your active subscription."
+                  action={
+                    <Button
+                      variant="outline"
+                      onClick={() => refetchActiveSub()}
+                      disabled={isActiveSubFetching}
+                      className="min-h-11"
+                    >
+                      {isActiveSubFetching ? "Retrying…" : "Try again"}
+                    </Button>
+                  }
+                />
               )}
             </CardContent>
           </Card>
@@ -207,7 +256,8 @@ export default function OwnerClubDashboardPage() {
                     className="bg-primary h-2 rounded-full"
                     style={{
                       width: `${Math.min(
-                        ((club.courtsCount || 0) / (activeSub ? activeSub.plan.maxCourts : 1)) * 100,
+                        ((club.courtsCount || 0) / (activeSub ? activeSub.plan.maxCourts : 1)) *
+                          100,
                         100
                       )}%`,
                     }}
@@ -239,9 +289,18 @@ export default function OwnerClubDashboardPage() {
                 <Skeleton className="h-10 w-full" />
               </div>
             ) : !subHistory?.items || subHistory.items.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No subscription history found.
-              </div>
+              <EmptyState
+                icon={Award}
+                title="No subscription history"
+                description="Your past subscriptions and payments will appear here."
+                action={
+                  isNoSubscription ? (
+                    <Button onClick={() => setIsSubModalOpen(true)} className="min-h-11 gap-2">
+                      <Plus className="h-4 w-4" /> Subscribe Now
+                    </Button>
+                  ) : undefined
+                }
+              />
             ) : (
               <div className="border rounded-lg overflow-x-auto">
                 <table className="w-full text-sm text-left">
@@ -282,6 +341,16 @@ export default function OwnerClubDashboardPage() {
         onClose={() => setIsSubModalOpen(false)}
         clubId={club.clubId}
         clubName={club.name}
+      />
+
+      <ConfirmDialog
+        open={showRenewConfirm}
+        onOpenChange={setShowRenewConfirm}
+        title="Renew subscription?"
+        description="Your active subscription will be renewed for another billing period."
+        confirmLabel="Renew"
+        onConfirm={handleRenew}
+        isLoading={renewSub.isPending}
       />
     </div>
   );

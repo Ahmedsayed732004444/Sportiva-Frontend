@@ -50,7 +50,12 @@ export const bookingsApi = {
     });
   },
 
-  getClubBookings: (clubId: string, filters: RequestFilters, status?: BookingStatusDto, isUpcoming?: boolean) => {
+  getClubBookings: (
+    clubId: string,
+    filters: RequestFilters,
+    status?: BookingStatusDto,
+    isUpcoming?: boolean
+  ) => {
     return apiClient.get<PaginatedList<BookingResponse>>(`/clubs/${clubId}/bookings`, {
       params: {
         ...filters,

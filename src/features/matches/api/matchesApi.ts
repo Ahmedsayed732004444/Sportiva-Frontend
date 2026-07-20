@@ -74,13 +74,18 @@ export const matchesApi = {
   },
 
   getMatchJoinRequests: (matchId: string, filters: RequestFilters) => {
-    return apiClient.get<PaginatedList<MatchJoinRequestResponse>>(`/matches/${matchId}/join-requests`, {
-      params: filters,
-    });
+    return apiClient.get<PaginatedList<MatchJoinRequestResponse>>(
+      `/matches/${matchId}/join-requests`,
+      {
+        params: filters,
+      }
+    );
   },
 
   getJoinRequest: (matchId: string, requestId: string) => {
-    return apiClient.get<MatchJoinRequestResponse>(`/matches/${matchId}/join-requests/${requestId}`);
+    return apiClient.get<MatchJoinRequestResponse>(
+      `/matches/${matchId}/join-requests/${requestId}`
+    );
   },
 
   reviewJoinRequest: (matchId: string, requestId: string, data: ReviewJoinRequestRequest) => {

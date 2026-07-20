@@ -1,5 +1,3 @@
-import type { SportType } from "@/features/clubs/types/clubs";
-
 export const SPORT_LABELS: Record<number, string> = {
   0: "Football",
   1: "Basketball",
@@ -17,7 +15,6 @@ export const SPORT_EMOJIS: Record<number, string> = {
   4: "🏐",
   5: "🏅",
 };
-
 
 export enum MatchStatusDto {
   Open = 0,

@@ -23,8 +23,6 @@ interface PostCardProps {
   post: PostResponse;
 }
 
-
-
 export const PostCard = ({ post }: PostCardProps) => {
   const { user } = useAuth();
   const toggleLike = useToggleLike();
@@ -97,7 +95,8 @@ export const PostCard = ({ post }: PostCardProps) => {
 
   const metaParts = [location, formatRelativeTime(post.createdAt)].filter(Boolean);
 
-  const authorId = post.author.userId || post.author.userProfileId || (post.author as any).id;
+  const authorId =
+    post.author.userId || post.author.userProfileId || (post.author as { id?: string }).id;
   const authorProfileLink = authorId ? `/profile/${authorId}` : "#";
 
   return (

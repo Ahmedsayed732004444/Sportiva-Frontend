@@ -15,7 +15,11 @@ export interface UpcomingMatch {
 }
 
 export const UpcomingMatchWidget = ({ match }: { match?: UpcomingMatch }) => {
-  const [timeLeft, setTimeLeft] = useState<{ hours: number; minutes: number; seconds: number } | null>(null);
+  const [timeLeft, setTimeLeft] = useState<{
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
 
   useEffect(() => {
     if (!match?.matchDate) return;
@@ -52,13 +56,19 @@ export const UpcomingMatchWidget = ({ match }: { match?: UpcomingMatch }) => {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="bg-[#20A854]/10 text-[#20A854] border-[#20A854]/20 text-[10px] font-bold">
+              <Badge
+                variant="outline"
+                className="bg-[#20A854]/10 text-[#20A854] border-[#20A854]/20 text-[10px] font-bold"
+              >
                 Upcoming Match
               </Badge>
-              <span className="text-xs font-semibold text-foreground">{match.sportName || "Friendly Match"}</span>
+              <span className="text-xs font-semibold text-foreground">
+                {match.sportName || "Friendly Match"}
+              </span>
             </div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
-              <MapPin className="h-3 w-3 shrink-0" /> {match.location || "Local Club"} • {match.matchDate}
+              <MapPin className="h-3 w-3 shrink-0" /> {match.location || "Local Club"} •{" "}
+              {match.matchDate}
             </p>
           </div>
         </div>
@@ -67,12 +77,18 @@ export const UpcomingMatchWidget = ({ match }: { match?: UpcomingMatch }) => {
           <div className="flex items-center gap-2 shrink-0 bg-background/80 px-4 py-2 rounded-2xl border border-border/60">
             <Clock className="h-4 w-4 text-[#20A854] animate-pulse" />
             <span className="font-mono text-sm font-bold text-foreground">
-              {String(timeLeft.hours).padStart(2, "0")}h : {String(timeLeft.minutes).padStart(2, "0")}m : {String(timeLeft.seconds).padStart(2, "0")}s
+              {String(timeLeft.hours).padStart(2, "0")}h :{" "}
+              {String(timeLeft.minutes).padStart(2, "0")}m :{" "}
+              {String(timeLeft.seconds).padStart(2, "0")}s
             </span>
           </div>
         )}
 
-        <Button asChild size="sm" className="rounded-xl bg-[#20A854] hover:bg-[#20A854]/90 text-white font-semibold gap-1 shrink-0">
+        <Button
+          asChild
+          size="sm"
+          className="rounded-xl bg-[#20A854] hover:bg-[#20A854]/90 text-white font-semibold gap-1 shrink-0"
+        >
           <Link to={`/matches/${match.matchId}`}>
             View Match <ArrowRight className="h-3.5 w-3.5" />
           </Link>

@@ -9,7 +9,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { useGetPlans } from "../hooks/usePlans";
 import { useSubscribeToPlan } from "../hooks/useClubSubscriptions";
-import { Rocket, Check, AlertCircle } from "lucide-react";
+import { Rocket, AlertCircle } from "lucide-react";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 
 interface SubscribeModalProps {
@@ -79,7 +79,9 @@ export function SubscribeModal({ isOpen, onClose, clubId, clubName }: SubscribeM
                     }`}
                   >
                     <div className="flex gap-3 items-center">
-                      <div className={`p-2 rounded-lg ${isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                      <div
+                        className={`p-2 rounded-lg ${isSelected ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+                      >
                         <Rocket className="h-5 w-5" />
                       </div>
                       <div>

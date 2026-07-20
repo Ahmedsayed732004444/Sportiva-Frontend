@@ -8,7 +8,7 @@ export const usePaginatedPosts = () => {
   const [page, setPage] = useState(1);
   const [posts, setPosts] = useState<Post[]>([]);
 
-  const { data, isLoading, isFetching, error } = usePosts({
+  const { data, isLoading, isFetching, error, isError, refetch } = usePosts({
     pageNumber: page,
     pageSize: 10,
     sortColumn: "CreatedAt",
@@ -42,6 +42,8 @@ export const usePaginatedPosts = () => {
     loadMore,
     reset,
     error,
+    isError,
+    refetch,
     page,
   };
 };

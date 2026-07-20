@@ -1,11 +1,22 @@
 import { useState, useEffect, useMemo } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { useGetAdminPermissions, useGetAdminRole, useCreateAdminRole, useUpdateAdminRole } from "../hooks/useAdminRoles";
+import {
+  useGetAdminPermissions,
+  useGetAdminRole,
+  useCreateAdminRole,
+  useUpdateAdminRole,
+} from "../hooks/useAdminRoles";
 import { ShieldCheck, CheckSquare, Square } from "lucide-react";
 
 interface RoleFormModalProps {
@@ -111,7 +122,9 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
           <form onSubmit={handleSubmit} className="space-y-4 pt-2 flex-1 overflow-y-auto pr-1">
             {/* Role Name */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Role Name</Label>
+              <Label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Role Name
+              </Label>
               <Input
                 required
                 value={roleName}
@@ -141,7 +154,9 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
                       }
                     }}
                   >
-                    {selectedPermissions.length === allPermissions.length ? "Deselect All" : "Select All"}
+                    {selectedPermissions.length === allPermissions.length
+                      ? "Deselect All"
+                      : "Select All"}
                   </Button>
                 )}
               </div>
@@ -156,8 +171,9 @@ export function RoleFormModal({ isOpen, onClose, roleId }: RoleFormModalProps) {
               ) : (
                 <div className="space-y-3">
                   {Object.entries(groupedPermissions).map(([groupName, groupPerms]) => {
-                    const allInGroupSelected = groupPerms.every((p) => selectedPermissions.includes(p));
-                    const someInGroupSelected = groupPerms.some((p) => selectedPermissions.includes(p));
+                    const allInGroupSelected = groupPerms.every((p) =>
+                      selectedPermissions.includes(p)
+                    );
 
                     return (
                       <div

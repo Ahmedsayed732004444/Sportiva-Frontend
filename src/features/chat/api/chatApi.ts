@@ -29,44 +29,53 @@ export interface MessageResponse {
 export const chatApi = {
   getConversations: async (): Promise<ConversationSummary[]> => {
     const res = await apiClient.get<ConversationSummary[]>("/messages/conversations");
-    return res.map(c => ({
+    return res.map((c) => ({
       ...c,
       otherUser: {
         ...c.otherUser,
-        id: (c.otherUser as any).userId || c.otherUser.id
-      }
+        id: (c.otherUser as { userId?: string }).userId || c.otherUser.id,
+      },
     }));
   },
 
-  getConversationHistory: async (otherUserId: string, filters: RequestFilters = {}): Promise<PaginatedList<MessageResponse>> => {
-    const res = await apiClient.get<PaginatedList<MessageResponse>>(`/messages/user/${otherUserId}`, {
-      params: filters,
-    });
+  getConversationHistory: async (
+    otherUserId: string,
+    filters: RequestFilters = {}
+  ): Promise<PaginatedList<MessageResponse>> => {
+    const res = await apiClient.get<PaginatedList<MessageResponse>>(
+      `/messages/user/${otherUserId}`,
+      {
+        params: filters,
+      }
+    );
     return {
       ...res,
-      items: res.items.map(m => ({
+      items: res.items.map((m) => ({
         ...m,
         sender: {
           ...m.sender,
-          id: (m.sender as any).userId || m.sender.id
-        }
-      }))
+          id: (m.sender as { userId?: string }).userId || m.sender.id,
+        },
+      })),
     };
   },
 
-  getMatchChatHistory: async (matchId: string, filters: RequestFilters = {}): Promise<PaginatedList<MessageResponse>> => {
+  getMatchChatHistory: async (
+    matchId: string,
+    filters: RequestFilters = {}
+  ): Promise<PaginatedList<MessageResponse>> => {
     const res = await apiClient.get<PaginatedList<MessageResponse>>(`/messages/match/${matchId}`, {
       params: filters,
     });
     return {
       ...res,
-      items: res.items.map(m => ({
+      items: res.items.map((m) => ({
         ...m,
         sender: {
           ...m.sender,
-          id: (m.sender as any).userId || m.sender.id
-        }
-      }))
+          id: (m.sender as { userId?: string }).userId || m.sender.id,
+        },
+      })),
     };
   },
 

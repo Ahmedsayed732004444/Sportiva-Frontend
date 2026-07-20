@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useNotifications } from "@/features/notifications/hooks/useNotifications";
 import { Bell, Check, Trash2 } from "lucide-react";
-import { formatRelativeTime, formatShortDate } from "@/lib/utils";
+import { formatRelativeTime } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -12,20 +12,15 @@ import {
 
 const NotificationDropdown: React.FC = () => {
   const navigate = useNavigate();
-  const {
-    notifications,
-    unreadCount,
-    markAsRead,
-    markAllAsRead,
-    deleteNotification,
-  } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification } =
+    useNotifications();
 
   const handleNotificationClick = (
     id: string,
     isRead: boolean,
     entityType?: string | null,
     entityId?: string | null,
-    actor?: any | null
+    actor?: unknown | null
   ) => {
     if (!isRead) {
       markAsRead(id);
@@ -51,12 +46,16 @@ const NotificationDropdown: React.FC = () => {
     } else if (type === "reply") {
       navigate(`/posts?post=${primaryId}&comment=${secondaryId}&reply=${tertiaryId}`);
     } else if (type === "user") {
-      const targetId = primaryId && primaryId !== "undefined" ? primaryId : (actor?.userId || actor?.id);
+      const targetId =
+        primaryId && primaryId !== "undefined" ? primaryId : actor?.userId || actor?.id;
       if (targetId && targetId !== "undefined") {
         navigate(`/profile/${targetId}`);
       }
     } else if (type === "message") {
-      const senderId = primaryId && primaryId.length > 8 && primaryId !== "undefined" ? primaryId : (actor?.userId || actor?.id);
+      const senderId =
+        primaryId && primaryId.length > 8 && primaryId !== "undefined"
+          ? primaryId
+          : actor?.userId || actor?.id;
       if (senderId && senderId !== "undefined") {
         navigate(`/chat?user=${senderId}`);
       }
@@ -75,9 +74,14 @@ const NotificationDropdown: React.FC = () => {
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80 max-h-[450px] overflow-y-auto rounded-xl p-0 border border-border bg-card shadow-xl">
+      <DropdownMenuContent
+        align="end"
+        className="w-80 max-h-[450px] overflow-y-auto rounded-xl p-0 border border-border bg-card shadow-xl"
+      >
         <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/20">
-          <DropdownMenuLabel className="font-bold text-sm text-foreground p-0">Notifications</DropdownMenuLabel>
+          <DropdownMenuLabel className="font-bold text-sm text-foreground p-0">
+            Notifications
+          </DropdownMenuLabel>
           {unreadCount > 0 && (
             <button
               onClick={() => markAllAsRead()}
@@ -119,7 +123,13 @@ const NotificationDropdown: React.FC = () => {
                   <div
                     className="flex-1 min-w-0 cursor-pointer"
                     onClick={() =>
-                      handleNotificationClick(notif.notificationId, notif.isRead, notif.entityType, notif.entityId, notif.actor)
+                      handleNotificationClick(
+                        notif.notificationId,
+                        notif.isRead,
+                        notif.entityType,
+                        notif.entityId,
+                        notif.actor
+                      )
                     }
                   >
                     <div className="flex justify-between items-baseline mb-0.5">

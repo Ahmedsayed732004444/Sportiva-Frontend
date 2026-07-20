@@ -31,7 +31,7 @@ const EGYPT_TZ = "Africa/Cairo";
 function toUtcDate(dateString: string | Date): Date {
   if (dateString instanceof Date) return dateString;
   // If the string already ends with 'Z', '+', or '-' (timezone offset), keep as-is
-  if (/[Z+\-]\d*$/.test(dateString) || dateString.endsWith("Z")) {
+  if (/[Z+-]\d*$/.test(dateString) || dateString.endsWith("Z")) {
     return new Date(dateString);
   }
   // Otherwise assume UTC and append Z
@@ -68,7 +68,10 @@ export function formatShortDate(dateString: string | Date): string {
  * Formats a date as long date in Egypt timezone.
  * Example: "Friday, July 18, 2026"
  */
-export function formatLongDate(dateString: string | Date, options?: Intl.DateTimeFormatOptions): string {
+export function formatLongDate(
+  dateString: string | Date,
+  options?: Intl.DateTimeFormatOptions
+): string {
   const date = toUtcDate(dateString as string);
   return date.toLocaleDateString("en-EG", {
     timeZone: EGYPT_TZ,

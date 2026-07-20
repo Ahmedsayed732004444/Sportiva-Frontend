@@ -1,6 +1,5 @@
-// src/features/posts/pages/MyPostsPage.tsx
 import { useState } from "react";
-import { FileText } from "lucide-react";
+import { AlertCircle, FileText } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { PostCard } from "@/features/posts/components/PostCard";
 import { CreatePostBar } from "@/features/posts/components/CreatePostBar";
@@ -8,6 +7,7 @@ import { CreatePostModal } from "@/features/posts/components/CreatePostModal";
 import { usePaginatedUserPosts } from "@/features/posts/hooks/usePaginatedUserPosts";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { EmptyState } from "@/shared/components/common/EmptyState";
 import { InfiniteScrollSentinel } from "@/shared/components/common/InfiniteScrollSentinel";
 
 const PostSkeleton = () => (
@@ -20,20 +20,23 @@ const PostSkeleton = () => (
       </div>
     </div>
     <Skeleton className="h-16 w-full" />
-    <Skeleton className="h-8 w-32" />
   </div>
 );
 
 const MyPostsPage = () => {
   const { user } = useAuth();
   const [createOpen, setCreateOpen] = useState(false);
-  const { posts, isLoading, isFetching, hasMore, loadMore, page } = usePaginatedUserPosts(
-    user?.id ?? ""
-  );
+  const { posts, isLoading, isFetching, hasMore, loadMore, page, isError, refetch } =
+    usePaginatedUserPosts(user?.id ?? "");
 
   return (
-    <div className="mx-auto w-full max-w-[680px] px-4 py-6">
-      <h1 className="mb-5 text-2xl font-bold text-foreground sm:mb-6">My Posts</h1>
+    <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">My Posts</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Manage and share your updates with the community.
+        </p>
+      </div>
 
       <CreatePostBar onOpen={() => setCreateOpen(true)} />
       <CreatePostModal open={createOpen} onOpenChange={setCreateOpen} />
@@ -44,16 +47,33 @@ const MyPostsPage = () => {
             <PostSkeleton key={index} />
           ))}
         </div>
+      ) : isError ? (
+        <EmptyState
+          icon={AlertCircle}
+          title="Couldn't load your posts"
+          description="Something went wrong while fetching your posts."
+          action={
+            <Button
+              variant="outline"
+              onClick={() => refetch()}
+              disabled={isFetching}
+              className="min-h-11"
+            >
+              {isFetching ? "Retrying…" : "Try again"}
+            </Button>
+          }
+        />
       ) : posts.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 px-4 py-16 text-center">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-            <FileText className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
-          </div>
-          <p className="font-semibold text-foreground">No posts yet</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            You haven&apos;t posted anything yet. Share your first update!
-          </p>
-        </div>
+        <EmptyState
+          icon={FileText}
+          title="No posts yet"
+          description="You haven't posted anything yet. Share your first update!"
+          action={
+            <Button onClick={() => setCreateOpen(true)} className="min-h-11">
+              Create a post
+            </Button>
+          }
+        />
       ) : (
         <>
           <div className="space-y-4">
@@ -61,7 +81,6 @@ const MyPostsPage = () => {
               <PostCard key={post.postId} post={post} />
             ))}
           </div>
-
           <InfiniteScrollSentinel
             hasNextPage={hasMore}
             isFetchingNextPage={isFetching}

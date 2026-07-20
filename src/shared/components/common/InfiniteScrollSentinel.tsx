@@ -38,11 +38,11 @@ export function InfiniteScrollSentinel({
   if (!hasNextPage) return null;
 
   return (
-    <div ref={sentinelRef} className={`py-6 flex justify-center items-center w-full ${className}`}>
+    <div ref={sentinelRef} className={`flex w-full items-center justify-center py-6 ${className}`}>
       {isFetchingNextPage ? (
-        <div className="flex items-center gap-2.5 text-xs font-semibold text-[#20A854] bg-[#20A854]/10 px-4 py-2 rounded-full border border-[#20A854]/20 animate-pulse">
-          <span className="h-4 w-4 rounded-full border-2 border-[#20A854] border-t-transparent animate-spin" />
-          Loading more items...
+        <div className="flex animate-pulse items-center gap-2.5 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold text-primary">
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          Loading more…
         </div>
       ) : (
         <div className="h-4 w-full" />

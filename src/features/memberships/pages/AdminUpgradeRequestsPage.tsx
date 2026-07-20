@@ -17,7 +17,6 @@ import {
   FileText,
   CheckCircle,
   XCircle,
-  Clock,
   AlertCircle,
   ShieldCheck,
   Search,
@@ -67,10 +66,14 @@ function PageSkeleton() {
     <div className="container mx-auto py-6 px-4 max-w-5xl space-y-6">
       <Skeleton className="h-44 w-full rounded-3xl" />
       <div className="grid grid-cols-3 gap-4">
-        {[1, 2, 3].map((i) => <Skeleton key={i} className="h-24 rounded-3xl" />)}
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-24 rounded-3xl" />
+        ))}
       </div>
       <Skeleton className="h-14 w-full rounded-2xl" />
-      {[1, 2, 3].map((i) => <Skeleton key={i} className="h-44 w-full rounded-3xl" />)}
+      {[1, 2, 3].map((i) => (
+        <Skeleton key={i} className="h-44 w-full rounded-3xl" />
+      ))}
     </div>
   );
 }
@@ -81,21 +84,23 @@ export default function AdminUpgradeRequestsPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const parsedStatus =
-    activeTab === "pending" ? RequestStatusDto.Pending
-    : activeTab === "approved" ? RequestStatusDto.Approved
-    : activeTab === "rejected" ? RequestStatusDto.Rejected
-    : undefined;
+    activeTab === "pending"
+      ? RequestStatusDto.Pending
+      : activeTab === "approved"
+        ? RequestStatusDto.Approved
+        : activeTab === "rejected"
+          ? RequestStatusDto.Rejected
+          : undefined;
 
-  const { data: requestsData, isLoading, isError } = useGetUpgradeRequests(
-    { pageNumber: 1, pageSize: 100 },
-    parsedStatus
-  );
-  const requests = requestsData?.items || [];
+  const {
+    data: requestsData,
+    isLoading,
+    isError,
+  } = useGetUpgradeRequests({ pageNumber: 1, pageSize: 100 }, parsedStatus);
+  const requests = useMemo(() => requestsData?.items || [], [requestsData?.items]);
 
   const approveMutation = useApproveUpgradeRequest();
-  const rejectMutation  = useRejectUpgradeRequest();
-
-
+  const rejectMutation = useRejectUpgradeRequest();
 
   /* client-side search */
   const filtered = useMemo(() => {
@@ -111,15 +116,21 @@ export default function AdminUpgradeRequestsPage() {
 
   const handleApprove = async (requestId: string) => {
     if (confirm("Approve this upgrade request?")) {
-      try { await approveMutation.mutateAsync(requestId); }
-      catch (e) { console.error(e); }
+      try {
+        await approveMutation.mutateAsync(requestId);
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
   const handleReject = async (requestId: string) => {
     if (confirm("Reject this upgrade request?")) {
-      try { await rejectMutation.mutateAsync(requestId); }
-      catch (e) { console.error(e); }
+      try {
+        await rejectMutation.mutateAsync(requestId);
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
@@ -127,7 +138,6 @@ export default function AdminUpgradeRequestsPage() {
 
   return (
     <div className="container mx-auto py-6 px-4 sm:px-6 max-w-5xl space-y-6">
-
       {/* ── Hero Banner ── */}
       <div className="relative w-full h-44 sm:h-52 rounded-3xl overflow-hidden border border-gray-100 dark:border-muted/30 shadow-sm flex items-end p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-[#20A854]/30">
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -152,8 +162,6 @@ export default function AdminUpgradeRequestsPage() {
           </div>
         </div>
       </div>
-
-
 
       {/* ── Filter Bar ── */}
       <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm">
@@ -192,14 +200,18 @@ export default function AdminUpgradeRequestsPage() {
       {isError ? (
         <div className="py-12 text-center text-red-500 bg-red-500/5 rounded-3xl border border-red-500/20 flex flex-col items-center gap-2">
           <AlertCircle className="h-8 w-8" />
-          <span className="text-sm font-semibold">Failed to load requests. Please try again later.</span>
+          <span className="text-sm font-semibold">
+            Failed to load requests. Please try again later.
+          </span>
         </div>
       ) : filtered.length === 0 ? (
         <div className="py-16 text-center bg-white dark:bg-card border border-gray-100 dark:border-muted/30 rounded-3xl space-y-2">
           <FileText className="h-10 w-10 mx-auto text-gray-300 dark:text-muted-foreground/40" />
           <h3 className="text-base font-bold text-gray-800 dark:text-white">No Requests Found</h3>
           <p className="text-sm text-gray-400 dark:text-muted-foreground">
-            {searchQuery ? "No results match your search." : "No membership upgrade requests matching this filter."}
+            {searchQuery
+              ? "No results match your search."
+              : "No membership upgrade requests matching this filter."}
           </p>
         </div>
       ) : (
@@ -219,7 +231,6 @@ export default function AdminUpgradeRequestsPage() {
                 )}
               >
                 <CardContent className="p-5 flex flex-col gap-4">
-
                   {/* ── Top Row: ID + User Email + Status + Date ── */}
                   <div className="flex flex-wrap items-center gap-3 justify-between">
                     <div className="flex items-center gap-2.5 flex-wrap">
@@ -232,13 +243,17 @@ export default function AdminUpgradeRequestsPage() {
                           title={`Requester Email: ${req.email || req.requestedBy?.email}`}
                         >
                           <Mail className="h-3 w-3 text-[#20A854]" />
-                          <span className="font-semibold text-gray-900 dark:text-white">{req.email || req.requestedBy?.email}</span>
+                          <span className="font-semibold text-gray-900 dark:text-white">
+                            {req.email || req.requestedBy?.email}
+                          </span>
                         </span>
                       )}
-                      <span className={cn(
-                        "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border",
-                        sm.cls
-                      )}>
+                      <span
+                        className={cn(
+                          "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border",
+                          sm.cls
+                        )}
+                      >
                         <span className={cn("w-1.5 h-1.5 rounded-full", sm.dot)} />
                         {sm.label}
                       </span>
@@ -250,7 +265,12 @@ export default function AdminUpgradeRequestsPage() {
                     </div>
                     <span className="text-[10px] text-gray-400 dark:text-muted-foreground flex items-center gap-1.5 font-semibold">
                       <Calendar className="h-3.5 w-3.5" />
-                      Submitted {new Date(req.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
+                      Submitted{" "}
+                      {new Date(req.createdAt).toLocaleDateString("en-US", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
                     </span>
                   </div>
 
@@ -288,7 +308,10 @@ export default function AdminUpgradeRequestsPage() {
                       {req.fullName && req.fullName !== req.requestedBy.fullName && (
                         <p className="text-[11px] text-gray-400 dark:text-muted-foreground flex items-center gap-1 mt-0.5">
                           <User className="h-3 w-3 shrink-0" />
-                          Submitted as: <span className="font-semibold text-gray-600 dark:text-gray-300 ml-1">{req.fullName}</span>
+                          Submitted as:{" "}
+                          <span className="font-semibold text-gray-600 dark:text-gray-300 ml-1">
+                            {req.fullName}
+                          </span>
                         </p>
                       )}
                     </div>
@@ -302,8 +325,12 @@ export default function AdminUpgradeRequestsPage() {
                         <Phone className="h-3.5 w-3.5 text-[#20A854]" />
                       </div>
                       <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Phone</p>
-                        <p className="font-bold text-gray-900 dark:text-white mt-0.5">{req.phone}</p>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                          Phone
+                        </p>
+                        <p className="font-bold text-gray-900 dark:text-white mt-0.5">
+                          {req.phone}
+                        </p>
                       </div>
                     </div>
 
@@ -314,8 +341,12 @@ export default function AdminUpgradeRequestsPage() {
                           <Building className="h-3.5 w-3.5 text-[#20A854]" />
                         </div>
                         <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Club Name</p>
-                          <p className="font-bold text-gray-900 dark:text-white mt-0.5">{req.clubName}</p>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                            Club Name
+                          </p>
+                          <p className="font-bold text-gray-900 dark:text-white mt-0.5">
+                            {req.clubName}
+                          </p>
                           {req.address && (
                             <p className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
                               <MapPin className="h-3 w-3 shrink-0" /> {req.address}
@@ -342,9 +373,15 @@ export default function AdminUpgradeRequestsPage() {
                           <Calendar className="h-3.5 w-3.5 text-gray-400" />
                         </div>
                         <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Reviewed On</p>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                            Reviewed On
+                          </p>
                           <p className="font-bold text-gray-900 dark:text-white mt-0.5">
-                            {new Date(req.reviewedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })}
+                            {new Date(req.reviewedAt).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}
                           </p>
                         </div>
                       </div>
@@ -356,7 +393,9 @@ export default function AdminUpgradeRequestsPage() {
                     <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-gray-50 dark:bg-muted/10 border border-gray-100 dark:border-muted/20">
                       <FileText className="h-4 w-4 text-[#20A854] shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Cover Note</p>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                          Cover Note
+                        </p>
                         <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-medium">
                           "{req.note}"
                         </p>
@@ -370,7 +409,8 @@ export default function AdminUpgradeRequestsPage() {
                       <XCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
                       <p className="text-xs text-red-600 dark:text-red-400 font-semibold leading-relaxed">
                         This request was reviewed and rejected.
-                        {req.reviewedAt && ` (${new Date(req.reviewedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })})`}
+                        {req.reviewedAt &&
+                          ` (${new Date(req.reviewedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })})`}
                       </p>
                     </div>
                   )}
@@ -381,7 +421,8 @@ export default function AdminUpgradeRequestsPage() {
                       <CheckCircle className="h-4 w-4 text-[#20A854] shrink-0 mt-0.5" />
                       <p className="text-xs text-[#20A854] font-semibold leading-relaxed">
                         This request was approved and the user's role has been upgraded.
-                        {req.reviewedAt && ` (${new Date(req.reviewedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })})`}
+                        {req.reviewedAt &&
+                          ` (${new Date(req.reviewedAt).toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" })})`}
                       </p>
                     </div>
                   )}
@@ -407,7 +448,6 @@ export default function AdminUpgradeRequestsPage() {
                       </Button>
                     </div>
                   )}
-
                 </CardContent>
               </Card>
             );

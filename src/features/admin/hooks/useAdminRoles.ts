@@ -6,7 +6,8 @@ import { extractErrorMessage } from "@/lib/api/errors";
 
 export const ADMIN_ROLES_QUERY_KEYS = {
   all: ["admin-roles"] as const,
-  list: (includeDisabled?: boolean) => [...ADMIN_ROLES_QUERY_KEYS.all, "list", { includeDisabled }] as const,
+  list: (includeDisabled?: boolean) =>
+    [...ADMIN_ROLES_QUERY_KEYS.all, "list", { includeDisabled }] as const,
   detail: (id: string) => [...ADMIN_ROLES_QUERY_KEYS.all, "detail", id] as const,
   permissions: () => [...ADMIN_ROLES_QUERY_KEYS.all, "permissions"] as const,
 };
@@ -53,8 +54,7 @@ export const useUpdateAdminRole = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: RoleRequest }) =>
-      rolesApi.update(id, data),
+    mutationFn: ({ id, data }: { id: string; data: RoleRequest }) => rolesApi.update(id, data),
     onSuccess: (_, variables) => {
       toast.success("Role updated successfully!");
       queryClient.invalidateQueries({ queryKey: ADMIN_ROLES_QUERY_KEYS.all });

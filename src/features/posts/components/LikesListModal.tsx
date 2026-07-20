@@ -14,8 +14,6 @@ interface LikesListModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-
-
 export const LikesListModal = ({ postId, open, onOpenChange }: LikesListModalProps) => {
   const { data: likers, isLoading } = usePostLikers(postId, open);
 
@@ -75,7 +73,11 @@ export const LikesListModal = ({ postId, open, onOpenChange }: LikesListModalPro
                     )}
                   >
                     <Link
-                      to={(liker.userProfileId || (liker as any).userId) ? `/profile/${liker.userProfileId || (liker as any).userId}` : "#"}
+                      to={
+                        liker.userProfileId || (liker as { userId?: string }).userId
+                          ? `/profile/${liker.userProfileId || (liker as { userId?: string }).userId}`
+                          : "#"
+                      }
                       onClick={() => onOpenChange(false)}
                       className="flex items-center gap-3 w-full hover:opacity-85 transition-opacity"
                     >

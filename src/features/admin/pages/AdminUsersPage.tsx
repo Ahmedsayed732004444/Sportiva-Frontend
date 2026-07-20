@@ -15,11 +15,9 @@ import {
   Search,
   UserPlus,
   Edit2,
-  Lock,
   Unlock,
   ShieldCheck,
   Mail,
-  User,
   CheckCircle,
   XCircle,
   ExternalLink,
@@ -46,7 +44,7 @@ function PageSkeleton() {
 export default function AdminUsersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "active" | "disabled">("all");
-  const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [roleFilter] = useState<string>("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserResponse | null>(null);
 
@@ -54,7 +52,7 @@ export default function AdminUsersPage() {
   const toggleStatusMutation = useToggleAdminUserStatus();
   const unlockMutation = useUnlockAdminUser();
 
-  const users = usersList || [];
+  const users = useMemo(() => usersList || [], [usersList]);
 
   /* Filter Logic */
   const filteredUsers = useMemo(() => {
@@ -67,11 +65,7 @@ export default function AdminUsersPage() {
 
       // Status
       const matchesStatus =
-        statusFilter === "all"
-          ? true
-          : statusFilter === "active"
-          ? !u.isDisabled
-          : u.isDisabled;
+        statusFilter === "all" ? true : statusFilter === "active" ? !u.isDisabled : u.isDisabled;
 
       // Role
       const matchesRole =
@@ -95,7 +89,11 @@ export default function AdminUsersPage() {
 
   const handleToggleStatus = async (user: UserResponse) => {
     const actionName = user.isDisabled ? "enable" : "disable";
-    if (confirm(`Are you sure you want to ${actionName} account for ${user.firstName} ${user.lastName}?`)) {
+    if (
+      confirm(
+        `Are you sure you want to ${actionName} account for ${user.firstName} ${user.lastName}?`
+      )
+    ) {
       try {
         await toggleStatusMutation.mutateAsync(user.id);
       } catch (err) {
@@ -201,14 +199,17 @@ export default function AdminUsersPage() {
           <Users className="h-10 w-10 mx-auto text-gray-300 dark:text-muted-foreground/40" />
           <h3 className="text-base font-bold text-gray-800 dark:text-white">No Users Found</h3>
           <p className="text-sm text-gray-400 dark:text-muted-foreground">
-            {searchQuery ? "No user accounts match your search filters." : "No registered user accounts found."}
+            {searchQuery
+              ? "No user accounts match your search filters."
+              : "No registered user accounts found."}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredUsers.map((u) => {
             const fullName = `${u.firstName} ${u.lastName}`;
-            const initials = `${u.firstName?.charAt(0) || ""}${u.lastName?.charAt(0) || ""}`.toUpperCase();
+            const initials =
+              `${u.firstName?.charAt(0) || ""}${u.lastName?.charAt(0) || ""}`.toUpperCase();
 
             return (
               <Card
@@ -255,14 +256,21 @@ export default function AdminUsersPage() {
                           : "bg-[#20A854]/10 text-[#20A854] border-[#20A854]/20"
                       )}
                     >
-                      <span className={cn("w-1.5 h-1.5 rounded-full", u.isDisabled ? "bg-red-500" : "bg-[#20A854]")} />
+                      <span
+                        className={cn(
+                          "w-1.5 h-1.5 rounded-full",
+                          u.isDisabled ? "bg-red-500" : "bg-[#20A854]"
+                        )}
+                      />
                       {u.isDisabled ? "Disabled" : "Active"}
                     </span>
                   </div>
 
                   {/* Roles Badges */}
                   <div className="space-y-1.5">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Assigned Roles</p>
+                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                      Assigned Roles
+                    </p>
                     <div className="flex flex-wrap gap-1.5">
                       {u.roles && u.roles.length > 0 ? (
                         u.roles.map((r) => (
@@ -303,7 +311,11 @@ export default function AdminUsersPage() {
                           : "bg-red-500/10 hover:bg-red-500/20 text-red-600 border-red-500/20"
                       )}
                     >
-                      {u.isDisabled ? <CheckCircle className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+                      {u.isDisabled ? (
+                        <CheckCircle className="h-3.5 w-3.5" />
+                      ) : (
+                        <XCircle className="h-3.5 w-3.5" />
+                      )}
                       {u.isDisabled ? "Enable" : "Disable"}
                     </Button>
 

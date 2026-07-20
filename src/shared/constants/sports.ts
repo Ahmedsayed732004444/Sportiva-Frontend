@@ -15,3 +15,5 @@ export const SPORTS_MAP: Record<number, SportConfig> = {
 };
 
 export const SPORTS_LIST = Object.values(SPORTS_MAP);
+
+export const getSportName = (type: number) => SPORTS_MAP[type]?.name ?? "Sport";

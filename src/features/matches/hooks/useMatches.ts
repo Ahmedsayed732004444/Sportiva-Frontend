@@ -1,11 +1,7 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { matchesApi } from "../api/matchesApi";
 import type { RequestFilters } from "@/features/clubs/types/clubs";
-import type {
-  CreateFriendlyMatchRequest,
-  ReviewJoinRequestRequest,
-  JoinRequestStatusDto,
-} from "../types/matches";
+import type { CreateFriendlyMatchRequest, ReviewJoinRequestRequest } from "../types/matches";
 import { toast } from "sonner";
 import { extractErrorMessage } from "@/lib/api/errors";
 
@@ -21,7 +17,12 @@ export const MATCHES_QUERY_KEYS = {
     [...MATCHES_QUERY_KEYS.all, "requests", matchId, { filters }] as const,
 };
 
-export const useGetMatches = (filters: RequestFilters = {}, sport?: number, date?: string, city?: string) => {
+export const useGetMatches = (
+  filters: RequestFilters = {},
+  sport?: number,
+  date?: string,
+  city?: string
+) => {
   return useQuery({
     queryKey: MATCHES_QUERY_KEYS.list(filters, sport, date, city),
     queryFn: () => matchesApi.getMatches(filters, sport, date, city),
@@ -32,6 +33,40 @@ export const useGetMyMatches = (filters: RequestFilters = {}, role?: string) => 
   return useQuery({
     queryKey: MATCHES_QUERY_KEYS.my(filters, role),
     queryFn: () => matchesApi.getMyMatches(filters, role),
+  });
+};
+
+export const useInfiniteMatches = (
+  filters: RequestFilters = {},
+  sport?: number,
+  date?: string,
+  city?: string,
+  options?: { enabled?: boolean }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...MATCHES_QUERY_KEYS.list(filters, sport, date, city), "infinite"],
+    queryFn: ({ pageParam = 1 }) =>
+      matchesApi.getMatches({ ...filters, pageNumber: pageParam, pageSize: 12 }, sport, date, city),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
+    ...options,
+  });
+};
+
+export const useInfiniteMyMatches = (
+  filters: RequestFilters = {},
+  role?: string,
+  options?: { enabled?: boolean }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...MATCHES_QUERY_KEYS.my(filters, role), "infinite"],
+    queryFn: ({ pageParam = 1 }) =>
+      matchesApi.getMyMatches({ ...filters, pageNumber: pageParam, pageSize: 12 }, role),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
+    ...options,
   });
 };
 
@@ -129,7 +164,9 @@ export const useRequestToJoin = () => {
       toast.success("Join request submitted! Pending organizer approval.");
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
-      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+      queryClient.invalidateQueries({
+        queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}),
+      });
     },
     onError: (error: unknown) => {
       const msg = extractErrorMessage(error);
@@ -143,6 +180,23 @@ export const useGetMatchJoinRequests = (matchId: string, filters: RequestFilters
     queryKey: MATCHES_QUERY_KEYS.requests(matchId, filters),
     queryFn: () => matchesApi.getMatchJoinRequests(matchId, filters),
     enabled: !!matchId,
+  });
+};
+
+export const useInfiniteMatchJoinRequests = (
+  matchId: string,
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean }
+) => {
+  return useInfiniteQuery({
+    queryKey: [...MATCHES_QUERY_KEYS.requests(matchId, filters), "infinite"],
+    queryFn: ({ pageParam = 1 }) =>
+      matchesApi.getMatchJoinRequests(matchId, { ...filters, pageNumber: pageParam, pageSize: 12 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
+    enabled: !!matchId && (options?.enabled ?? true),
+    ...options,
   });
 };
 
@@ -163,8 +217,12 @@ export const useReviewJoinRequest = () => {
       toast.success("Join request status updated.");
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
-      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.participants(variables.matchId) });
-      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+      queryClient.invalidateQueries({
+        queryKey: MATCHES_QUERY_KEYS.participants(variables.matchId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}),
+      });
     },
     onError: (error: unknown) => {
       const msg = extractErrorMessage(error);
@@ -183,7 +241,9 @@ export const useWithdrawJoinRequest = () => {
       toast.success("Join request withdrawn successfully.");
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.all });
       queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.detail(variables.matchId) });
-      queryClient.invalidateQueries({ queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}) });
+      queryClient.invalidateQueries({
+        queryKey: MATCHES_QUERY_KEYS.requests(variables.matchId, {}),
+      });
     },
     onError: (error: unknown) => {
       const msg = extractErrorMessage(error);

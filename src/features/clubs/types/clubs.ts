@@ -149,5 +149,3 @@ export interface SetTimeSlotsAvailabilityRequest {
   slotIds: string[];
   isActive: boolean;
 }
-
-

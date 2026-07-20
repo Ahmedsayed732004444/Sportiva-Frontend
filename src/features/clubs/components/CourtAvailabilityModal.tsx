@@ -21,12 +21,21 @@ interface CourtAvailabilityModalProps {
   courtName: string;
 }
 
-export function CourtAvailabilityModal({ isOpen, onClose, courtId, courtName }: CourtAvailabilityModalProps) {
+export function CourtAvailabilityModal({
+  isOpen,
+  onClose,
+  courtId,
+  courtName,
+}: CourtAvailabilityModalProps) {
   const [selectedDate, setSelectedDate] = useState(() => {
     return new Date().toISOString().split("T")[0];
   });
 
-  const { data: slots, isLoading, isError } = useGetCourtAvailability(courtId, selectedDate, { enabled: isOpen });
+  const {
+    data: slots,
+    isLoading,
+    isError,
+  } = useGetCourtAvailability(courtId, selectedDate, { enabled: isOpen });
 
   const formatTime = (timeStr: string) => {
     try {
@@ -42,7 +51,9 @@ export function CourtAvailabilityModal({ isOpen, onClose, courtId, courtName }: 
   };
 
   const handleBookSlot = (slotId: string, startTime: string) => {
-    toast.success(`Booking slot for ${formatTime(startTime)} is not fully implemented yet, but availability checked successfully!`);
+    toast.success(
+      `Booking slot for ${formatTime(startTime)} is not fully implemented yet, but availability checked successfully!`
+    );
   };
 
   return (
@@ -72,7 +83,8 @@ export function CourtAvailabilityModal({ isOpen, onClose, courtId, courtName }: 
 
           <div className="border-t pt-4">
             <h4 className="font-semibold text-sm mb-3 flex items-center gap-1.5 text-foreground">
-              <Clock className="h-4 w-4 text-primary" /> Time Slots for {new Date(selectedDate).toLocaleDateString()}
+              <Clock className="h-4 w-4 text-primary" /> Time Slots for{" "}
+              {new Date(selectedDate).toLocaleDateString()}
             </h4>
 
             {isLoading ? (

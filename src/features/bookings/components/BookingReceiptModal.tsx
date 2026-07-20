@@ -2,14 +2,22 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
   DialogDescription,
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { useGetBookingReceipt } from "../hooks/useBookings";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Badge } from "@/shared/components/ui/badge";
-import { Printer, Calendar, Clock, DollarSign, Building, User, Receipt, AlertCircle } from "lucide-react";
+import {
+  Printer,
+  Calendar,
+  Clock,
+  DollarSign,
+  Building,
+  User,
+  Receipt,
+  AlertCircle,
+} from "lucide-react";
 import { BookingStatusDto } from "../types/bookings";
 
 interface BookingReceiptModalProps {
@@ -26,13 +34,25 @@ export function BookingReceiptModal({ isOpen, onClose, bookingId }: BookingRecei
       case BookingStatusDto.Pending:
         return <Badge variant="secondary">Pending Approval</Badge>;
       case BookingStatusDto.Confirmed:
-        return <Badge variant="default" className="bg-green-600 hover:bg-green-700">Confirmed</Badge>;
+        return (
+          <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+            Confirmed
+          </Badge>
+        );
       case BookingStatusDto.Rejected:
         return <Badge variant="destructive">Rejected</Badge>;
       case BookingStatusDto.Cancelled:
-        return <Badge variant="outline" className="text-muted-foreground border-muted-foreground">Cancelled</Badge>;
+        return (
+          <Badge variant="outline" className="text-muted-foreground border-muted-foreground">
+            Cancelled
+          </Badge>
+        );
       case BookingStatusDto.Completed:
-        return <Badge variant="outline" className="text-primary border-primary bg-primary/5">Completed</Badge>;
+        return (
+          <Badge variant="outline" className="text-primary border-primary bg-primary/5">
+            Completed
+          </Badge>
+        );
       default:
         return <Badge variant="secondary">Unknown</Badge>;
     }
@@ -87,11 +107,17 @@ export function BookingReceiptModal({ isOpen, onClose, bookingId }: BookingRecei
             {/* Invoice Design */}
             <div className="flex justify-between items-start gap-4">
               <div>
-                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">Receipt No</p>
-                <p className="font-mono font-bold text-foreground text-sm">{receipt.bookingNumber}</p>
+                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">
+                  Receipt No
+                </p>
+                <p className="font-mono font-bold text-foreground text-sm">
+                  {receipt.bookingNumber}
+                </p>
               </div>
               <div className="text-right">
-                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">Status</p>
+                <p className="text-[11px] text-muted-foreground uppercase font-bold tracking-wider">
+                  Status
+                </p>
                 <div className="mt-0.5">{getStatusBadge(receipt.status)}</div>
               </div>
             </div>
@@ -115,7 +141,9 @@ export function BookingReceiptModal({ isOpen, onClose, bookingId }: BookingRecei
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Date</p>
-                    <p className="font-semibold text-sm">{new Date(receipt.timeSlot.day).toLocaleDateString()}</p>
+                    <p className="font-semibold text-sm">
+                      {new Date(receipt.timeSlot.day).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
 
@@ -126,7 +154,8 @@ export function BookingReceiptModal({ isOpen, onClose, bookingId }: BookingRecei
                   <div>
                     <p className="text-xs text-muted-foreground">Time Range</p>
                     <p className="font-semibold text-sm">
-                      {formatTime(receipt.timeSlot.startTime)} - {formatTime(receipt.timeSlot.endTime)}
+                      {formatTime(receipt.timeSlot.startTime)} -{" "}
+                      {formatTime(receipt.timeSlot.endTime)}
                     </p>
                   </div>
                 </div>

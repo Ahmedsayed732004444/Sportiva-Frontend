@@ -11,9 +11,12 @@ export const clubSubscriptionsApi = {
   },
 
   getSubscriptionHistory: (clubId: string, filters?: RequestFilters) => {
-    return apiClient.get<PaginatedList<ClubSubscriptionResponse>>(`/clubs/${clubId}/subscriptions`, {
-      params: filters,
-    });
+    return apiClient.get<PaginatedList<ClubSubscriptionResponse>>(
+      `/clubs/${clubId}/subscriptions`,
+      {
+        params: filters,
+      }
+    );
   },
 
   subscribe: (clubId: string, data: CreateClubSubscriptionRequest) => {

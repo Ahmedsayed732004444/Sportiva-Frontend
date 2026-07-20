@@ -59,7 +59,8 @@ export function MembershipUpgradeModal({ isOpen, onClose }: MembershipUpgradeMod
         <DialogHeader>
           <DialogTitle>Request Account Upgrade</DialogTitle>
           <DialogDescription>
-            Request to upgrade your account to Club Owner to register and manage sports clubs and courts.
+            Request to upgrade your account to Club Owner to register and manage sports clubs and
+            courts.
           </DialogDescription>
         </DialogHeader>
 

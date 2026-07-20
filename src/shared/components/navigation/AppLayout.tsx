@@ -6,6 +6,7 @@ import AppSidebar from "@/shared/components/navigation/AppSidebar";
 import PublicHeader from "@/shared/components/navigation/PublicHeader";
 import MinimalFooter from "@/shared/components/navigation/MinimalFooter";
 import { useSidebarConfig } from "@/shared/hooks/useSidebarConfig";
+import { LocationReminderBanner } from "@/shared/components/common/LocationReminderBanner";
 
 /**
  * Authenticated app shell: fixed `AppHeader`, collapsible `AppSidebar`, main content area.
@@ -21,6 +22,7 @@ const AppLayout = () => {
         <div className="flex flex-1 flex-col pt-16">
           <Outlet />
         </div>
+        <LocationReminderBanner />
       </div>
     );
   }
@@ -44,6 +46,7 @@ const AppLayout = () => {
           <MinimalFooter />
         </div>
       </div>
+      <LocationReminderBanner />
     </SidebarProvider>
   );
 };

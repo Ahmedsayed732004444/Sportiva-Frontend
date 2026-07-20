@@ -1,6 +1,10 @@
 import { apiClient } from "@/lib/api/client";
 import type { RequestFilters, PaginatedList } from "@/features/clubs/types/clubs";
-import type { MembershipUpgradeResponse, CreateMembershipUpgradeRequest, RequestStatusDto } from "../types/memberships";
+import type {
+  MembershipUpgradeResponse,
+  CreateMembershipUpgradeRequest,
+  RequestStatusDto,
+} from "../types/memberships";
 
 export const membershipsApi = {
   getMyUpgradeRequest: () => {

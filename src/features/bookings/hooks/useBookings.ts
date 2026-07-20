@@ -1,7 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { bookingsApi } from "../api/bookingsApi";
 import type { RequestFilters } from "@/features/clubs/types/clubs";
-import type { BookingStatusDto, CreateBookingRequest, ReviewBookingRequest } from "../types/bookings";
+import type {
+  BookingStatusDto,
+  CreateBookingRequest,
+  ReviewBookingRequest,
+} from "../types/bookings";
 import { toast } from "sonner";
 
 export const BOOKINGS_QUERY_KEYS = {
@@ -14,11 +18,20 @@ export const BOOKINGS_QUERY_KEYS = {
   courtList: (courtId: string, filters: RequestFilters, date?: string) =>
     [...BOOKINGS_QUERY_KEYS.courtScoped(courtId), "list", { filters, date }] as const,
   clubScoped: (clubId: string) => [...BOOKINGS_QUERY_KEYS.all, "club", clubId] as const,
-  clubList: (clubId: string, filters: RequestFilters, status?: BookingStatusDto, isUpcoming?: boolean) =>
+  clubList: (
+    clubId: string,
+    filters: RequestFilters,
+    status?: BookingStatusDto,
+    isUpcoming?: boolean
+  ) =>
     [...BOOKINGS_QUERY_KEYS.clubScoped(clubId), "list", { filters, status, isUpcoming }] as const,
 };
 
-export const useGetMyBookings = (filters: RequestFilters = {}, status?: BookingStatusDto, isUpcoming?: boolean) => {
+export const useGetMyBookings = (
+  filters: RequestFilters = {},
+  status?: BookingStatusDto,
+  isUpcoming?: boolean
+) => {
   return useQuery({
     queryKey: BOOKINGS_QUERY_KEYS.my(filters, status, isUpcoming),
     queryFn: () => bookingsApi.getMyBookings(filters, status, isUpcoming),
@@ -104,7 +117,11 @@ export const useReviewBooking = () => {
   });
 };
 
-export const useGetCourtBookings = (courtId: string, filters: RequestFilters = {}, date?: string) => {
+export const useGetCourtBookings = (
+  courtId: string,
+  filters: RequestFilters = {},
+  date?: string
+) => {
   return useQuery({
     queryKey: BOOKINGS_QUERY_KEYS.courtList(courtId, filters, date),
     queryFn: () => bookingsApi.getCourtBookings(courtId, filters, date),
@@ -112,7 +129,12 @@ export const useGetCourtBookings = (courtId: string, filters: RequestFilters = {
   });
 };
 
-export const useGetClubBookings = (clubId: string, filters: RequestFilters = {}, status?: BookingStatusDto, isUpcoming?: boolean) => {
+export const useGetClubBookings = (
+  clubId: string,
+  filters: RequestFilters = {},
+  status?: BookingStatusDto,
+  isUpcoming?: boolean
+) => {
   return useQuery({
     queryKey: BOOKINGS_QUERY_KEYS.clubList(clubId, filters, status, isUpcoming),
     queryFn: () => bookingsApi.getClubBookings(clubId, filters, status, isUpcoming),

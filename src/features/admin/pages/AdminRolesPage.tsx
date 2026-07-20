@@ -8,19 +8,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Input } from "@/shared/components/ui/input";
-import { Badge } from "@/shared/components/ui/badge";
-import {
-  ShieldCheck,
-  Search,
-  Plus,
-  Edit2,
-  CheckCircle,
-  XCircle,
-  ShieldAlert,
-  Lock,
-  Key,
-  Layers,
-} from "lucide-react";
+import { ShieldCheck, Search, Plus, Edit2, CheckCircle, XCircle, Key, Layers } from "lucide-react";
 import type { RoleResponse } from "../types/roles";
 import { RoleFormModal } from "../components/RoleFormModal";
 import { cn } from "@/lib/utils";
@@ -49,7 +37,7 @@ export default function AdminRolesPage() {
   const { data: rolesList, isLoading, isError } = useGetAdminRoles(includeDisabled);
   const toggleStatusMutation = useToggleAdminRoleStatus();
 
-  const roles = rolesList || [];
+  const roles = useMemo(() => rolesList || [], [rolesList]);
 
   const filteredRoles = useMemo(() => {
     if (!searchQuery.trim()) return roles;
@@ -232,7 +220,12 @@ function RoleCard({ role, onEdit, onToggleStatus, isToggling }: RoleCardProps) {
                 : "bg-[#20A854]/10 text-[#20A854] border-[#20A854]/20"
             )}
           >
-            <span className={cn("w-1.5 h-1.5 rounded-full", role.isDeleted ? "bg-red-500" : "bg-[#20A854]")} />
+            <span
+              className={cn(
+                "w-1.5 h-1.5 rounded-full",
+                role.isDeleted ? "bg-red-500" : "bg-[#20A854]"
+              )}
+            />
             {role.isDeleted ? "Disabled" : "Active"}
           </span>
         </div>
@@ -295,7 +288,11 @@ function RoleCard({ role, onEdit, onToggleStatus, isToggling }: RoleCardProps) {
                 : "bg-red-500/10 hover:bg-red-500/20 text-red-600 border-red-500/20"
             )}
           >
-            {role.isDeleted ? <CheckCircle className="h-3.5 w-3.5" /> : <XCircle className="h-3.5 w-3.5" />}
+            {role.isDeleted ? (
+              <CheckCircle className="h-3.5 w-3.5" />
+            ) : (
+              <XCircle className="h-3.5 w-3.5" />
+            )}
             {role.isDeleted ? "Enable" : "Disable"}
           </Button>
         </div>

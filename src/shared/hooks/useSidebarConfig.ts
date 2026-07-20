@@ -1,5 +1,18 @@
 import type { SidebarConfig } from "@/shared/components/navigation/AppSidebar";
-import { User, FileText, Shield, Building, Tent, CreditCard, Calendar, UserCheck, Trophy, MessageSquare, Users, ShieldCheck } from "lucide-react";
+import {
+  User,
+  FileText,
+  Shield,
+  Building,
+  Tent,
+  CreditCard,
+  Calendar,
+  UserCheck,
+  Trophy,
+  MessageSquare,
+  Users,
+  ShieldCheck,
+} from "lucide-react";
 import { authService } from "@/features/auth/services/authService";
 import { isAdmin, isOwner, isMember, getUserRoles } from "@/lib/jwt";
 
@@ -29,7 +42,11 @@ export const useSidebarConfig = (): SidebarConfig | null => {
     navigationLinks.push({ label: "Manage Clubs", path: "/clubs", icon: Shield });
     navigationLinks.push({ label: "Manage Courts", path: "/courts", icon: Tent });
     navigationLinks.push({ label: "Manage Plans", path: "/admin/plans", icon: CreditCard });
-    navigationLinks.push({ label: "Upgrade Requests", path: "/admin/membership-requests", icon: UserCheck });
+    navigationLinks.push({
+      label: "Upgrade Requests",
+      path: "/admin/membership-requests",
+      icon: UserCheck,
+    });
   } else if (isOwner()) {
     navigationLinks.push({ label: "My Clubs", path: "/clubs", icon: Building });
     navigationLinks.push({ label: "My Courts", path: "/courts", icon: Tent });

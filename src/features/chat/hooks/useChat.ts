@@ -101,30 +101,38 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
     // Register live event listeners
     connection.on("ReceiveMessage", (message: MessageResponse) => {
       // Ensure otherUser.id is mapped from otherUser.userId if userId is sent instead
-      if (message.sender && (message.sender as any).userId) {
-        message.sender.id = (message.sender as any).userId;
+      if (message.sender && (message.sender as { userId?: string }).userId) {
+        message.sender.id = (message.sender as { userId?: string }).userId!;
       }
       const otherUser = message.sender;
       const isMine = message.isMine;
       const currentActiveId = activeReceiverIdRef.current;
       const targetUserId = isMine && currentActiveId ? currentActiveId : otherUser.id;
 
-      queryClient.setQueryData<any>(
+      queryClient.setQueryData<PaginatedList<MessageResponse>>(
         CHAT_QUERY_KEYS.history(targetUserId),
-        (oldData: any) => {
+        (oldData) => {
           if (!oldData) return oldData;
 
           // If it is my message, find the sending/sent/delivered optimistic version and replace it
           if (isMine) {
             const hasPending = oldData.items.some(
-              (item: any) => 
-                (item.status === "sending" || item.status === "sent" || item.status === "delivered") && 
+              (item) =>
+                (item.status === "sending" ||
+                  item.status === "sent" ||
+                  item.status === "delivered") &&
                 item.content === message.content
             );
             if (hasPending) {
               let replaced = false;
-              const newItems = oldData.items.map((item: any) => {
-                if (!replaced && (item.status === "sending" || item.status === "sent" || item.status === "delivered") && item.content === message.content) {
+              const newItems = oldData.items.map((item) => {
+                if (
+                  !replaced &&
+                  (item.status === "sending" ||
+                    item.status === "sent" ||
+                    item.status === "delivered") &&
+                  item.content === message.content
+                ) {
                   replaced = true;
                   return message; // Replace with server authenticated version
                 }
@@ -135,7 +143,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
           }
 
           // Otherwise, append it if it doesn't already exist
-          const exists = oldData.items.some((item: any) => item.messageId === message.messageId);
+          const exists = oldData.items.some((item) => item.messageId === message.messageId);
           if (exists) return oldData;
 
           return {
@@ -155,13 +163,13 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
     });
 
     connection.on("ReceiveMatchMessage", (message: MessageResponse) => {
-      if (message.sender && (message.sender as any).userId) {
-        message.sender.id = (message.sender as any).userId;
+      if (message.sender && (message.sender as { userId?: string }).userId) {
+        message.sender.id = (message.sender as { userId?: string }).userId!;
       }
       if (message.friendlyMatchId) {
-        queryClient.setQueryData<any>(
+        queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.matchHistory(message.friendlyMatchId),
-          (oldData: any) => {
+          (oldData) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
@@ -178,7 +186,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         setIsConnected(false);
       }
     };
-  }, [queryClient, refetchConversations]);
+  }, [queryClient, refetchConversations, markAsReadMutation]);
 
   // Separate effect to handle joining/leaving friendly match SignalR group when activeMatchId changes
   useEffect(() => {
@@ -198,7 +206,7 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
   const sendMessage = useCallback(
     async (content: string) => {
       if (!connectionRef.current || !isConnected || !activeReceiverId || !currentUser) return;
-      
+
       const tempId = "temp-" + Date.now();
       const tempMsg: MessageResponse = {
         messageId: tempId,
@@ -206,71 +214,79 @@ export const useChat = (activeReceiverId?: string, activeMatchId?: string) => {
         sender: {
           id: currentUser.id,
           fullName: `${currentUser.firstName} ${currentUser.lastName}`,
-          profilePictureUrl: currentUser.profilePhotoUrl || null
+          profilePictureUrl: currentUser.profilePhotoUrl || null,
         },
         isMine: true,
         isRead: false,
         sentAt: new Date().toISOString(),
-        status: "sending"
+        status: "sending",
       };
 
       // Optimistic update
-      queryClient.setQueryData<any>(
+      queryClient.setQueryData<PaginatedList<MessageResponse>>(
         CHAT_QUERY_KEYS.history(activeReceiverId),
-        (oldData: any) => {
-          if (!oldData) return { items: [tempMsg] };
+        (oldData) => {
+          if (!oldData)
+            return {
+              items: [tempMsg],
+              pageNumber: 1,
+              pageSize: 50,
+              totalCount: 1,
+              totalPages: 1,
+              hasPreviousPage: false,
+              hasNextPage: false,
+            };
           return {
             ...oldData,
-            items: [tempMsg, ...oldData.items]
+            items: [tempMsg, ...oldData.items],
           };
         }
       );
 
       try {
         await connectionRef.current.invoke("SendMessage", activeReceiverId, content);
-        
+
         // Mark as sent on success
-        queryClient.setQueryData<any>(
+        queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.history(activeReceiverId),
-          (oldData: any) => {
+          (oldData) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
-              items: oldData.items.map((item: any) => 
+              items: oldData.items.map((item) =>
                 item.messageId === tempId ? { ...item, status: "sent" } : item
-              )
+              ),
             };
           }
         );
 
         // Simulate delivery latency (recipient receiving push notification/message)
         setTimeout(() => {
-          queryClient.setQueryData<any>(
+          queryClient.setQueryData<PaginatedList<MessageResponse>>(
             CHAT_QUERY_KEYS.history(activeReceiverId),
-            (oldData: any) => {
+            (oldData) => {
               if (!oldData) return oldData;
               return {
                 ...oldData,
-                items: oldData.items.map((item: any) => 
+                items: oldData.items.map((item) =>
                   item.messageId === tempId ? { ...item, status: "delivered" } : item
-                )
+                ),
               };
             }
           );
         }, 1200);
-
       } catch (err) {
         console.error("Error sending message: ", err);
         // Mark as failed in local UI
-        queryClient.setQueryData<any>(
+        queryClient.setQueryData<PaginatedList<MessageResponse>>(
           CHAT_QUERY_KEYS.history(activeReceiverId),
-          (oldData: any) => {
+          (oldData) => {
             if (!oldData) return oldData;
             return {
               ...oldData,
-              items: oldData.items.map((item: any) => 
+              items: oldData.items.map((item) =>
                 item.messageId === tempId ? { ...item, status: "failed" } : item
-              )
+              ),
             };
           }
         );

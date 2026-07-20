@@ -142,10 +142,13 @@ export function ClubFormModal({ isOpen, onClose, club }: ClubFormModalProps) {
                 placeholder="owner@example.com"
               />
               <p className="text-[11px] text-muted-foreground">
-                Email of the player who will own and manage this club. They will be granted Owner role automatically.
+                Email of the player who will own and manage this club. They will be granted Owner
+                role automatically.
               </p>
               {errors.ownerEmail && (
-                <span className="text-xs text-destructive">{errors.ownerEmail.message as string}</span>
+                <span className="text-xs text-destructive">
+                  {errors.ownerEmail.message as string}
+                </span>
               )}
             </div>
           )}

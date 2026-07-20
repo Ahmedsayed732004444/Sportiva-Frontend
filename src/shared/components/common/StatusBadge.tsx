@@ -56,7 +56,11 @@ export const StatusBadge = ({ status, className }: StatusBadgeProps) => {
   return (
     <Badge
       variant="outline"
-      className={cn("px-2.5 py-0.5 rounded-full font-semibold text-xs border", config.className, className)}
+      className={cn(
+        "px-2.5 py-0.5 rounded-full font-semibold text-xs border",
+        config.className,
+        className
+      )}
     >
       {config.label}
     </Badge>

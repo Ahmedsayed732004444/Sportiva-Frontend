@@ -9,7 +9,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { useGetMyClubs } from "@/features/clubs/hooks/useClubs";
 import { useSubscribeToPlan } from "../hooks/useClubSubscriptions";
-import { Building, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 
 interface SelectClubModalProps {
@@ -45,7 +45,8 @@ export function SelectClubModal({ isOpen, onClose, planId, planName }: SelectClu
         <DialogHeader>
           <DialogTitle>Subscribe to {planName}</DialogTitle>
           <DialogDescription>
-            Select which of your clubs you would like to subscribe to the <strong>{planName}</strong> plan.
+            Select which of your clubs you would like to subscribe to the{" "}
+            <strong>{planName}</strong> plan.
           </DialogDescription>
         </DialogHeader>
 
@@ -62,7 +63,8 @@ export function SelectClubModal({ isOpen, onClose, planId, planName }: SelectClu
         ) : clubs.length === 0 ? (
           <div className="text-center py-8 space-y-4">
             <p className="text-muted-foreground text-sm">
-              You do not have any registered clubs. An admin must create a club and assign you as the owner first.
+              You do not have any registered clubs. An admin must create a club and assign you as
+              the owner first.
             </p>
             <Button onClick={onClose} variant="outline" className="w-full">
               Close
@@ -90,9 +92,13 @@ export function SelectClubModal({ isOpen, onClose, planId, planName }: SelectClu
                         className="h-10 w-10 rounded-full object-cover border"
                       />
                     ) : (
-                      <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold border ${
-                        isSelected ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
-                      }`}>
+                      <div
+                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold border ${
+                          isSelected
+                            ? "bg-primary/20 text-primary"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
                         {club.name.charAt(0).toUpperCase()}
                       </div>
                     )}

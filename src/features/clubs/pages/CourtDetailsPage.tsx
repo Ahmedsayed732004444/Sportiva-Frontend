@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import {
-  useGetCourt,
-  useDeleteCourt,
-  useToggleCourtStatus,
-} from "../hooks/useCourts";
+import { useGetCourt, useDeleteCourt, useToggleCourtStatus } from "../hooks/useCourts";
 import { useGetTimeSlots, useSetTimeSlotsAvailability } from "../hooks/useTimeSlots";
 import { useGetCourtReviews } from "@/features/reviews/hooks/useReviews";
 import { useCreateBooking } from "@/features/bookings/hooks/useBookings";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { Input } from "@/shared/components/ui/input";
-import { Label } from "@/shared/components/ui/label";
 import { Badge } from "@/shared/components/ui/badge";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import {
@@ -29,17 +29,15 @@ import {
   CheckCircle,
   XCircle,
   Star,
-  MessageSquare,
-  ChevronLeft,
-  ChevronRight,
   ArrowRight,
   Check,
   MapPin,
 } from "lucide-react";
-import { getSportName } from "./CourtsPage";
+import { getSportName } from "@/shared/constants/sports";
 import { CourtFormModal } from "../components/CourtFormModal";
 import { toast } from "sonner";
 import { cn, formatRelativeTime } from "@/lib/utils";
+import { ConfirmDialog } from "@/shared/components/common/ConfirmDialog";
 
 export default function CourtDetailsPage() {
   const { clubId, courtId } = useParams<{ clubId: string; courtId: string }>();
@@ -50,23 +48,27 @@ export default function CourtDetailsPage() {
   });
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [selectedSlotIds, setSelectedSlotIds] = useState<string[]>([]);
-  const [selectedSlot, setSelectedSlot] = useState<any | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<Record<string, unknown> | null>(null);
 
   // Queries
-  const { data: court, isLoading: isCourtLoading, isError: isCourtError, error: courtError } = useGetCourt(
-    clubId as string,
-    courtId as string
-  );
+  const {
+    data: court,
+    isLoading: isCourtLoading,
+    isError: isCourtError,
+    error: courtError,
+  } = useGetCourt(clubId as string, courtId as string);
 
   const canManage = court?.canManage || false;
 
-  const { data: slots, isLoading: isSlotsLoading, isError: isSlotsError } = useGetTimeSlots(
-    courtId as string,
-    selectedDate,
-    canManage ? undefined : true,
-    { enabled: !!courtId }
-  );
+  const {
+    data: slots,
+    isLoading: isSlotsLoading,
+    isError: isSlotsError,
+  } = useGetTimeSlots(courtId as string, selectedDate, canManage ? undefined : true, {
+    enabled: !!courtId,
+  });
 
   const { data: reviewsData, isLoading: isReviewsLoading } = useGetCourtReviews(courtId as string);
   const reviews = reviewsData?.items || [];
@@ -89,7 +91,7 @@ export default function CourtDetailsPage() {
     }
   };
 
-  const handleBookSlot = async (slotId: string, startTime: string) => {
+  const handleBookSlot = async (slotId: string, _startTime: string) => {
     if (!courtId) return;
     try {
       await createBooking.mutateAsync({
@@ -97,8 +99,8 @@ export default function CourtDetailsPage() {
         timeSlotId: slotId,
       });
       setSelectedSlot(null);
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Toast handled by mutation hook
     }
   };
 
@@ -106,21 +108,15 @@ export default function CourtDetailsPage() {
     if (!court || !clubId || !courtId) return;
     try {
       await toggleCourtStatus.mutateAsync({ clubId, courtId });
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Toast handled by mutation hook
     }
   };
 
   const handleDelete = async () => {
     if (!court || !clubId || !courtId) return;
-    if (confirm("Are you sure you want to delete this court? This action cannot be undone.")) {
-      try {
-        await deleteCourt.mutateAsync({ clubId, courtId });
-        navigate(`/clubs/${clubId}`);
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    await deleteCourt.mutateAsync({ clubId, courtId });
+    navigate(`/clubs/${clubId}`);
   };
 
   // Bulk set slots active/inactive
@@ -136,8 +132,8 @@ export default function CourtDetailsPage() {
         isActive,
       });
       setSelectedSlotIds([]); // clear selection
-    } catch (e) {
-      console.error(e);
+    } catch {
+      // Toast handled by mutation hook
     }
   };
 
@@ -159,14 +155,27 @@ export default function CourtDetailsPage() {
   const getNext7Days = () => {
     const days = [];
     const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
     for (let i = 0; i < 7; i++) {
       const d = new Date();
       d.setDate(d.getDate() + i);
       const isToday = i === 0;
       const dateString = d.toISOString().split("T")[0]; // YYYY-MM-DD
-      
+
       days.push({
         dateString,
         dayLabel: isToday ? "Today" : weekdays[d.getDay()],
@@ -184,7 +193,7 @@ export default function CourtDetailsPage() {
 
   if (isCourtLoading) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-5xl space-y-6">
+      <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
         <Skeleton className="h-10 w-32" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Skeleton className="h-64 md:col-span-2 rounded-xl" />
@@ -196,12 +205,12 @@ export default function CourtDetailsPage() {
 
   if (isCourtError || !court) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-md text-center space-y-4">
+      <div className="container mx-auto max-w-6xl space-y-4 px-4 py-6 text-center">
         <ShieldAlert className="h-12 w-12 mx-auto text-destructive" />
         <h2 className="text-2xl font-bold text-destructive">Court Not Found</h2>
         <p className="text-muted-foreground">
-          {(courtError as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-            "The court details could not be retrieved."}
+          {(courtError as { response?: { data?: { message?: string } } })?.response?.data
+            ?.message || "The court details could not be retrieved."}
         </p>
         <Button asChild variant="outline">
           <Link to="/courts">Back to Courts</Link>
@@ -214,10 +223,10 @@ export default function CourtDetailsPage() {
   const days = getNext7Days();
 
   return (
-    <div className="container mx-auto py-6 px-2 sm:py-8 sm:px-4 max-w-7xl space-y-6">
+    <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
       {/* Back navigation & Controls */}
       <div className="flex items-center justify-between">
-        <Button asChild variant="ghost" className="hover:bg-emerald-50/50 text-[#20A854] hover:text-[#20A854] p-0 font-bold gap-2">
+        <Button asChild variant="ghost" className="min-h-11 gap-2 p-0 text-primary">
           <Link to={`/clubs/${clubId}`} className="flex items-center">
             <ArrowLeft className="h-4 w-4" /> Back to Club
           </Link>
@@ -226,17 +235,33 @@ export default function CourtDetailsPage() {
         {/* Management Controls */}
         {canManage && (
           <div className="flex items-center gap-2">
-            <Button variant="outline" className="rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 gap-2 h-10 text-xs font-bold" onClick={() => setIsEditModalOpen(true)}>
-              <Edit2 className="h-4 w-4 text-[#20A854]" /> Edit Court
+            <Button
+              variant="outline"
+              className="h-10 gap-2 rounded-xl border border-border text-xs font-bold text-foreground hover:bg-muted/50"
+              onClick={() => setIsEditModalOpen(true)}
+            >
+              <Edit2 className="h-4 w-4 text-primary" /> Edit Court
             </Button>
-            <Button variant="outline" className={cn(
-              "rounded-xl border h-10 text-xs font-bold gap-2",
-              court.isActive ? "border-red-200 text-red-600 hover:bg-red-50" : "border-emerald-200 text-emerald-600 hover:bg-emerald-50"
-            )} onClick={handleToggleStatus} disabled={toggleCourtStatus.isPending}>
+            <Button
+              variant="outline"
+              className={cn(
+                "rounded-xl border h-10 text-xs font-bold gap-2",
+                court.isActive
+                  ? "border-red-200 text-red-600 hover:bg-red-50"
+                  : "border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+              )}
+              onClick={handleToggleStatus}
+              disabled={toggleCourtStatus.isPending}
+            >
               <Power className="h-4 w-4" />
               {court.isActive ? "Deactivate" : "Activate"}
             </Button>
-            <Button variant="destructive" className="rounded-xl h-10 text-xs font-bold gap-2" onClick={handleDelete} disabled={deleteCourt.isPending}>
+            <Button
+              variant="destructive"
+              className="min-h-11 rounded-xl text-xs font-semibold"
+              onClick={() => setShowDeleteConfirm(true)}
+              disabled={deleteCourt.isPending}
+            >
               <Trash2 className="h-4 w-4" /> Delete
             </Button>
           </div>
@@ -247,8 +272,8 @@ export default function CourtDetailsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* Court Info & Image */}
         <div className="lg:col-span-2 space-y-6">
-          <div 
-            className="w-full h-80 rounded-3xl bg-muted overflow-hidden bg-cover bg-center border border-gray-100 relative shrink-0"
+          <div
+            className="w-full h-80 rounded-3xl bg-muted overflow-hidden bg-cover bg-center border border-border relative shrink-0"
             style={court.imageUrl ? { backgroundImage: `url(${court.imageUrl})` } : undefined}
           >
             {!court.imageUrl && (
@@ -256,7 +281,7 @@ export default function CourtDetailsPage() {
                 {court.name?.substring(0, 2)?.toUpperCase()}
               </div>
             )}
-            <Badge className="absolute top-4 left-4 uppercase font-extrabold bg-white dark:bg-card text-gray-900 dark:text-white hover:bg-white tracking-wider px-3 py-1.5 text-xs shadow-md border-0 rounded-full gap-1.5 flex items-center">
+            <Badge className="absolute top-4 left-4 uppercase font-extrabold bg-card text-foreground hover:bg-white tracking-wider px-3 py-1.5 text-xs shadow-md border-0 rounded-full gap-1.5 flex items-center">
               ⚽ {getSportName(court.sportType)}
             </Badge>
           </div>
@@ -264,7 +289,7 @@ export default function CourtDetailsPage() {
           <div className="space-y-4">
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight">
+                <h1 className="text-3xl font-extrabold tracking-tight text-foreground leading-tight">
                   {court.name || "Unnamed Court"}
                 </h1>
                 <span
@@ -280,22 +305,24 @@ export default function CourtDetailsPage() {
                 </span>
               </div>
               {court.club && (
-                <p className="text-gray-500 dark:text-muted-foreground text-xs font-semibold flex items-center gap-1 mt-2">
-                  <MapPin className="h-3.5 w-3.5 text-[#20A854]" />
-                  <span>Located at: <strong>{court.club.name}</strong></span>
+                <p className="text-muted-foreground text-xs font-semibold flex items-center gap-1 mt-2">
+                  <MapPin className="h-3.5 w-3.5 text-primary" />
+                  <span>
+                    Located at: <strong>{court.club.name}</strong>
+                  </span>
                 </p>
               )}
             </div>
 
             {/* About court card */}
-            <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-4">
+            <Card className="rounded-3xl border border-border bg-card shadow-sm p-4">
               <div className="flex items-start gap-3">
-                <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] flex items-center justify-center shrink-0 border border-emerald-500/10 mt-0.5">
+                <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-primary flex items-center justify-center shrink-0 border border-emerald-500/10 mt-0.5">
                   <CalendarIcon className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-sm font-bold text-gray-900 dark:text-white">About this court</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                  <h3 className="text-sm font-bold text-foreground">About this court</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {court.description || "No description provided for this court."}
                   </p>
                 </div>
@@ -304,81 +331,58 @@ export default function CourtDetailsPage() {
 
             {/* Specifications Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-4.5">
+              <Card className="rounded-3xl border border-border bg-card shadow-sm p-4.5">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] shrink-0">
+                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-primary shrink-0">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Max Players</p>
-                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{court.maxCapacity} Players</p>
-                    <p className="text-[9px] text-gray-400 font-medium mt-0.5">Ideal for friendly games.</p>
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+                      Max Players
+                    </p>
+                    <p className="text-sm font-extrabold text-foreground">
+                      {court.maxCapacity} Players
+                    </p>
+                    <p className="text-[9px] text-muted-foreground font-medium mt-0.5">
+                      Ideal for friendly games.
+                    </p>
                   </div>
                 </div>
               </Card>
 
-              <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-4.5">
+              <Card className="rounded-3xl border border-border bg-card shadow-sm p-4.5">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] shrink-0">
+                  <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-primary shrink-0">
                     <DollarSign className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Price Per Hour</p>
-                    <p className="text-sm font-extrabold text-gray-900 dark:text-white">{court.pricePerHour} EGP /hr</p>
-                    <p className="text-[9px] text-gray-400 font-medium mt-0.5">Transparent pricing.</p>
+                    <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">
+                      Price Per Hour
+                    </p>
+                    <p className="text-sm font-extrabold text-foreground">
+                      {court.pricePerHour} EGP /hr
+                    </p>
+                    <p className="text-[9px] text-muted-foreground font-medium mt-0.5">
+                      Transparent pricing.
+                    </p>
                   </div>
                 </div>
               </Card>
-            </div>
-
-            {/* Features Row */}
-            <div className="space-y-3 pt-6 border-t border-gray-100 dark:border-muted/30">
-              <h3 className="text-sm font-bold text-gray-900 dark:text-white">Court Features</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-gray-50 dark:bg-muted/15 border border-gray-100 dark:border-muted/30">
-                  <span className="text-lg">🌱</span>
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">Premium Turf</p>
-                    <p className="text-[9px] text-gray-400 mt-0.5 leading-none">High quality grass</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-gray-50 dark:bg-muted/15 border border-gray-100 dark:border-muted/30">
-                  <span className="text-lg">💡</span>
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">LED Lighting</p>
-                    <p className="text-[9px] text-gray-400 mt-0.5 leading-none">Stadium lights</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-gray-50 dark:bg-muted/15 border border-gray-100 dark:border-muted/30">
-                  <span className="text-lg">❄️</span>
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">Air Conditioned</p>
-                    <p className="text-[9px] text-gray-400 mt-0.5 leading-none">Cool environment</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-gray-50 dark:bg-muted/15 border border-gray-100 dark:border-muted/30">
-                  <span className="text-lg">🪑</span>
-                  <div>
-                    <p className="text-[11px] font-bold text-gray-900 dark:text-white leading-tight">Player Bench</p>
-                    <p className="text-[9px] text-gray-400 mt-0.5 leading-none">Spacious team area</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
         {/* Availability / Booking Section */}
         <div className="space-y-6">
-          <Card className="rounded-3xl border border-gray-100 dark:border-muted/30 bg-white dark:bg-card shadow-sm p-5 space-y-5">
+          <Card className="rounded-3xl border border-border bg-card shadow-sm p-5 space-y-5">
             <div className="space-y-4">
-              <h2 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5 text-[#20A854]" />
+              <h2 className="text-base font-bold text-foreground flex items-center gap-2">
+                <CalendarIcon className="h-5 w-5 text-primary" />
                 Select Date
               </h2>
 
               {/* Date Slider Carousel */}
-              <div className="flex items-center gap-1 border border-gray-100 dark:border-muted/30 rounded-2xl p-1 bg-gray-50/50 dark:bg-muted/10">
+              <div className="flex items-center gap-1 border border-border rounded-2xl p-1 bg-muted/50">
                 <div className="flex-1 flex gap-1.5 overflow-x-auto pb-1 scrollbar-none justify-between">
                   {days.map((day) => {
                     const isActive = selectedDate === day.dateString;
@@ -390,11 +394,16 @@ export default function CourtDetailsPage() {
                         className={cn(
                           "flex flex-col items-center justify-center py-2 px-3.5 rounded-xl min-w-[50px] transition-all border flex-1 text-center",
                           isActive
-                            ? "bg-[#20A854] text-white border-[#20A854] shadow-sm font-bold"
-                            : "bg-white dark:bg-card hover:bg-gray-50 dark:hover:bg-muted/30 border-transparent text-gray-700 dark:text-gray-300"
+                            ? "bg-primary text-white border-primary shadow-sm font-bold"
+                            : "bg-card hover:bg-muted/50 border-transparent text-muted-foreground"
                         )}
                       >
-                        <span className={cn("text-[9px] font-extrabold uppercase", isActive ? "text-white/80" : "text-gray-400")}>
+                        <span
+                          className={cn(
+                            "text-[9px] font-extrabold uppercase",
+                            isActive ? "text-white/80" : "text-muted-foreground"
+                          )}
+                        >
                           {day.dayLabel}
                         </span>
                         <span className="text-xs font-extrabold mt-0.5">{day.dayNum}</span>
@@ -405,14 +414,16 @@ export default function CourtDetailsPage() {
               </div>
             </div>
 
-            <div className="border-t border-gray-50 dark:border-muted/10 pt-4 space-y-3.5">
+            <div className="space-y-3.5 border-t border-border pt-4">
               <div className="flex items-center justify-between gap-4">
-                <h4 className="font-bold text-xs text-gray-900 dark:text-white">
-                  Available Time Slots
-                </h4>
-                <div className="flex items-center gap-2.5 text-[10px] font-medium text-gray-400">
-                  <span className="flex items-center gap-1"><div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Available</span>
-                  <span className="flex items-center gap-1"><div className="h-1.5 w-1.5 rounded-full bg-red-500" /> Booked</span>
+                <h4 className="font-bold text-xs text-foreground">Available Time Slots</h4>
+                <div className="flex items-center gap-2.5 text-[10px] font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Available
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <div className="h-1.5 w-1.5 rounded-full bg-red-500" /> Booked
+                  </span>
                 </div>
               </div>
 
@@ -462,7 +473,7 @@ export default function CourtDetailsPage() {
                   <span>Failed to load time slots.</span>
                 </div>
               ) : allSlots.length === 0 ? (
-                <div className="text-center py-6 text-xs text-gray-400 bg-gray-50 dark:bg-muted/10 rounded-2xl border border-dashed">
+                <div className="rounded-2xl border border-dashed bg-muted/30 py-6 text-center text-xs text-muted-foreground">
                   No active slots configured for this date.
                 </div>
               ) : (
@@ -477,10 +488,10 @@ export default function CourtDetailsPage() {
                             selectedSlotIds.includes(slot.timeSlotId)
                               ? "border-primary bg-primary/5"
                               : !slot.isActive
-                              ? "bg-muted/40 border-muted text-muted-foreground"
-                              : slot.isBooked
-                              ? "bg-red-500/5 border-red-500/10 text-red-500"
-                              : "bg-green-500/5 border-green-500/10 text-green-600 hover:border-green-500/30"
+                                ? "bg-muted/40 border-muted text-muted-foreground"
+                                : slot.isBooked
+                                  ? "bg-red-500/5 border-red-500/10 text-red-500"
+                                  : "bg-green-500/5 border-green-500/10 text-green-600 hover:border-green-500/30"
                           }`}
                         >
                           <Checkbox
@@ -495,7 +506,11 @@ export default function CourtDetailsPage() {
                           </div>
                           <Badge
                             variant={
-                              !slot.isActive ? "secondary" : slot.isBooked ? "destructive" : "default"
+                              !slot.isActive
+                                ? "secondary"
+                                : slot.isBooked
+                                  ? "destructive"
+                                  : "default"
                             }
                             className="font-bold"
                           >
@@ -520,30 +535,36 @@ export default function CourtDetailsPage() {
                           className={cn(
                             "flex items-center justify-between p-3.5 rounded-2xl border text-xs font-semibold transition-all w-full text-left h-12.5",
                             isSelected
-                              ? "border-[#20A854] bg-[#20A854]/5 text-[#20A854] shadow-sm"
+                              ? "border-primary bg-primary/5 text-primary shadow-sm"
                               : slot.isBooked
-                              ? "bg-red-500/5 border-red-500/10 text-red-500/80 cursor-not-allowed"
-                              : "bg-white dark:bg-card border-gray-100 dark:border-muted/30 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-muted/50"
+                                ? "bg-red-500/5 border-red-500/10 text-red-500/80 cursor-not-allowed"
+                                : "bg-card border-border text-muted-foreground hover:border-border/60"
                           )}
                         >
                           <div className="flex items-center gap-2.5">
-                            <Clock className="h-4 w-4 text-gray-400 shrink-0" />
+                            <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
                             <span>
                               {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
                             </span>
                           </div>
                           {isSelected ? (
-                            <Badge className="bg-[#20A854] text-white rounded-full font-bold px-2.5 py-0.5 text-[10px] flex items-center gap-1 border-0">
+                            <Badge className="bg-primary text-white rounded-full font-bold px-2.5 py-0.5 text-[10px] flex items-center gap-1 border-0">
                               <CheckCircle className="h-3 w-3 fill-current" />
                               Selected
                             </Badge>
                           ) : slot.isBooked ? (
-                            <Badge variant="destructive" className="bg-red-100 text-red-600 dark:bg-red-950/20 dark:text-red-400 rounded-full font-bold px-2.5 py-0.5 text-[10px] flex items-center gap-1 border-0">
+                            <Badge
+                              variant="destructive"
+                              className="bg-red-100 text-red-600 dark:bg-red-950/20 dark:text-red-400 rounded-full font-bold px-2.5 py-0.5 text-[10px] flex items-center gap-1 border-0"
+                            >
                               <XCircle className="h-3 w-3" />
                               Booked
                             </Badge>
                           ) : (
-                            <Badge variant="secondary" className="bg-emerald-50 dark:bg-emerald-950/20 text-[#20A854] hover:bg-emerald-50 rounded-full font-bold px-2.5 py-0.5 text-[10px] border border-[#20A854]/10">
+                            <Badge
+                              variant="secondary"
+                              className="bg-emerald-50 dark:bg-emerald-950/20 text-primary hover:bg-emerald-50 rounded-full font-bold px-2.5 py-0.5 text-[10px] border border-primary/10"
+                            >
                               Available
                             </Badge>
                           )}
@@ -559,31 +580,43 @@ export default function CourtDetailsPage() {
             {!canManage && selectedSlot && (
               <div className="bg-emerald-500/5 dark:bg-emerald-950/10 border border-emerald-500/10 rounded-2xl p-4 space-y-4 pt-4 border-t">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-extrabold text-gray-900 dark:text-white">Your Booking</span>
-                  <button 
-                    type="button" 
-                    className="text-[#20A854] hover:underline font-extrabold text-xs"
+                  <span className="font-extrabold text-foreground">Your Booking</span>
+                  <button
+                    type="button"
+                    className="text-primary hover:underline font-extrabold text-xs"
                     onClick={() => setSelectedSlot(null)}
                   >
                     Clear
                   </button>
                 </div>
-                <div className="space-y-2 text-xs text-gray-600 dark:text-gray-300">
+                <div className="space-y-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <CalendarIcon className="h-4 w-4 text-gray-400 shrink-0" />
-                    <span className="font-semibold">{new Date(selectedDate).toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <CalendarIcon className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <span className="font-semibold">
+                      {new Date(selectedDate).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-gray-400 shrink-0" />
-                    <span className="font-semibold">{formatTime(selectedSlot.startTime)} - {formatTime(selectedSlot.endTime)} (1 hr)</span>
+                    <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
+                    <span className="font-semibold">
+                      {formatTime(selectedSlot.startTime)} - {formatTime(selectedSlot.endTime)} (1
+                      hr)
+                    </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between border-t border-emerald-500/10 pt-3 text-xs">
-                  <span className="font-bold text-gray-700 dark:text-gray-300">Total Price:</span>
-                  <span className="text-lg font-extrabold text-[#20A854]">{court.pricePerHour} EGP</span>
+                  <span className="font-bold text-muted-foreground">Total Price:</span>
+                  <span className="text-lg font-extrabold text-primary">
+                    {court.pricePerHour} EGP
+                  </span>
                 </div>
                 <Button
-                  className="w-full bg-[#20A854] hover:bg-[#20A854]/90 text-white font-bold py-3.5 rounded-2xl shadow-sm flex items-center justify-center gap-2"
+                  className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 rounded-2xl shadow-sm flex items-center justify-center gap-2"
                   onClick={() => handleBookSlot(selectedSlot.timeSlotId, selectedSlot.startTime)}
                   disabled={createBooking.isPending}
                 >
@@ -597,8 +630,8 @@ export default function CourtDetailsPage() {
       </div>
 
       {/* Reviews Section */}
-      <Card className="bg-card border border-gray-100 dark:border-muted/30 rounded-3xl shadow-sm mt-8 overflow-hidden">
-        <CardHeader className="pb-4 flex flex-row items-center justify-between gap-4 border-b border-gray-50 dark:border-muted/10">
+      <Card className="bg-card border border-border rounded-3xl shadow-sm mt-8 overflow-hidden">
+        <CardHeader className="flex flex-row items-center justify-between gap-4 border-b border-border pb-4">
           <div>
             <CardTitle className="text-xl font-extrabold flex items-center gap-2 text-foreground">
               <Star className="h-5 w-5 text-amber-500 fill-amber-400 shrink-0" />
@@ -607,7 +640,7 @@ export default function CourtDetailsPage() {
             <CardDescription className="text-xs mt-1">
               {court.reviewsCount > 0 ? (
                 <span className="flex items-center gap-1.5 text-sm font-medium mt-1">
-                  Average Rating: 
+                  Average Rating:
                   <span className="flex items-center gap-0.5 text-amber-500 font-bold text-base">
                     <Star className="h-4 w-4 fill-amber-400" />
                     {court.averageRating?.toFixed(1) || "0.0"}
@@ -619,7 +652,7 @@ export default function CourtDetailsPage() {
             </CardDescription>
           </div>
           {reviews.length > 0 && (
-            <span className="text-xs font-bold text-[#20A854] flex items-center gap-1 shrink-0 cursor-default">
+            <span className="text-xs font-bold text-primary flex items-center gap-1 shrink-0 cursor-default">
               Reviews Listed
             </span>
           )}
@@ -635,17 +668,24 @@ export default function CourtDetailsPage() {
               Be the first to play on this court and write a review!
             </div>
           ) : (
-            <div className="divide-y divide-gray-50 dark:divide-muted/10">
+            <div className="divide-y divide-border">
               {reviews.map((rev) => (
-                <div key={rev.reviewId} className="flex flex-col sm:flex-row sm:items-center gap-4 py-4 first:pt-0 last:pb-0">
+                <div
+                  key={rev.reviewId}
+                  className="flex flex-col sm:flex-row sm:items-center gap-4 py-4 first:pt-0 last:pb-0"
+                >
                   {/* Left: Avatar & Name/Date */}
                   <div className="flex items-center gap-3 min-w-[200px] shrink-0">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-[#20A854] font-bold text-xs border border-emerald-100 dark:border-emerald-950/30">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/20 dark:text-primary font-bold text-xs border border-emerald-100 dark:border-emerald-950/30">
                       {rev.author.fullName.substring(0, 2).toUpperCase()}
                     </div>
                     <div>
-                      <p className="font-extrabold text-sm text-gray-800 dark:text-gray-200 leading-tight">{rev.author.fullName}</p>
-                      <span className="text-[10px] text-gray-400 font-medium">{formatRelativeTime(rev.createdAt)}</span>
+                      <p className="font-extrabold text-sm text-foreground leading-tight">
+                        {rev.author.fullName}
+                      </p>
+                      <span className="text-[10px] text-muted-foreground font-medium">
+                        {formatRelativeTime(rev.createdAt)}
+                      </span>
                     </div>
                   </div>
 
@@ -656,7 +696,9 @@ export default function CourtDetailsPage() {
                         key={i}
                         className={cn(
                           "h-3.5 w-3.5",
-                          i < rev.rating ? "fill-amber-400 text-amber-400" : "text-gray-200 dark:text-muted/30 fill-transparent"
+                          i < rev.rating
+                            ? "fill-warning text-warning"
+                            : "fill-transparent text-muted/30"
                         )}
                       />
                     ))}
@@ -664,9 +706,7 @@ export default function CourtDetailsPage() {
 
                   {/* Right: Comment */}
                   <div className="flex-1 sm:pl-4 min-w-0">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                      {rev.comment}
-                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{rev.comment}</p>
                   </div>
                 </div>
               ))}
@@ -684,6 +724,17 @@ export default function CourtDetailsPage() {
           court={court}
         />
       )}
+
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        onOpenChange={setShowDeleteConfirm}
+        title="Delete court?"
+        description="This will permanently delete the court and cannot be undone."
+        confirmLabel="Delete court"
+        variant="destructive"
+        onConfirm={handleDelete}
+        isLoading={deleteCourt.isPending}
+      />
     </div>
   );
 }

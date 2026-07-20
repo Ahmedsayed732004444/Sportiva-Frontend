@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { Sparkles, Gamepad, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Sparkles, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
 import { SPORTS_LIST } from "@/shared/constants/sports";
 
 interface QuickMatchWizardModalProps {
@@ -53,7 +58,9 @@ export const QuickMatchWizardModal = ({
                 type="button"
                 onClick={() => setSelectedSport("all")}
                 className={`h-14 rounded-2xl font-bold text-xs flex flex-col items-center justify-center gap-1 ${
-                  selectedSport === "all" ? "border-2 border-[#20A854] bg-[#20A854]/10 text-[#20A854]" : ""
+                  selectedSport === "all"
+                    ? "border-2 border-[#20A854] bg-[#20A854]/10 text-[#20A854]"
+                    : ""
                 }`}
               >
                 <span>🏆 All Sports</span>

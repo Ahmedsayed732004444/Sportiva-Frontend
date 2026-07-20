@@ -99,7 +99,9 @@ export function ReviewFormModal({ isOpen, onClose, bookingId, review }: ReviewFo
                     key={star}
                     className={cn(
                       "h-8 w-8 cursor-pointer transition-colors",
-                      active ? "fill-amber-400 text-amber-400 animate-pulse-subtle" : "text-muted-foreground/30 fill-transparent"
+                      active
+                        ? "fill-amber-400 text-amber-400 animate-pulse-subtle"
+                        : "text-muted-foreground/30 fill-transparent"
                     )}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
@@ -113,12 +115,12 @@ export function ReviewFormModal({ isOpen, onClose, bookingId, review }: ReviewFo
                 {rating === 5
                   ? "Excellent! ⭐⭐⭐⭐⭐"
                   : rating === 4
-                  ? "Very Good! ⭐⭐⭐⭐"
-                  : rating === 3
-                  ? "Good ⭐⭐⭐"
-                  : rating === 2
-                  ? "Fair ⭐⭐"
-                  : "Poor ⭐"}
+                    ? "Very Good! ⭐⭐⭐⭐"
+                    : rating === 3
+                      ? "Good ⭐⭐⭐"
+                      : rating === 2
+                        ? "Fair ⭐⭐"
+                        : "Poor ⭐"}
               </span>
             )}
           </div>

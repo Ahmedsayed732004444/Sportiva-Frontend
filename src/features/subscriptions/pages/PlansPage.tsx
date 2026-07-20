@@ -2,18 +2,47 @@ import { useState } from "react";
 import { useGetPlans } from "../hooks/usePlans";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { Check, Rocket } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import { EmptyState } from "@/shared/components/common/EmptyState";
+import { AlertCircle, Check, CreditCard, Rocket } from "lucide-react";
 import { isOwner } from "@/lib/jwt";
 import { toast } from "sonner";
 import { SelectClubModal } from "../components/SelectClubModal";
 import type { SubscriptionPlanResponse } from "../types/plans";
 
+function PlansGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {[1, 2, 3].map((i) => (
+        <Card key={i} className="rounded-xl border border-border">
+          <CardHeader className="space-y-2">
+            <Skeleton className="h-6 w-1/3" />
+            <Skeleton className="h-4 w-2/3" />
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Skeleton className="h-10 w-24" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
+            <Skeleton className="h-11 w-full rounded-lg" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 export default function PlansPage() {
-  const { data: plans, isLoading, isError } = useGetPlans();
+  const { data: plans, isLoading, isError, refetch, isFetching } = useGetPlans();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlanResponse | null>(null);
 
-  // Only display active plans to public
   const activePlans = plans?.filter((plan) => plan.isActive) || [];
 
   const handleSubscribeClick = (plan: SubscriptionPlanResponse) => {
@@ -24,111 +53,134 @@ export default function PlansPage() {
     setSelectedPlan(plan);
   };
 
+  const renderPlansContent = () => {
+    if (isLoading) {
+      return <PlansGridSkeleton />;
+    }
+
+    if (isError) {
+      return (
+        <EmptyState
+          icon={AlertCircle}
+          title="Couldn't load subscription plans"
+          description="Something went wrong while fetching pricing plans. Please try again."
+          action={
+            <Button
+              variant="outline"
+              onClick={() => refetch()}
+              disabled={isFetching}
+              className="min-h-11"
+            >
+              {isFetching ? "Retrying…" : "Try again"}
+            </Button>
+          }
+        />
+      );
+    }
+
+    if (activePlans.length === 0) {
+      return (
+        <EmptyState
+          icon={CreditCard}
+          title="No plans available"
+          description="No subscription plans are currently available. Check back later."
+        />
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {activePlans.map((plan) => {
+          const isPopular =
+            plan.name.toLowerCase().includes("popular") || plan.name.toLowerCase().includes("pro");
+          return (
+            <Card
+              key={plan.planId}
+              className={`relative flex flex-col overflow-hidden rounded-xl border border-border transition-all hover:shadow-md ${
+                isPopular ? "border-primary shadow-sm" : ""
+              }`}
+            >
+              {isPopular && (
+                <div className="absolute right-0 top-0 rounded-bl-lg bg-primary px-4 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
+                  Popular
+                </div>
+              )}
+              <CardHeader className="pb-6">
+                <CardTitle className="flex items-center gap-2 text-2xl font-bold">
+                  <Rocket
+                    className={`h-5 w-5 ${isPopular ? "text-primary" : "text-muted-foreground"}`}
+                  />
+                  {plan.name}
+                </CardTitle>
+                <CardDescription className="mt-2 min-h-[40px]">
+                  {plan.description || "Everything you need to manage your club facilities."}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-1 flex-col justify-between pt-0">
+                <div className="space-y-6">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-extrabold tracking-tight text-foreground">
+                      ${plan.price}
+                    </span>
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      /{plan.durationInDays} days
+                    </span>
+                  </div>
+
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex items-center gap-3">
+                      <Check className="h-5 w-5 shrink-0 text-success" />
+                      <span>
+                        Manage up to <strong>{plan.maxCourts}</strong> court
+                        {plan.maxCourts > 1 ? "s" : ""}
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <Check className="h-5 w-5 shrink-0 text-success" />
+                      <span>
+                        Valid for <strong>{plan.durationInDays}</strong> days
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <Check className="h-5 w-5 shrink-0 text-success" />
+                      <span>Online bookings enabled</span>
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <Check className="h-5 w-5 shrink-0 text-success" />
+                      <span>24/7 Premium support</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="mt-8 border-t border-border pt-6">
+                  <Button
+                    className="min-h-11 w-full font-semibold"
+                    variant={isPopular ? "default" : "outline"}
+                    onClick={() => handleSubscribeClick(plan)}
+                  >
+                    Subscribe Now
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div className="container mx-auto py-12 px-4 max-w-7xl">
-      <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl bg-gradient-to-r from-primary to-primary-foreground bg-clip-text text-transparent">
+    <div className="container mx-auto max-w-6xl space-y-6 px-4 py-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           Simple, Transparent Pricing
         </h1>
-        <p className="text-xl text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           Choose the perfect plan to manage your sports club and court bookings.
         </p>
       </div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[...Array(3)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader className="space-y-2">
-                <Skeleton className="h-6 w-1/3" />
-                <Skeleton className="h-4 w-2/3" />
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <Skeleton className="h-10 w-24" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-5/6" />
-                </div>
-                <Skeleton className="h-10 w-full" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : isError ? (
-        <div className="py-12 text-center text-destructive bg-destructive/10 rounded-xl border border-destructive/20">
-          Failed to load subscription plans. Please try again later.
-        </div>
-      ) : activePlans.length === 0 ? (
-        <div className="py-12 text-center text-muted-foreground bg-card rounded-xl border border-muted">
-          No subscription plans are currently available.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch justify-center">
-          {activePlans.map((plan) => {
-            const isPopular = plan.name.toLowerCase().includes("popular") || plan.name.toLowerCase().includes("pro");
-            return (
-              <Card 
-                key={plan.planId} 
-                className={`flex flex-col relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-                  isPopular ? "border-primary shadow-md scale-105" : ""
-                }`}
-              >
-                {isPopular && (
-                  <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-semibold px-4 py-1 rounded-bl-lg uppercase tracking-wider">
-                    Popular
-                  </div>
-                )}
-                <CardHeader className="pb-8">
-                  <CardTitle className="text-2xl font-bold flex items-center gap-2">
-                    <Rocket className={`h-5 w-5 ${isPopular ? "text-primary" : "text-muted-foreground"}`} />
-                    {plan.name}
-                  </CardTitle>
-                  <CardDescription className="min-h-[40px] mt-2">
-                    {plan.description || "Everything you need to manage your club facilities."}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1 flex flex-col justify-between pt-0">
-                  <div className="space-y-6">
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-extrabold tracking-tight">${plan.price}</span>
-                      <span className="text-sm font-semibold text-muted-foreground">/{plan.durationInDays} days</span>
-                    </div>
-
-                    <ul className="space-y-3.5 text-sm">
-                      <li className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        <span>Manage up to <strong>{plan.maxCourts}</strong> court{plan.maxCourts > 1 ? "s" : ""}</span>
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        <span>Valid for <strong>{plan.durationInDays}</strong> days</span>
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        <span>Online bookings enabled</span>
-                      </li>
-                      <li className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-green-500 shrink-0" />
-                        <span>24/7 Premium support</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="mt-8 pt-6 border-t">
-                    <Button 
-                      className="w-full text-md font-semibold py-6"
-                      variant={isPopular ? "default" : "outline"}
-                      onClick={() => handleSubscribeClick(plan)}
-                    >
-                      Subscribe Now
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-      )}
+      {renderPlansContent()}
 
       {selectedPlan && (
         <SelectClubModal

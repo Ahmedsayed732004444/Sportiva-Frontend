@@ -40,9 +40,21 @@ export const useInfiniteSearchCourts = (
   options?: { enabled?: boolean; lat?: number; lng?: number }
 ) => {
   return useInfiniteQuery({
-    queryKey: [...COURTS_QUERY_KEYS.search(filters, sport, city, date), "infinite", options?.lat, options?.lng],
+    queryKey: [
+      ...COURTS_QUERY_KEYS.search(filters, sport, city, date),
+      "infinite",
+      options?.lat,
+      options?.lng,
+    ],
     queryFn: ({ pageParam = 1 }) =>
-      courtsApi.searchCourts({ ...filters, pageNumber: pageParam, pageSize: 6 }, sport, city, date, options?.lat, options?.lng),
+      courtsApi.searchCourts(
+        { ...filters, pageNumber: pageParam, pageSize: 6 },
+        sport,
+        city,
+        date,
+        options?.lat,
+        options?.lng
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
@@ -50,7 +62,11 @@ export const useInfiniteSearchCourts = (
   });
 };
 
-export const useGetCourtAvailability = (courtId: string, date: string, options?: { enabled?: boolean }) => {
+export const useGetCourtAvailability = (
+  courtId: string,
+  date: string,
+  options?: { enabled?: boolean }
+) => {
   return useQuery({
     queryKey: COURTS_QUERY_KEYS.availability(courtId, date),
     queryFn: () => courtsApi.getCourtAvailability(courtId, date),
@@ -59,7 +75,11 @@ export const useGetCourtAvailability = (courtId: string, date: string, options?:
   });
 };
 
-export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+export const useGetClubCourts = (
+  clubId: string,
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean }
+) => {
   return useQuery({
     queryKey: COURTS_QUERY_KEYS.clubList(clubId, filters),
     queryFn: () => courtsApi.getClubCourts(clubId, filters),
@@ -99,12 +119,21 @@ export const useUpdateCourt = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ clubId, courtId, data }: { clubId: string; courtId: string; data: UpdateCourtRequest }) =>
-      courtsApi.updateCourt(clubId, courtId, data),
+    mutationFn: ({
+      clubId,
+      courtId,
+      data,
+    }: {
+      clubId: string;
+      courtId: string;
+      data: UpdateCourtRequest;
+    }) => courtsApi.updateCourt(clubId, courtId, data),
     onSuccess: (_, variables) => {
       toast.success("Court updated successfully");
       queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
-      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId) });
+      queryClient.invalidateQueries({
+        queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId),
+      });
       queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
     },
     onError: (error: unknown) => {
@@ -143,7 +172,9 @@ export const useToggleCourtStatus = () => {
     onSuccess: (_, variables) => {
       toast.success("Court status updated successfully");
       queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.clubScoped(variables.clubId) });
-      queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId) });
+      queryClient.invalidateQueries({
+        queryKey: COURTS_QUERY_KEYS.detail(variables.clubId, variables.courtId),
+      });
       queryClient.invalidateQueries({ queryKey: COURTS_QUERY_KEYS.searches() });
     },
     onError: (error: unknown) => {

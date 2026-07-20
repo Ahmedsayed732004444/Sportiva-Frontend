@@ -33,8 +33,6 @@ interface CommentsSectionProps {
   postId: string;
 }
 
-
-
 const CommentSkeleton = () => (
   <div className="flex gap-3 py-3">
     <Skeleton className="h-8 w-8 shrink-0 rounded-full" />
@@ -160,7 +158,8 @@ const CommentItem = ({
   const isPendingUpdate = isReply ? updateReply.isPending : updateComment.isPending;
   const isPendingDelete = isReply ? deleteReply.isPending : deleteComment.isPending;
 
-  const authorId = comment.author.userId || (comment.author as any).userProfileId;
+  const authorId =
+    comment.author.userId || (comment.author as { userProfileId?: string }).userProfileId;
   const authorProfileLink = authorId ? `/profile/${authorId}` : "#";
 
   return (

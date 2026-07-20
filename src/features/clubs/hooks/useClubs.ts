@@ -31,7 +31,11 @@ export const useInfiniteClubs = (
   return useInfiniteQuery({
     queryKey: [...CLUBS_QUERY_KEYS.list(filters), "infinite", options?.lat, options?.lng],
     queryFn: ({ pageParam = 1 }) =>
-      clubsApi.getClubs({ ...filters, pageNumber: pageParam, pageSize: 6 }, options?.lat, options?.lng),
+      clubsApi.getClubs(
+        { ...filters, pageNumber: pageParam, pageSize: 6 },
+        options?.lat,
+        options?.lng
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage) =>
       lastPage.pageNumber < lastPage.totalPages ? lastPage.pageNumber + 1 : undefined,
@@ -47,7 +51,11 @@ export const useGetClub = (clubId: string) => {
   });
 };
 
-export const useGetClubCourts = (clubId: string, filters: RequestFilters = {}, options?: { enabled?: boolean }) => {
+export const useGetClubCourts = (
+  clubId: string,
+  filters: RequestFilters = {},
+  options?: { enabled?: boolean }
+) => {
   return useQuery({
     queryKey: [...CLUBS_QUERY_KEYS.detail(clubId), "courts", filters],
     queryFn: () => clubsApi.getClubCourts(clubId, filters),

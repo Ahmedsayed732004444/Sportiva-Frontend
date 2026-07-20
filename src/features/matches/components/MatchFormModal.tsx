@@ -10,12 +10,16 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 import { useCreateMatch, useUpdateMatch } from "../hooks/useMatches";
 import { useGetClubs, useGetClubCourts } from "@/features/clubs/hooks/useClubs";
 import { useGetTimeSlots } from "@/features/clubs/hooks/useTimeSlots";
-import { Trophy, Calendar, Clock, Users, Building, Target, FileText, MapPin } from "lucide-react";
-import { SportType } from "@/features/clubs/types/clubs";
 import type { FriendlyMatchResponse } from "../types/matches";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/shared/components/ui/skeleton";
@@ -32,12 +36,19 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
   const updateMatch = useUpdateMatch();
 
   // Queries for club / court selection
-  const { data: clubsData, isLoading: isClubsLoading } = useGetClubs({ pageNumber: 1, pageSize: 100 }, { enabled: isOpen && !isEditing });
+  const { data: clubsData, isLoading: isClubsLoading } = useGetClubs(
+    { pageNumber: 1, pageSize: 100 },
+    { enabled: isOpen && !isEditing }
+  );
   const clubs = clubsData?.items || [];
 
   const [selectedClubId, setSelectedClubId] = useState("");
-  
-  const { data: courtsData, isLoading: isCourtsLoading } = useGetClubCourts(selectedClubId, {}, { enabled: isOpen && !!selectedClubId && !isEditing });
+
+  const { data: courtsData, isLoading: isCourtsLoading } = useGetClubCourts(
+    selectedClubId,
+    {},
+    { enabled: isOpen && !!selectedClubId && !isEditing }
+  );
   const courts = courtsData?.items || [];
 
   // Form States
@@ -84,7 +95,11 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
         setExternalLocation("");
         setSelectedClubId("");
         setCourtId("");
-        setDate(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0]);
+        setDate(
+          new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+            .toISOString()
+            .split("T")[0]
+        );
         setStartTime("");
         setEndTime("");
         setSportType("0");
@@ -174,7 +189,10 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
               <Button
                 type="button"
                 variant={isExternal ? "ghost" : "secondary"}
-                className={cn("flex-1 text-xs font-bold rounded-lg h-9 shadow-sm", !isExternal && "bg-background text-primary")}
+                className={cn(
+                  "flex-1 text-xs font-bold rounded-lg h-9 shadow-sm",
+                  !isExternal && "bg-background text-primary"
+                )}
                 onClick={() => setIsExternal(false)}
               >
                 🏫 System Court
@@ -182,7 +200,10 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
               <Button
                 type="button"
                 variant={isExternal ? "secondary" : "ghost"}
-                className={cn("flex-1 text-xs font-bold rounded-lg h-9 shadow-sm", isExternal && "bg-background text-primary")}
+                className={cn(
+                  "flex-1 text-xs font-bold rounded-lg h-9 shadow-sm",
+                  isExternal && "bg-background text-primary"
+                )}
                 onClick={() => setIsExternal(true)}
               >
                 📍 External Court
@@ -199,7 +220,9 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
                 </Label>
                 <Select value={selectedClubId} onValueChange={setSelectedClubId}>
                   <SelectTrigger id="match-club-select">
-                    <SelectValue placeholder={isClubsLoading ? "Loading clubs..." : "Choose a club..."} />
+                    <SelectValue
+                      placeholder={isClubsLoading ? "Loading clubs..." : "Choose a club..."}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     {clubs.map((c) => (
@@ -226,8 +249,8 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
                         isCourtsLoading
                           ? "Loading courts..."
                           : !selectedClubId
-                          ? "Select a club first"
-                          : "Choose a court..."
+                            ? "Select a club first"
+                            : "Choose a court..."
                       }
                     />
                   </SelectTrigger>
@@ -240,11 +263,13 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-600 dark:text-amber-400 p-3 rounded-xl flex items-start gap-2 leading-relaxed">
                 <Clock className="h-4 w-4 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold">Reservation Request:</span> Creating a match on a system court will submit a booking request. The match will open to players once the owner approves the booking.
+                  <span className="font-bold">Reservation Request:</span> Creating a match on a
+                  system court will submit a booking request. The match will open to players once
+                  the owner approves the booking.
                 </div>
               </div>
             </>
@@ -309,7 +334,11 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              min={new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0]}
+              min={
+                new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+                  .toISOString()
+                  .split("T")[0]
+              }
               required
             />
           </div>
@@ -380,7 +409,9 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
                         variant={isSelected ? "default" : "outline"}
                         className={cn(
                           "h-9.5 text-[11px] font-bold rounded-xl transition-all hover:scale-[1.02] shadow-sm select-none",
-                          isSelected ? "bg-primary text-primary-foreground border-primary" : "hover:border-primary/50 text-foreground"
+                          isSelected
+                            ? "bg-primary text-primary-foreground border-primary"
+                            : "hover:border-primary/50 text-foreground"
                         )}
                         onClick={() => handleSlotSelect(s.timeSlotId, s.startTime, s.endTime)}
                       >
@@ -451,9 +482,9 @@ export function MatchFormModal({ isOpen, onClose, match }: MatchFormModalProps) 
             <Button
               type="submit"
               disabled={
-                createMatch.isPending || 
-                updateMatch.isPending || 
-                (!isEditing && !isExternal && !selectedSlotId) || 
+                createMatch.isPending ||
+                updateMatch.isPending ||
+                (!isEditing && !isExternal && !selectedSlotId) ||
                 (!isEditing && isExternal && (!externalClubName.trim() || !externalLocation.trim()))
               }
             >

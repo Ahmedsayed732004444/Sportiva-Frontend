@@ -15,26 +15,42 @@ export function PreferredSportsWidget({ preferredSports }: PreferredSportsWidget
     { type: "Volleyball" as SportTypeDto, emoji: "🏐", label: "Volleyball" },
   ];
 
+  if (!preferredSports?.length) {
+    return (
+      <Card className="rounded-3xl border border-border bg-card p-6 shadow-sm">
+        <CardHeader className="p-0 pb-4">
+          <CardTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+            <Flame className="h-5 w-5 shrink-0 text-primary" />
+            Preferred Sports
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 text-sm text-muted-foreground">
+          No preferred sports selected yet.
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="bg-white dark:bg-card border border-gray-100 dark:border-muted/30 rounded-3xl p-6 shadow-sm">
+    <Card className="rounded-3xl border border-border bg-card p-6 shadow-sm">
       <CardHeader className="p-0 pb-6">
-        <CardTitle className="text-base font-bold flex items-center gap-2 text-gray-900 dark:text-white">
-          <Flame className="h-5 w-5 text-[#20A854] shrink-0" />
+        <CardTitle className="flex items-center gap-2 text-base font-bold text-foreground">
+          <Flame className="h-5 w-5 shrink-0 text-primary" />
           Preferred Sports
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <div className="flex items-center gap-4">
           {sports.map((sport) => {
-            const isPreferred = preferredSports?.includes(sport.type);
+            const isPreferred = preferredSports.includes(sport.type);
             return (
               <div
                 key={sport.label}
                 className={cn(
-                  "w-12 h-12 rounded-full border-2 flex items-center justify-center text-xl transition-all cursor-pointer shadow-sm",
+                  "flex h-12 w-12 cursor-default items-center justify-center rounded-full border-2 text-xl shadow-sm transition-all",
                   isPreferred
-                    ? "border-[#20A854] text-[#20A854] bg-[#20A854]/10 shadow-md ring-2 ring-[#20A854]/15"
-                    : "border-gray-200 dark:border-muted text-gray-400 dark:text-muted-foreground hover:border-gray-300 hover:text-gray-600 dark:hover:text-gray-200"
+                    ? "border-primary bg-primary/10 text-primary shadow-md ring-2 ring-primary/15"
+                    : "border-border text-muted-foreground opacity-40"
                 )}
                 title={sport.label}
               >

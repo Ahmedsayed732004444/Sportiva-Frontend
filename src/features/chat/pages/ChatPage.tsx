@@ -2,23 +2,44 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { useAuthContext } from "@/features/auth/context/AuthContext";
 import { useChat } from "../hooks/useChat";
-import { 
-  Send, MessageSquare, Search, ArrowLeft, 
-  MoreHorizontal, Smile, CheckCheck, Check 
-} from "lucide-react";
+import { Send, MessageSquare, Search, ArrowLeft, Smile, CheckCheck, Check } from "lucide-react";
 import { formatTime } from "@/lib/utils";
 
-const POPULAR_EMOJIS = ["😀", "😂", "😍", "👍", "🙌", "🔥", "⚽", "🏀", "🎾", "🏆", "👏", "❤️", "🎉", "😮", "😢", "😡"];
+const POPULAR_EMOJIS = [
+  "😀",
+  "😂",
+  "😍",
+  "👍",
+  "🙌",
+  "🔥",
+  "⚽",
+  "🏀",
+  "🎾",
+  "🏆",
+  "👏",
+  "❤️",
+  "🎉",
+  "😮",
+  "😢",
+  "😡",
+];
 
 const MessageStatus: React.FC<{ status?: string; isRead: boolean }> = ({ status, isRead }) => {
   if (status === "sending") {
     return <span className="text-[10px] opacity-75 shrink-0 select-none">⏳</span>;
   }
   if (status === "failed") {
-    return <span className="text-[10px] text-destructive shrink-0 select-none font-bold" title="Failed to send">⚠️</span>;
+    return (
+      <span
+        className="text-[10px] text-destructive shrink-0 select-none font-bold"
+        title="Failed to send"
+      >
+        ⚠️
+      </span>
+    );
   }
   if (isRead) {
-    return <CheckCheck className="h-3.5 w-3.5 text-[#53bdeb] shrink-0 select-none" />; // WhatsApp Blue double check
+    return <CheckCheck className="h-3.5 w-3.5 text-info shrink-0 select-none" />;
   }
   if (status === "sent") {
     return <Check className="h-3.5 w-3.5 text-muted-foreground/60 shrink-0 select-none" />; // Single check
@@ -32,7 +53,8 @@ const ChatPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const userIdParam = searchParams.get("user");
-  const validUserIdParam = userIdParam && userIdParam !== "undefined" && userIdParam !== "null" ? userIdParam : undefined;
+  const validUserIdParam =
+    userIdParam && userIdParam !== "undefined" && userIdParam !== "null" ? userIdParam : undefined;
 
   const [activeReceiverId, setActiveReceiverId] = useState<string | undefined>(validUserIdParam);
   const [messageInput, setMessageInput] = useState("");
@@ -40,14 +62,8 @@ const ChatPage: React.FC = () => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [activeTab, setActiveTab] = useState<"all" | "unread">("all");
 
-  const {
-    isConnected,
-    conversations,
-    messages,
-    sendMessage,
-    markAsRead,
-    refetchConversations,
-  } = useChat(activeReceiverId);
+  const { isConnected, conversations, messages, sendMessage, markAsRead, refetchConversations } =
+    useChat(activeReceiverId);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const emojiPickerRef = useRef<HTMLDivElement | null>(null);
@@ -72,7 +88,7 @@ const ChatPage: React.FC = () => {
     } else {
       setActiveReceiverId(undefined);
     }
-  }, [validUserIdParam]);
+  }, [validUserIdParam, refetchConversations]);
 
   // Auto-select first conversation on desktop ONLY during initial mount
   useEffect(() => {
@@ -129,14 +145,14 @@ const ChatPage: React.FC = () => {
       >
         {/* Top Header - Back arrow and User profile */}
         <div className="p-3 border-b border-border flex items-center gap-3 bg-muted/20">
-          <button 
+          <button
             onClick={() => navigate(-1)}
             className="p-1.5 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-all flex items-center justify-center shrink-0"
             title="Go back"
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
-          
+
           {currentUser?.profilePhotoUrl ? (
             <img
               src={currentUser.profilePhotoUrl}
@@ -212,9 +228,7 @@ const ChatPage: React.FC = () => {
                     setSearchParams({ user: chat.otherUser.id });
                   }}
                   className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-all relative border border-transparent my-0.5 ${
-                    isActive 
-                      ? "bg-secondary/60 border-border" 
-                      : "hover:bg-secondary/20"
+                    isActive ? "bg-secondary/60 border-border" : "hover:bg-secondary/20"
                   }`}
                 >
                   {/* Left green stripe indicator */}
@@ -304,50 +318,59 @@ const ChatPage: React.FC = () => {
                       {activeSenderName || "New Conversation"}
                     </h3>
                     <span className="text-[10px] text-muted-foreground flex items-center gap-1.5 mt-0.5">
-                      <span className={`h-1.5 w-1.5 rounded-full ${isConnected ? "bg-primary animate-pulse" : "bg-amber-500"}`} />
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${isConnected ? "bg-primary animate-pulse" : "bg-warning"}`}
+                      />
                       {isConnected ? "Real-time Connected" : "Connecting..."}
                     </span>
                   </div>
                 </Link>
               </div>
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
-                <button className="p-2 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-all">
-                  <MoreHorizontal className="h-4 w-4" />
-                </button>
-              </div>
             </div>
 
-            {/* Message Thread (WhatsApp Style) */}
+            {/* Message Thread */}
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-              {/* Centered Date Separator */}
-              <div className="flex justify-center my-2">
-                <span className="px-3 py-1 text-[10px] font-medium text-muted-foreground border border-border bg-card rounded-md shadow-sm">
-                  Today, 18 July 2026
-                </span>
-              </div>
+              {messages.length > 0 && (
+                <div className="my-2 flex justify-center">
+                  <span className="rounded-md border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+                    {new Date().toLocaleDateString("en-US", {
+                      weekday: "long",
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                </div>
+              )}
 
               {messages.map((msg) => {
                 const isMe = msg.sender.id === currentUser?.id;
                 return (
-                  <div key={msg.messageId} className={`flex w-full ${isMe ? "justify-end" : "justify-start"}`}>
+                  <div
+                    key={msg.messageId}
+                    className={`flex w-full ${isMe ? "justify-end" : "justify-start"}`}
+                  >
                     <div
                       className={`rounded-lg px-3 py-1.5 text-sm shadow-[0_1px_0.5px_rgba(0,0,0,0.13)] max-w-[70%] min-w-[80px] ${
                         isMe
-                          ? "bg-[#d9fdd3] dark:bg-[#005c4b] text-foreground rounded-tr-none"
-                          : "bg-card dark:bg-[#202c33] text-foreground rounded-tl-none border border-border/10"
+                          ? "bg-chat-bubble-sent text-foreground rounded-tr-none"
+                          : "bg-chat-bubble-received text-foreground rounded-tl-none border border-border/10"
                       }`}
                     >
-                      <p className="leading-relaxed break-words whitespace-pre-wrap pr-10">{msg.content}</p>
-                      
+                      <p className="leading-relaxed break-words whitespace-pre-wrap pr-10">
+                        {msg.content}
+                      </p>
+
                       {/* Inline Time and checkmark inside bubble bottom-right */}
                       <div className="flex items-center justify-end gap-1 mt-0.5 float-right -mr-1">
                         <span className="text-[9px] opacity-60 text-muted-foreground leading-none">
                           {formatTime(msg.sentAt)}
                         </span>
                         {isMe && (
-                          <MessageStatus status={(msg as any).status} isRead={msg.isRead} />
+                          <MessageStatus
+                            status={(msg as MessageResponse & { status?: string }).status}
+                            isRead={msg.isRead}
+                          />
                         )}
                       </div>
                     </div>
@@ -361,7 +384,7 @@ const ChatPage: React.FC = () => {
             <div className="p-3 bg-muted/10 border-t border-border relative">
               {/* Emoji Picker Popover */}
               {showEmojiPicker && (
-                <div 
+                <div
                   ref={emojiPickerRef}
                   className="absolute bottom-16 left-4 bg-card border border-border rounded-xl p-3 shadow-xl z-50 grid grid-cols-4 gap-2 w-48 animate-in fade-in slide-in-from-bottom-2 duration-150"
                 >
@@ -386,7 +409,7 @@ const ChatPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                  className={`p-2 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground transition-all hover:bg-muted shrink-0 ${showEmojiPicker ? 'text-primary border-primary' : ''}`}
+                  className={`p-2 rounded-full border border-border bg-card text-muted-foreground hover:text-foreground transition-all hover:bg-muted shrink-0 ${showEmojiPicker ? "text-primary border-primary" : ""}`}
                 >
                   <Smile className="h-5 w-5" />
                 </button>
@@ -418,7 +441,8 @@ const ChatPage: React.FC = () => {
             </div>
             <h3 className="text-lg font-semibold text-foreground mb-1">Your Inbox</h3>
             <p className="text-sm max-w-xs text-muted-foreground">
-              Select an active conversation from the sidebar or click "Message" from a user's profile to start chatting.
+              Select an active conversation from the sidebar or click "Message" from a user's
+              profile to start chatting.
             </p>
           </div>
         )}

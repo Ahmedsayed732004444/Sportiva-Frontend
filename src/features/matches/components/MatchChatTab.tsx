@@ -13,11 +13,7 @@ const MatchChatTab: React.FC<MatchChatTabProps> = ({ matchId }) => {
   const [messageInput, setMessageInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const {
-    isConnected,
-    matchMessages: messages,
-    sendMatchMessage,
-  } = useChat(undefined, matchId);
+  const { isConnected, matchMessages: messages, sendMatchMessage } = useChat(undefined, matchId);
 
   // Scroll to bottom when messages list changes
   useEffect(() => {
@@ -40,7 +36,9 @@ const MatchChatTab: React.FC<MatchChatTabProps> = ({ matchId }) => {
           <h3 className="font-semibold text-foreground text-sm">Match Discussion</h3>
         </div>
         <span className="text-[10px] text-muted-foreground flex items-center gap-1.5">
-          <span className={`h-1.5 w-1.5 rounded-full ${isConnected ? "bg-emerald-500" : "bg-amber-500"}`} />
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${isConnected ? "bg-emerald-500" : "bg-amber-500"}`}
+          />
           {isConnected ? "Connected live" : "Connecting..."}
         </span>
       </div>
@@ -59,9 +57,12 @@ const MatchChatTab: React.FC<MatchChatTabProps> = ({ matchId }) => {
           messages.map((msg) => {
             const isMe = msg.sender.id === currentUser?.id;
             return (
-              <div key={msg.messageId} className={`flex gap-3 ${isMe ? "justify-end" : "justify-start"}`}>
-                {!isMe && (
-                  msg.sender.profilePictureUrl ? (
+              <div
+                key={msg.messageId}
+                className={`flex gap-3 ${isMe ? "justify-end" : "justify-start"}`}
+              >
+                {!isMe &&
+                  (msg.sender.profilePictureUrl ? (
                     <img
                       src={msg.sender.profilePictureUrl}
                       alt=""
@@ -71,8 +72,7 @@ const MatchChatTab: React.FC<MatchChatTabProps> = ({ matchId }) => {
                     <div className="h-8 w-8 rounded-full border border-border bg-primary/10 text-primary font-semibold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
                       {msg.sender.fullName.substring(0, 2).toUpperCase()}
                     </div>
-                  )
-                )}
+                  ))}
                 <div className={`max-w-[70%] ${isMe ? "text-right" : "text-left"}`}>
                   {!isMe && (
                     <span className="block text-[10px] font-semibold text-muted-foreground mb-1 pl-1">

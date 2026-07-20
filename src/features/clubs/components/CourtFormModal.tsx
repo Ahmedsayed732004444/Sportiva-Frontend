@@ -14,7 +14,13 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Checkbox } from "@/shared/components/ui/checkbox";
 import { Textarea } from "@/shared/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 import { useCreateCourt, useUpdateCourt } from "../hooks/useCourts";
 import { SportType } from "../types/clubs";
 import type { CourtResponse } from "../types/clubs";
@@ -44,7 +50,7 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const form = useForm<CourtFormValues>({
-    resolver: zodResolver(courtSchema) as any,
+    resolver: zodResolver(courtSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -171,7 +177,9 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
               <Label htmlFor="maxCapacity">Max Capacity (Players) *</Label>
               <Input id="maxCapacity" type="number" {...register("maxCapacity")} />
               {errors.maxCapacity && (
-                <span className="text-xs text-destructive">{errors.maxCapacity.message as string}</span>
+                <span className="text-xs text-destructive">
+                  {errors.maxCapacity.message as string}
+                </span>
               )}
             </div>
           </div>
@@ -180,7 +188,9 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
             <Label htmlFor="pricePerHour">Price Per Hour ($) *</Label>
             <Input id="pricePerHour" type="number" step="0.01" {...register("pricePerHour")} />
             {errors.pricePerHour && (
-              <span className="text-xs text-destructive">{errors.pricePerHour.message as string}</span>
+              <span className="text-xs text-destructive">
+                {errors.pricePerHour.message as string}
+              </span>
             )}
           </div>
 
@@ -205,7 +215,9 @@ export function CourtFormModal({ isOpen, onClose, clubId, court }: CourtFormModa
               type="submit"
               disabled={isSubmitting || createCourt.isPending || updateCourt.isPending}
             >
-              {isSubmitting || createCourt.isPending || updateCourt.isPending ? "Saving..." : "Save"}
+              {isSubmitting || createCourt.isPending || updateCourt.isPending
+                ? "Saving..."
+                : "Save"}
             </Button>
           </div>
         </form>
