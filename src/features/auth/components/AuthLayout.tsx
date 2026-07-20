@@ -77,7 +77,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
   );
 
   return (
-    <div className="h-screen max-h-screen w-full flex bg-[#0B0F17] overflow-hidden">
+    <div className="h-screen max-h-screen w-full flex bg-slate-100 dark:bg-[#0B0F17] overflow-hidden transition-colors duration-300">
       {/* Left Side - High Clarity Hero Image */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-slate-950">
         <img
@@ -94,8 +94,8 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
         <div className="relative z-10 w-full h-full">{leftContent || defaultLeftContent}</div>
       </div>
 
-      {/* Right Side - Form Container */}
-      <div className="flex flex-1 items-center justify-center bg-[#070A10] px-4 py-4 sm:px-6 lg:px-8 overflow-y-auto max-h-screen">
+      {/* Right Side - Form Container with Light & Dark Mode */}
+      <div className="flex flex-1 items-center justify-center bg-slate-100/90 dark:bg-[#070A10] px-4 py-4 sm:px-6 lg:px-8 overflow-y-auto max-h-screen transition-colors duration-300">
         <div className="w-full max-w-[420px] my-auto">{children}</div>
       </div>
     </div>

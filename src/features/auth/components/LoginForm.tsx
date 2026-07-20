@@ -50,7 +50,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="w-full space-y-4 rounded-3xl border border-white/10 bg-[#0E1521]/95 p-6 sm:p-7 shadow-2xl backdrop-blur-xl text-white my-auto">
+    <div className="w-full space-y-4 rounded-3xl border border-slate-200/80 bg-white/95 text-slate-900 shadow-xl dark:border-white/10 dark:bg-[#0E1521]/95 dark:text-white p-6 sm:p-7 backdrop-blur-xl my-auto transition-colors duration-300">
       {/* Logo and Header */}
       <div className="flex flex-col items-center justify-center space-y-1.5 text-center">
         <Link
@@ -58,24 +58,28 @@ export const LoginForm = () => {
           className="flex items-center gap-2.5 group hover:opacity-90 transition-opacity"
         >
           {/* Green Hexagon Icon Badge */}
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 shadow-md shadow-emerald-500/20 transition-transform group-hover:scale-105">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-[#20A854] shadow-sm transition-transform group-hover:scale-105">
             <svg className="h-5 w-5 fill-current text-[#20A854]" viewBox="0 0 24 24">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
           <div className="text-left">
-            <h3 className="text-xl font-black tracking-tight text-white leading-none">Sportiva</h3>
-            <p className="text-[9px] uppercase font-semibold text-white/50 tracking-wider mt-0.5">
+            <h3 className="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-none">
+              Sportiva
+            </h3>
+            <p className="text-[9px] uppercase font-semibold text-slate-500 dark:text-white/50 tracking-wider mt-0.5">
               Sports Booking & Social Platform
             </p>
           </div>
         </Link>
 
         <div className="pt-2 space-y-0.5">
-          <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Welcome Back
           </h1>
-          <p className="text-xs text-white/60 font-medium">Login to continue your journey</p>
+          <p className="text-xs text-slate-500 dark:text-white/60 font-medium">
+            Login to continue your journey
+          </p>
         </div>
       </div>
 
@@ -88,22 +92,22 @@ export const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-1">
-                <FormLabel className="text-[11px] font-semibold text-white/80">
+                <FormLabel className="text-[11px] font-semibold text-slate-700 dark:text-white/80">
                   Email or Phone
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <User className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/40" />
+                    <User className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-white/40" />
                     <Input
                       type="text"
                       autoComplete="email"
                       placeholder="Enter your email or phone number"
-                      className="h-9 rounded-lg border-white/10 bg-[#151D2A] pl-9 text-xs text-white placeholder:text-white/40 focus:border-[#20A854] focus:ring-1 focus:ring-[#20A854] transition-all"
+                      className="h-9 rounded-lg border-slate-200 bg-slate-50 pl-9 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#20A854] focus:ring-1 focus:ring-[#20A854] dark:border-white/10 dark:bg-[#151D2A] dark:text-white dark:placeholder:text-white/40 transition-all"
                       {...field}
                     />
                   </div>
                 </FormControl>
-                <FormMessage className="text-[11px] text-rose-400" />
+                <FormMessage className="text-[11px] text-rose-500" />
               </FormItem>
             )}
           />
@@ -114,22 +118,24 @@ export const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="space-y-1">
-                <FormLabel className="text-[11px] font-semibold text-white/80">Password</FormLabel>
+                <FormLabel className="text-[11px] font-semibold text-slate-700 dark:text-white/80">
+                  Password
+                </FormLabel>
                 <FormControl>
                   <div className="relative">
-                    <Lock className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white/40" />
+                    <Lock className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400 dark:text-white/40" />
                     <Input
                       type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
                       placeholder="Enter your password"
-                      className="h-9 rounded-lg border-white/10 bg-[#151D2A] pl-9 pr-10 text-xs text-white placeholder:text-white/40 focus:border-[#20A854] focus:ring-1 focus:ring-[#20A854] transition-all"
+                      className="h-9 rounded-lg border-slate-200 bg-slate-50 pl-9 pr-10 text-xs text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-[#20A854] focus:ring-1 focus:ring-[#20A854] dark:border-white/10 dark:bg-[#151D2A] dark:text-white dark:placeholder:text-white/40 transition-all"
                       {...field}
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0.5 top-0 h-full px-2.5 text-white/40 hover:text-white hover:bg-transparent"
+                      className="absolute right-0.5 top-0 h-full px-2.5 text-slate-400 hover:text-slate-700 dark:text-white/40 dark:hover:text-white hover:bg-transparent"
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={showPassword ? "Hide password" : "Show password"}
                     >
@@ -141,13 +147,13 @@ export const LoginForm = () => {
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage className="text-[11px] text-rose-400" />
+                <FormMessage className="text-[11px] text-rose-500" />
               </FormItem>
             )}
           />
 
           {form.formState.errors.root && (
-            <div className="rounded-lg bg-destructive/15 border border-destructive/30 p-2.5 text-xs text-rose-300">
+            <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-2.5 text-xs text-rose-500">
               {form.formState.errors.root.message}
             </div>
           )}
@@ -176,10 +182,12 @@ export const LoginForm = () => {
       {/* Separator */}
       <div className="relative py-0.5">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-white/10" />
+          <span className="w-full border-t border-slate-200 dark:border-white/10" />
         </div>
         <div className="relative flex justify-center text-[10px]">
-          <span className="bg-[#0E1521] px-3 text-white/50 font-medium">or continue with</span>
+          <span className="bg-white dark:bg-[#0E1521] px-3 text-slate-400 dark:text-white/50 font-medium transition-colors">
+            or continue with
+          </span>
         </div>
       </div>
 
@@ -188,7 +196,7 @@ export const LoginForm = () => {
         <Button
           type="button"
           variant="outline"
-          className="w-full border border-white/10 bg-[#151D2A] text-white hover:bg-[#1c2637] hover:border-white/20 h-9 transition-all rounded-xl text-xs font-semibold"
+          className="w-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 shadow-sm dark:border-white/10 dark:bg-[#151D2A] dark:text-white dark:hover:bg-[#1c2637] h-9 transition-all rounded-xl text-xs font-semibold"
           onClick={handleGoogleLogin}
         >
           <svg className="mr-2 h-3.5 w-3.5" viewBox="0 0 24 24">
@@ -214,7 +222,7 @@ export const LoginForm = () => {
       </div>
 
       {/* Sign Up Link */}
-      <p className="text-center text-[11px] text-white/60 font-medium pt-0.5">
+      <p className="text-center text-[11px] text-slate-500 dark:text-white/60 font-medium pt-0.5">
         Don't have an account?{" "}
         <Link to="/register" className="text-[#20A854] font-bold hover:underline">
           Sign Up

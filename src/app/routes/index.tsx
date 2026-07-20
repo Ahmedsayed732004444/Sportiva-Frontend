@@ -4,7 +4,6 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import PublicLayout from "@/shared/components/navigation/PublicLayout";
 import AppLayout from "@/shared/components/navigation/AppLayout";
 import ScrollToTop from "@/shared/components/navigation/ScrollToTop";
-import { AuthLayout } from "@/features/auth/components/AuthLayout";
 import NotFoundPage from "@/shared/components/NotFoundPage";
 import UnauthorizedPage from "@/shared/components/UnauthorizedPage";
 import { RoleProtectedRoute } from "@/features/auth/components/RoleProtectedRoute";
@@ -110,79 +109,21 @@ const MainRouter = () => {
           </Route>
         </Route>
 
-        {/* Auth */}
+        {/* Auth Routes */}
         <Route
           path="/login"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <AuthLayout variant="login">
-                <LoginPage />
-              </AuthLayout>
-            )
-          }
+          element={isAuthenticated ? <Navigate to="/profile" replace /> : <LoginPage />}
         />
         <Route
           path="/register"
-          element={
-            isAuthenticated ? (
-              <Navigate to="/profile" replace />
-            ) : (
-              <AuthLayout variant="register">
-                <RegisterPage />
-              </AuthLayout>
-            )
-          }
+          element={isAuthenticated ? <Navigate to="/profile" replace /> : <RegisterPage />}
         />
-        <Route
-          path="/forgot-password"
-          element={
-            <AuthLayout variant="forgot">
-              <ForgotPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/auth/forgetPassword"
-          element={
-            <AuthLayout variant="reset">
-              <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/resetPassword"
-          element={
-            <AuthLayout variant="reset">
-              <ResetPasswordPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/emailConfirmation"
-          element={
-            <AuthLayout variant="verify">
-              <VerifyEmailPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/auth/emailConfirmation"
-          element={
-            <AuthLayout variant="verify">
-              <ConfirmEmailPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path="/confirm-email"
-          element={
-            <AuthLayout variant="verify">
-              <ConfirmEmailPage />
-            </AuthLayout>
-          }
-        />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/auth/forgetPassword" element={<ResetPasswordPage />} />
+        <Route path="/resetPassword" element={<ResetPasswordPage />} />
+        <Route path="/emailConfirmation" element={<VerifyEmailPage />} />
+        <Route path="/auth/emailConfirmation" element={<ConfirmEmailPage />} />
+        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
 
         {/* 404 & Unauthorized */}
