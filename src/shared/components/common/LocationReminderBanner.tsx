@@ -9,6 +9,7 @@ import {
   DialogFooter,
 } from "@/shared/components/ui/dialog";
 import { MapPin, Navigation, X, Lock, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 export function LocationReminderBanner() {
   const { coords, status, requestLocation, isBlockedByBrowser } = useLocationPermission();
@@ -30,10 +31,20 @@ export function LocationReminderBanner() {
   };
 
   const handleEnableClick = () => {
-    requestLocation();
-    if (isBlockedByBrowser) {
+    if (isBlockedByBrowser || (status as string) === "denied") {
       setIsHelpOpen(true);
+      toast.info("المتصفح يحظر الوصول للموقع. تابع الخطوات الموضحة لمنح الإذن.");
+      return;
     }
+
+    requestLocation();
+
+    // Check after short delay if browser blocked request
+    setTimeout(() => {
+      if (isBlockedByBrowser || (status as string) === "denied") {
+        setIsHelpOpen(true);
+      }
+    }, 800);
   };
 
   if (coords || status === "granted" || isDismissed) {
