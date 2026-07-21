@@ -309,7 +309,11 @@ export default function CourtDetailsPage() {
                     <MapPin className="h-4 w-4 text-primary shrink-0" />
                     <span>
                       Located at: <strong>{court.club.name}</strong>
-                      {court.club.address ? ` — ${court.club.address}` : ""}
+                      {court.club.address &&
+                      !court.club.address.startsWith("http://") &&
+                      !court.club.address.startsWith("https://")
+                        ? ` — ${court.club.address}`
+                        : ""}
                       {[court.club.city, court.club.governorate].filter(Boolean).length > 0
                         ? `, ${[court.club.city, court.club.governorate].filter(Boolean).join(", ")}`
                         : ""}
@@ -324,14 +328,17 @@ export default function CourtDetailsPage() {
                       {court.distanceText || court.club.distanceText}
                     </Badge>
                   )}
-                  {court.club.latitude && court.club.longitude && (
+                  {(court.club.address?.startsWith("http") ||
+                    (court.club.latitude && court.club.longitude)) && (
                     <Button
                       variant="outline"
                       size="sm"
                       className="rounded-full text-[11px] font-bold gap-1 h-7 px-3 border-primary/20 text-primary hover:bg-primary/10 ml-auto sm:ml-0"
                       onClick={() =>
                         window.open(
-                          `https://www.google.com/maps/dir/?api=1&destination=${court.club?.latitude},${court.club?.longitude}`,
+                          court.club?.address?.startsWith("http")
+                            ? court.club.address
+                            : `https://www.google.com/maps/dir/?api=1&destination=${court.club?.latitude},${court.club?.longitude}`,
                           "_blank"
                         )
                       }

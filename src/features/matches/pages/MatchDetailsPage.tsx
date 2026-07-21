@@ -15,6 +15,7 @@ import { matchesApi } from "../api/matchesApi";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/shared/components/ui/tabs";
 import {
   Calendar,
@@ -34,6 +35,7 @@ import {
   Undo2,
   Trophy,
   ChevronRight,
+  Navigation,
 } from "lucide-react";
 import { MatchChatSheet } from "../components/MatchChatSheet";
 import { MatchFormModal } from "../components/MatchFormModal";
@@ -795,11 +797,43 @@ export default function MatchDetailsPage() {
                   <div className="p-2 rounded-xl bg-primary/8 dark:bg-primary/10 shrink-0">
                     <MapPin className="h-4 w-4 text-primary" />
                   </div>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <p className="text-[10px] font-semibold text-muted-foreground uppercase">
                       Location
                     </p>
                     <p className="text-sm font-bold text-foreground mt-0.5">{locationText}</p>
+                    {match.court?.club?.address && !match.court.club.address.startsWith("http") && (
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                        {match.court.club.address}
+                      </p>
+                    )}
+                    {match.court?.club?.distanceText && (
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] font-extrabold text-primary bg-primary/10 border-primary/20 gap-1 mt-1.5 px-2 py-0.5"
+                      >
+                        <Navigation className="h-3 w-3" />
+                        {match.court.club.distanceText}
+                      </Badge>
+                    )}
+                    {(match.court?.club?.address?.startsWith("http") ||
+                      (match.court?.club?.latitude && match.court?.club?.longitude)) && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-full text-[11px] font-bold gap-1 h-7 px-3 border-primary/20 text-primary hover:bg-primary/10 mt-2 w-full justify-center"
+                        onClick={() =>
+                          window.open(
+                            match.court?.club?.address?.startsWith("http")
+                              ? match.court.club.address
+                              : `https://www.google.com/maps/dir/?api=1&destination=${match.court?.club?.latitude},${match.court?.club?.longitude}`,
+                            "_blank"
+                          )
+                        }
+                      >
+                        <Navigation className="h-3 w-3" /> Get Directions
+                      </Button>
+                    )}
                   </div>
                 </div>
               )}

@@ -39,6 +39,7 @@ import {
   LogOut,
   Sparkles,
   Filter,
+  Navigation,
 } from "lucide-react";
 import { MatchStatusDto, SPORT_LABELS } from "../types/matches";
 import { MatchFormModal } from "../components/MatchFormModal";
@@ -240,11 +241,25 @@ export default function MatchesPage() {
           <CardTitle className="truncate pt-1 text-lg font-bold">
             {match.court.name || "Friendly Match"}
           </CardTitle>
-          <p className="flex items-center gap-1 text-xs text-muted-foreground">
-            <MapPin className="h-3.5 w-3.5 shrink-0" />
-            {match.court.club?.name || "Club"}
-            {match.court.club?.city ? ` (${match.court.club.city})` : ""}
-          </p>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" />
+              <strong className="text-foreground">{match.court.club?.name || "Club"}</strong>
+              {match.court.club?.city ? ` (${match.court.club.city})` : ""}
+            </span>
+            {match.court.club?.address && !match.court.club.address.startsWith("http") && (
+              <span className="truncate text-muted-foreground">• {match.court.club.address}</span>
+            )}
+            {match.court.club?.distanceText && (
+              <Badge
+                variant="outline"
+                className="text-[10px] font-extrabold text-primary bg-primary/10 border-primary/20 gap-1 px-1.5 py-0"
+              >
+                <Navigation className="h-2.5 w-2.5" />
+                {match.court.club.distanceText}
+              </Badge>
+            )}
+          </div>
         </div>
         <div className="min-w-[4.375rem] shrink-0 rounded-xl border border-border/30 bg-secondary/40 px-3 py-2 text-center">
           <span className="block text-[9px] font-bold uppercase leading-none tracking-wider text-muted-foreground">

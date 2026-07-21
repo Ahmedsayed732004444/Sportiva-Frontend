@@ -97,12 +97,37 @@ const CourtCard = ({ court, onNavigate }: { court: CourtResponse; onNavigate: ()
             <span className="block truncate text-xs font-semibold text-foreground">
               {court.club.name}
             </span>
-            {court.club.address && (
-              <span className="block truncate text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
-                <MapPin className="h-3 w-3 text-primary shrink-0" />
-                {court.club.address}
-              </span>
-            )}
+            {court.club.address ? (
+              court.club.address.startsWith("http://") ||
+              court.club.address.startsWith("https://") ? (
+                <a
+                  href={court.club.address}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline mt-0.5 truncate"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <MapPin className="h-3 w-3 shrink-0" />
+                  Location
+                </a>
+              ) : (
+                <span className="block truncate text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                  <MapPin className="h-3 w-3 text-primary shrink-0" />
+                  {court.club.address}
+                </span>
+              )
+            ) : court.club.latitude && court.club.longitude ? (
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${court.club.latitude},${court.club.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary hover:underline mt-0.5 truncate"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <MapPin className="h-3 w-3 shrink-0" />
+                Location
+              </a>
+            ) : null}
             <span className="block truncate text-[10px] text-muted-foreground mt-0.5">
               {court.distanceText || court.club?.distanceText ? (
                 <span className="inline-flex items-center gap-1 font-bold text-primary">
