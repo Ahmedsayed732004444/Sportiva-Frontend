@@ -42,6 +42,11 @@ export interface CourtResponse {
     logoUrl?: string;
     city?: string;
     governorate?: string;
+    address?: string;
+    latitude?: number;
+    longitude?: number;
+    distanceKm?: number;
+    distanceText?: string;
   };
   canBook: boolean;
   canManage: boolean;

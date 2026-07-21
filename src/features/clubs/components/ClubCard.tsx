@@ -187,12 +187,15 @@ export function ClubCard({
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
             <div className="min-w-0 text-xs">
               <p className="font-semibold text-foreground">{formatLocation(club)}</p>
-              {club.address && !mapsUrl && (
+              {club.address && !isMapsUrl(club.address) && (
                 <p className="mt-0.5 truncate text-muted-foreground">{club.address}</p>
               )}
-              {mapsUrl && (
+              {(mapsUrl || (club.latitude && club.longitude)) && (
                 <a
-                  href={mapsUrl}
+                  href={
+                    mapsUrl ||
+                    `https://www.google.com/maps/dir/?api=1&destination=${club.latitude},${club.longitude}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-1 inline-flex items-center gap-1 font-semibold text-primary hover:underline"

@@ -93,15 +93,21 @@ const CourtCard = ({ court, onNavigate }: { court: CourtResponse; onNavigate: ()
               {court.club.name.substring(0, 2).toUpperCase()}
             </div>
           )}
-          <div className="min-w-0 truncate">
+          <div className="min-w-0 flex-1">
             <span className="block truncate text-xs font-semibold text-foreground">
               {court.club.name}
             </span>
-            <span className="block truncate text-xs text-muted-foreground">
-              {court.distanceText ? (
-                <span className="inline-flex items-center gap-1 text-primary">
-                  <MapPin className="h-3 w-3" />
-                  {court.distanceText}
+            {court.club.address && (
+              <span className="block truncate text-[11px] text-muted-foreground flex items-center gap-1 mt-0.5">
+                <MapPin className="h-3 w-3 text-primary shrink-0" />
+                {court.club.address}
+              </span>
+            )}
+            <span className="block truncate text-[10px] text-muted-foreground mt-0.5">
+              {court.distanceText || court.club?.distanceText ? (
+                <span className="inline-flex items-center gap-1 font-bold text-primary">
+                  <Navigation className="h-3 w-3" />
+                  {court.distanceText || court.club?.distanceText}
                 </span>
               ) : (
                 [court.club.city, court.club.governorate].filter(Boolean).join(", ") ||
@@ -139,7 +145,13 @@ export default function CourtsPage() {
     lng: coords?.lng,
   });
 
-  const courts = courtsData?.pages.flatMap((page) => page.items) || [];
+  const rawCourts = courtsData?.pages.flatMap((page) => page.items) || [];
+  // Sort courts by nearest distance (closest first)
+  const courts = [...rawCourts].sort((a, b) => {
+    const distA = a.distanceKm ?? a.club?.distanceKm ?? Infinity;
+    const distB = b.distanceKm ?? b.club?.distanceKm ?? Infinity;
+    return distA - distB;
+  });
 
   const handleNavigate = (court: CourtResponse) => {
     const clubId = court.club?.clubId;

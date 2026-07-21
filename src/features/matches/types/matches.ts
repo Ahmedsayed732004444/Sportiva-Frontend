@@ -51,6 +51,12 @@ export interface FriendlyMatchResponse {
       clubId: string;
       name?: string;
       city?: string;
+      governorate?: string;
+      address?: string;
+      latitude?: number;
+      longitude?: number;
+      distanceKm?: number;
+      distanceText?: string;
       logoUrl?: string;
     };
   };

@@ -32,6 +32,7 @@ import {
   ArrowRight,
   Check,
   MapPin,
+  Navigation,
 } from "lucide-react";
 import type { TimeSlotResponse } from "../types/clubs";
 import { getSportName } from "@/shared/constants/sports";
@@ -303,12 +304,42 @@ export default function CourtDetailsPage() {
                 </span>
               </div>
               {court.club && (
-                <p className="text-muted-foreground text-xs font-semibold flex items-center gap-1 mt-2">
-                  <MapPin className="h-3.5 w-3.5 text-primary" />
-                  <span>
-                    Located at: <strong>{court.club.name}</strong>
-                  </span>
-                </p>
+                <div className="flex flex-wrap items-center gap-2 mt-2">
+                  <p className="text-muted-foreground text-xs font-semibold flex items-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-primary shrink-0" />
+                    <span>
+                      Located at: <strong>{court.club.name}</strong>
+                      {court.club.address ? ` — ${court.club.address}` : ""}
+                      {[court.club.city, court.club.governorate].filter(Boolean).length > 0
+                        ? `, ${[court.club.city, court.club.governorate].filter(Boolean).join(", ")}`
+                        : ""}
+                    </span>
+                  </p>
+                  {(court.distanceText || court.club.distanceText) && (
+                    <Badge
+                      variant="outline"
+                      className="text-[10px] font-extrabold text-primary bg-primary/10 border-primary/20 gap-1"
+                    >
+                      <Navigation className="h-2.5 w-2.5" />
+                      {court.distanceText || court.club.distanceText}
+                    </Badge>
+                  )}
+                  {court.club.latitude && court.club.longitude && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-full text-[11px] font-bold gap-1 h-7 px-3 border-primary/20 text-primary hover:bg-primary/10 ml-auto sm:ml-0"
+                      onClick={() =>
+                        window.open(
+                          `https://www.google.com/maps/dir/?api=1&destination=${court.club?.latitude},${court.club?.longitude}`,
+                          "_blank"
+                        )
+                      }
+                    >
+                      <Navigation className="h-3 w-3" /> Get Directions
+                    </Button>
+                  )}
+                </div>
               )}
             </div>
 
